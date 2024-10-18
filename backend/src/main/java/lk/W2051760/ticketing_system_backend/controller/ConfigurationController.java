@@ -1,22 +1,38 @@
 package lk.W2051760.ticketing_system_backend.controller;
 
 import lk.W2051760.ticketing_system_backend.model.Configuration;
+import lk.W2051760.ticketing_system_backend.service.ConfigurationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
-@RequestMapping("/api/configuration")
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ConfigurationController {
 
-    private Configuration config = new Configuration(); // In-memory storage for now
+    @Autowired
+    private ConfigurationService configurationService;
 
-    @PostMapping
-    public Configuration setConfiguration(@RequestBody Configuration newConfig) {
-        config = newConfig;
-        return config;
+    @PostMapping("/configuration")
+    public String saveConfiguration(@RequestBody Configuration config) {
+        try {
+            configurationService.saveConfiguration(config);
+            return "Configuration saved successfully";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error saving configuration";
+        }
     }
 
-    @GetMapping
+    @GetMapping("/configuration")
     public Configuration getConfiguration() {
-        return config;
+        try {
+            return configurationService.loadConfiguration();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Configuration();
+        }
     }
 }

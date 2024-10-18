@@ -1,6 +1,17 @@
+import { enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
+import { provideRouter, Routes } from '@angular/router';
+import { ConfigurationFormComponent } from './app/components/configuration-form/configuration-form.component';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+const routes: Routes = [
+  { path: '', component: ConfigurationFormComponent },
+  { path: 'configuration', component: ConfigurationFormComponent },
+];
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes),
+
+  ],
+}).catch((err) => console.error(err));

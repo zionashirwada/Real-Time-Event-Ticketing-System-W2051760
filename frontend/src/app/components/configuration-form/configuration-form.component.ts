@@ -1,48 +1,49 @@
+import { Configuration } from './../../types/configuration.type';
 import { Component, OnInit } from '@angular/core';
 import { ConfigurationService } from '../../services/configuration.service';
-import { Configuration } from '../../types/configuration.type';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-configuration-form',
-  standalone: true,
-  imports: [],
   templateUrl: './configuration-form.component.html',
+  standalone: true,
   styleUrls: ['./configuration-form.component.css'],
+  imports: [CommonModule, FormsModule],
 })
 export class ConfigurationFormComponent implements OnInit {
-  config: Configuration = {
-    totalTickets: 0,
-    ticketReleaseRate: 0,
-    customerRetrievalRate: 0,
-    maxTicketCapacity: 0,
-  };
+  configuration: Configuration = new Configuration();
 
-  constructor(private configurationService: ConfigurationService) {}
+  constructor(private configService: ConfigurationService) {}
 
-  ngOnInit() {
-    // Fetch the saved configs
-    this.configurationService.getConfiguration().subscribe({
-      next: (data) => {
-        if (data) {
-          this.config = data; 
-        }
-      },
-      error: (err) => {
-        console.error('Error fetching configuration:', err);
-      },
-    });
+  ngOnInit(): void {
+    this.loadConfiguration();
   }
 
-  onSubmit() {
-    this.configurationService.setConfiguration(this.config).subscribe({
-      next: (response) => {
-        console.log('Configuration saved:', response);
-        alert('Configuration saved successfully!');
+  loadConfiguration(): void {
+    this.configService.getConfiguration().subscribe(
+      (config) => {
+        this.configuration = config;
       },
-      error: (err) => {
-        console.error('Error saving configuration:', err);
-        alert('Error saving configuration.');
+      (error) => {
+        console.error('Error loading configuration:', error);
+        //set default values
+        this.configuration = new Configuration();
+      }
+    );
+  }
+
+  onSubmit(): void {
+    this.configService.saveConfiguration(this.configuration).subscribe(
+      (response) => {
+        console.log(response);
+        alert('Configuration saved successfully');
       },
-    });
+      (error) => {
+        console.error('Error saving configuration:', error);
+        alert('Error saving configuration');
+      }
+    );
   }
 }

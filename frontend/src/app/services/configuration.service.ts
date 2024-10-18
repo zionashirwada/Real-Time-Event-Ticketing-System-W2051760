@@ -9,15 +9,15 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class ConfigurationService {
-  private apiUrl = `${environment.apiBaseUrl}/api/configuration`;
+  private apiUrl = `${environment.apiBaseUrl}/api`;
 
   constructor(private http: HttpClient) {}
 
-  getConfiguration(): Observable<Configuration> {
-    return this.http.get<Configuration>(this.apiUrl);
+  saveConfiguration(config: Configuration): Observable<string> {
+    return this.http.post(`${this.apiUrl}/configuration`, config, { responseType: 'text' });
   }
 
-  setConfiguration(config: Configuration): Observable<Configuration> {
-    return this.http.post<Configuration>(this.apiUrl, config);
+  getConfiguration(): Observable<Configuration> {
+    return this.http.get<Configuration>(`${this.apiUrl}/configuration`);
   }
 }
