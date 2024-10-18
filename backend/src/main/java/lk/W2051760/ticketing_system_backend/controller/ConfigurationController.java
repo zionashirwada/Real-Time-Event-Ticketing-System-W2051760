@@ -3,8 +3,8 @@ package lk.W2051760.ticketing_system_backend.controller;
 import lk.W2051760.ticketing_system_backend.model.Configuration;
 import lk.W2051760.ticketing_system_backend.service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 
 @RestController
@@ -16,23 +16,24 @@ public class ConfigurationController {
     private ConfigurationService configurationService;
 
     @PostMapping("/configuration")
-    public String saveConfiguration(@RequestBody Configuration config) {
+    public ResponseEntity<String> saveConfiguration(@RequestBody Configuration config) {
         try {
             configurationService.saveConfiguration(config);
-            return "Configuration saved successfully";
+            return ResponseEntity.ok("Configuration saved successfully");
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error saving configuration";
+            return ResponseEntity.status(500).body("Error saving configuration: " + e.getMessage());
         }
     }
 
     @GetMapping("/configuration")
-    public Configuration getConfiguration() {
+    public ResponseEntity<Configuration> getConfiguration() {
         try {
-            return configurationService.loadConfiguration();
+            Configuration config = configurationService.loadConfiguration();
+            return ResponseEntity.ok(config);
         } catch (IOException e) {
             e.printStackTrace();
-            return new Configuration();
+            return ResponseEntity.status(500).build();
         }
     }
 }

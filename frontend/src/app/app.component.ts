@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ConfigurationFormComponent } from './components/configuration-form/configuration-form.component';
-import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,10 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [
     ConfigurationFormComponent,
-    RouterModule,],
+    HttpClientModule,
+    ToastContainerComponent,
+  ],
 })
-
 export class AppComponent {
-  title = 'Ticket System - W2051760';
+  title = 'frontend';
 }

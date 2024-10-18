@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Configuration } from '../types/configuration.type';
+import { Configuration } from '../models/configuration.model';
 import { environment } from '../../environments/environment';
-
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigurationService {
-  private apiUrl = `${environment.apiBaseUrl}/api`;
+  private apiUrl = `${environment.apiUrl}/configuration`;
 
   constructor(private http: HttpClient) {}
 
-  saveConfiguration(config: Configuration): Observable<string> {
-    return this.http.post(`${this.apiUrl}/configuration`, config, { responseType: 'text' });
+  saveConfiguration(config: Configuration): Observable<any> {
+    return this.http.post(this.apiUrl, config);
   }
 
   getConfiguration(): Observable<Configuration> {
-    return this.http.get<Configuration>(`${this.apiUrl}/configuration`);
+    return this.http.get<Configuration>(this.apiUrl);
   }
 }

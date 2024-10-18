@@ -1,50 +1,54 @@
-<form (ngSubmit)="onSubmit()" #configForm="ngForm" class="space-y-4">
-  <div>
-    <label>Total Number of Tickets:</label>
-    <input
-      type="number"
-      [(ngModel)]="configuration.totalTickets"
-      name="totalTickets"
-      required
-      title="Total Number of Tickets"
-      class="border p-2 w-full"
-    />
-  </div>
-  <div>
-    <label>Ticket Release Rate:</label>
-    <input
-      type="number"
-      [(ngModel)]="configuration.ticketReleaseRate"
-      name="ticketReleaseRate"
-      required
-      title="Ticket Release Rate"
-      class="border p-2 w-full"
-    />
-  </div>
-  <div>
-    <label>Customer Retrieval Rate:</label>
-    <input
-      type="number"
-      [(ngModel)]="configuration.customerRetrievalRate"
-      name="customerRetrievalRate"
-      required
-      title="Customer Retrieval Rate"
-      class="border p-2 w-full"
-    />
-  </div>
-  <div>
-    <label>Maximum Ticket Capacity:</label>
-    <input
-      type="number"
-      [(ngModel)]="configuration.maxTicketCapacity"
-      name="maxTicketCapacity"
-      required
-      class="border p-2 w-full"
-      title="Maximum Ticket Capacity"
-      placeholder="Enter maximum ticket capacity"
-    />
-  </div>
-  <button type="submit" class="bg-blue-500 text-white px-4 py-2 mt-4">
-    Save Configuration
-  </button>
-</form>
+<div
+  class="flex justify-center items-center h-screen p-4 rounded-lg shadow-md"
+>
+  <form (ngSubmit)="onSubmit()" #configForm="ngForm" class="space-y-4 rounded-lg shadow-md p-11 ">
+    <div>
+      <label>Total Number of Tickets:</label>
+      <input
+        type="number"
+        [(ngModel)]="configuration.totalTickets"
+        name="totalTickets"
+        required
+        title="Total Number of Tickets"
+        class="border p-2 w-full"
+      />
+    </div>
+    <div>
+      <label>Ticket Release Rate:</label>
+      <input
+        type="number"
+        [(ngModel)]="configuration.ticketReleaseRate"
+        name="ticketReleaseRate"
+        required
+        title="Ticket Release Rate"
+        class="border p-2 w-full"
+      />
+    </div>
+    <div>
+      <label>Customer Retrieval Rate:</label>
+      <input
+        type="number"
+        [(ngModel)]="configuration.customerRetrievalRate"
+        name="customerRetrievalRate"
+        required
+        title="Customer Retrieval Rate"
+        class="border p-2 w-full"
+      />
+    </div>
+    <div>
+      <label>Maximum Ticket Capacity:</label>
+      <input
+        type="number"
+        [(ngModel)]="configuration.maxTicketCapacity"
+        name="maxTicketCapacity"
+        required
+        class="border p-2 w-full"
+        title="Maximum Ticket Capacity"
+        placeholder="Enter maximum ticket capacity"
+      />
+    </div>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 mt-4">
+      Save Configuration
+    </button>
+  </form>
+</div>
