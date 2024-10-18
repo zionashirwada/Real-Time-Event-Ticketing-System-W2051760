@@ -1,0 +1,25 @@
+<div class="max-w-md mx-auto p-4 border rounded shadow">
+  <form (ngSubmit)="onSubmit()" #configForm="ngForm">
+    <div class="mb-4">
+      <label for="totalTickets" class="block text-sm font-medium">Total Tickets</label>
+      <input type="number" id="totalTickets" [(ngModel)]="config.totalTickets" name="totalTickets" class="mt-1 p-2 block w-full border rounded" required />
+    </div>
+
+    <div class="mb-4">
+      <label for="ticketReleaseRate" class="block text-sm font-medium">Ticket Release Rate</label>
+      <input type="number" id="ticketReleaseRate" [(ngModel)]="config.ticketReleaseRate" name="ticketReleaseRate" class="mt-1 p-2 block w-full border rounded" required />
+    </div>
+
+    <div class="mb-4">
+      <label for="customerRetrievalRate" class="block text-sm font-medium">Customer Retrieval Rate</label>
+      <input type="number" id="customerRetrievalRate" [(ngModel)]="config.customerRetrievalRate" name="customerRetrievalRate" class="mt-1 p-2 block w-full border rounded" required />
+    </div>
+
+    <div class="mb-4">
+      <label for="maxTicketCapacity" class="block text-sm font-medium">Max Ticket Capacity</label>
+      <input type="number" id="maxTicketCapacity" [(ngModel)]="config.maxTicketCapacity" name="maxTicketCapacity" class="mt-1 p-2 block w-full border rounded" required />
+    </div>
+
+    <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded">Save Configuration</button>
+  </form>
+</div>
