@@ -13,7 +13,7 @@ export class ConfigurationService {
   constructor(private http: HttpClient) {}
 
   saveConfiguration(config: Configuration): Observable<any> {
-    return this.http.post(this.apiUrl, config);
+    return this.http.post(this.apiUrl, config,{ responseType: 'text' });
   }
 
   getConfiguration(): Observable<Configuration> {

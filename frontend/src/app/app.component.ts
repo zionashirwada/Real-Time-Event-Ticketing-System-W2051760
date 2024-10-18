@@ -12,6 +12,7 @@ import { ToastContainerComponent } from './components/toast-container/toast-cont
     ConfigurationFormComponent,
     HttpClientModule,
     ToastContainerComponent,
+    
   ],
 })
 export class AppComponent {

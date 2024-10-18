@@ -4,13 +4,14 @@ import { Configuration } from '../../models/configuration.model';
 import { ConfigurationService } from '../../services/configuration.service';
 import { ToastContainerComponent } from '../toast-container/toast-container.component';
 import { ToastService } from '../../services/toast.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-configuration-form',
   templateUrl: './configuration-form.component.html',
   styleUrls: ['./configuration-form.component.css'],
   standalone: true,
-  imports: [FormsModule, ToastContainerComponent],
+  imports: [FormsModule, ToastContainerComponent,CommonModule],
 })
 export class ConfigurationFormComponent implements OnInit {
   configuration: Configuration = {
@@ -33,6 +34,7 @@ export class ConfigurationFormComponent implements OnInit {
     this.configService.getConfiguration().subscribe({
       next: (config) => {
         this.configuration = config;
+        console.log('Data Loaded from the Existing Json:', this.configuration);
       },
       error: (error) => {
         console.error('Error loading configuration:', error);
@@ -51,20 +53,23 @@ export class ConfigurationFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.configService.saveConfiguration(this.configuration).subscribe({
-      next: () => {
+    this.configService.saveConfiguration(this.configuration).subscribe(
+      (response) => {
+        console.log(response);
+        console.log('Data entered to the Json:', this.configuration,response);
         this.toast.success(
           'Configuration has been saved successfully',
           'Success'
         );
       },
-      error: (error) => {
+      (error) => {
         console.error('Error saving configuration:', error);
-        this.toast.error(
-          'Failed to save configuration. Please try again.',
+        this.toast.success(
+          'Error saving configuration'+ error.message,
           'Error'
         );
       }
-    });
+    );
   }
+
 }

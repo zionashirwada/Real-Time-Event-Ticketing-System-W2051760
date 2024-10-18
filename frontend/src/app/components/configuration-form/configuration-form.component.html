@@ -1,53 +1,73 @@
-<div
-  class="flex justify-center items-center h-screen p-4 rounded-lg shadow-md"
->
-  <form (ngSubmit)="onSubmit()" #configForm="ngForm" class="space-y-4 rounded-lg shadow-md p-11 ">
+<div class="flex justify-center items-center h-screen p-4 rounded-lg shadow-md">
+  <form (ngSubmit)="onSubmit()" #configForm="ngForm" class="space-y-4 rounded-lg shadow-md p-11">
+    <!-- Total Number of Tickets -->
     <div>
       <label>Total Number of Tickets:</label>
-      <input
-        type="number"
-        [(ngModel)]="configuration.totalTickets"
-        name="totalTickets"
-        required
-        title="Total Number of Tickets"
-        class="border p-2 w-full"
-      />
+      <input type="number" [(ngModel)]="configuration.totalTickets" name="totalTickets" min="1"
+        title="Total number of tickets must be greater than 0" #totalTickets="ngModel" class="border p-2 w-full" />
+      <div *ngIf="totalTickets.invalid && (totalTickets.dirty || totalTickets.touched)" class="text-red-500">
+        <small *ngIf="totalTickets.errors?.['required']">
+          Total Number of Tickets is required.
+        </small>
+        <small *ngIf="totalTickets.errors?.['min']">
+          Total Number of Tickets must be at least 1.
+        </small>
+      </div>
+
     </div>
+
+    <!-- Ticket Release Rate -->
     <div>
       <label>Ticket Release Rate:</label>
-      <input
-        type="number"
-        [(ngModel)]="configuration.ticketReleaseRate"
-        name="ticketReleaseRate"
-        required
-        title="Ticket Release Rate"
-        class="border p-2 w-full"
-      />
+      <input type="number" [(ngModel)]="configuration.ticketReleaseRate" name="ticketReleaseRate" required min="1"
+        title="Ticket release rate must be greater than 0" #ticketReleaseRate="ngModel" class="border p-2 w-full" />
+      <div *ngIf="ticketReleaseRate.invalid && (ticketReleaseRate.dirty || ticketReleaseRate.touched)"
+        class="text-red-500">
+        <small *ngIf="ticketReleaseRate.errors?.['required']">
+          Total Number of Tickets is required.
+        </small>
+        <small *ngIf="ticketReleaseRate.errors?.['min']">
+          Total Number of Tickets must be at least 1.
+        </small>
+      </div>
     </div>
+
+    <!-- Customer Retrieval Rate -->
     <div>
       <label>Customer Retrieval Rate:</label>
-      <input
-        type="number"
-        [(ngModel)]="configuration.customerRetrievalRate"
-        name="customerRetrievalRate"
-        required
-        title="Customer Retrieval Rate"
-        class="border p-2 w-full"
-      />
+      <input type="number" [(ngModel)]="configuration.customerRetrievalRate" name="customerRetrievalRate" required
+        min="1" title="Customer retrieval rate must be greater than 0" #customerRetrievalRate="ngModel"
+        class="border p-2 w-full" />
+      <div *ngIf="customerRetrievalRate.invalid && (customerRetrievalRate.dirty || customerRetrievalRate.touched)"
+        class="text-red-500">
+        <small *ngIf="customerRetrievalRate.errors?.['required']">
+          Total Number of Tickets is required.
+        </small>
+        <small *ngIf="customerRetrievalRate.errors?.['min']">
+          Total Number of Tickets must be at least 1.
+        </small>
+      </div>
     </div>
+
+    <!-- Maximum Ticket Capacity -->
     <div>
       <label>Maximum Ticket Capacity:</label>
-      <input
-        type="number"
-        [(ngModel)]="configuration.maxTicketCapacity"
-        name="maxTicketCapacity"
-        required
-        class="border p-2 w-full"
-        title="Maximum Ticket Capacity"
-        placeholder="Enter maximum ticket capacity"
-      />
+      <input type="number" [(ngModel)]="configuration.maxTicketCapacity" name="maxTicketCapacity" required min="1"
+        title="Maximum ticket capacity must be greater than 0" [attr.min]="configuration.totalTickets"
+        #maxTicketCapacity="ngModel" class="border p-2 w-full" />
+      <div *ngIf="maxTicketCapacity.invalid && (maxTicketCapacity.dirty || maxTicketCapacity.touched)"
+        class="text-red-500">
+        <small *ngIf="maxTicketCapacity.errors?.['required']">
+          Total Number of Tickets is required.
+        </small>
+        <small *ngIf="maxTicketCapacity.errors?.['min']">
+          Total Number of Tickets must be at least 1.
+        </small>
+      </div>
     </div>
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 mt-4">
+
+    <!-- Submit Button -->
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 mt-4" [disabled]="configForm.invalid">
       Save Configuration
     </button>
   </form>
