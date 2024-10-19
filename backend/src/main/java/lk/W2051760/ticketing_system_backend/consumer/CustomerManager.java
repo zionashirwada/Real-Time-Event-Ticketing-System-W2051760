@@ -1,13 +1,16 @@
 package lk.W2051760.ticketing_system_backend.consumer;
 
+import jakarta.annotation.PreDestroy;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
 import org.springframework.stereotype.Component;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class CustomerManager {
+    private static final Logger logger = LogManager.getLogger(CustomerManager.class);
 
     private List<Thread> customerThreads;
     private List<Customer> customers;
@@ -27,12 +30,14 @@ public class CustomerManager {
             thread.setDaemon(true);
             customers.add(customer);
             customerThreads.add(thread);
+            logger.info("Initialized {}", thread.getName());
         }
     }
 
     public void startCustomers() {
         for (Thread thread : customerThreads) {
             thread.start();
+            logger.info("Started {}", thread.getName());
         }
     }
 
@@ -40,6 +45,12 @@ public class CustomerManager {
         for (Customer customer : customers) {
             customer.stop();
         }
-        System.out.println("All customer threads have been requested to stop.");
+        logger.info("All customer threads have been requested to stop.");
+    }
+
+    @PreDestroy
+    public void onDestroy() {
+        stopCustomers();
+        logger.info("CustomerManager is being destroyed. Customer threads stopped.");
     }
 }

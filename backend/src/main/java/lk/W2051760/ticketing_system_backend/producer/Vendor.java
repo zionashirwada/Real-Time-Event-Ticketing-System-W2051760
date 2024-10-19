@@ -1,8 +1,10 @@
 package lk.W2051760.ticketing_system_backend.producer;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
 
 public class Vendor implements Runnable {
+    private static final Logger logger = LogManager.getLogger(Vendor.class);
 
     private String vendorName;
     private int ticketReleaseRate;
@@ -22,18 +24,20 @@ public class Vendor implements Runnable {
             try {
                 // Add tickets to the ticket pool
                 ticketPool.addTickets(ticketReleaseRate);
-                System.out.println(vendorName + " released " + ticketReleaseRate + " tickets.");
+                logger.info("{} released {} tickets.", vendorName, ticketReleaseRate);
 
-                // Wait for a certain interval before releasing more tickets
-                Thread.sleep(1000); // Sleep for 1 second (adjust as needed)
+                // pause time
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.out.println(vendorName + " was interrupted.");
+                logger.error("{} was interrupted.", vendorName, e);
             }
         }
+        logger.info("{} has stopped.", vendorName);
     }
 
     public void stop() {
+
         running = false;
     }
 }

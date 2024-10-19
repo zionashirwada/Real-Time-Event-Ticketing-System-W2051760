@@ -1,9 +1,11 @@
 package lk.W2051760.ticketing_system_backend.consumer;
 
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Customer implements Runnable {
-
+    private static final Logger logger = LogManager.getLogger(Customer.class);
     private String customerName;
     private int ticketsToPurchase;
     private TicketPool ticketPool;
@@ -23,20 +25,22 @@ public class Customer implements Runnable {
                 // Attempt to purchase tickets
                 boolean success = ticketPool.removeTickets(ticketsToPurchase);
                 if (success) {
-                    System.out.println(customerName + " successfully purchased " + ticketsToPurchase + " tickets.");
+                    logger.info("{} successfully purchased {} tickets.", customerName, ticketsToPurchase);
                 } else {
-                    System.out.println(customerName + " failed to purchase " + ticketsToPurchase + " tickets. Not enough tickets available.");
+                    logger.warn("{} failed to purchase {} tickets. Not enough tickets available.", customerName, ticketsToPurchase);
                 }
                 // pause amount
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.out.println(customerName + " was interrupted.");
+                logger.error("{} was interrupted.", customerName, e);
             }
         }
+        logger.info("{} has stopped.", customerName);
     }
 
     public void stop() {
+
         running = false;
     }
 }
