@@ -1,11 +1,19 @@
 package lk.W2051760.ticketing_system_backend.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class TicketPool {
 
     private int totalTickets;
     private int maxTicketCapacity;
 
-    public TicketPool(int maxTicketCapacity) {
+    public TicketPool() {
+        // Default constructor required by Spring
+    }
+
+    public void initialize(int maxTicketCapacity) {
         this.totalTickets = 0;
         this.maxTicketCapacity = maxTicketCapacity;
     }

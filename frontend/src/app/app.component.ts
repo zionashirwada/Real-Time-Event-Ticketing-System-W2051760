@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ConfigurationFormComponent } from './components/configuration-form/configuration-form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastContainerComponent } from './components/toast-container/toast-container.component';
+import { TicketPoolStatusComponent } from './components/ticket-pool-status/ticket-pool-status.component';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,8 @@ import { ToastContainerComponent } from './components/toast-container/toast-cont
     ConfigurationFormComponent,
     HttpClientModule,
     ToastContainerComponent,
-    
+    TicketPoolStatusComponent,
+
   ],
 })
 export class AppComponent {

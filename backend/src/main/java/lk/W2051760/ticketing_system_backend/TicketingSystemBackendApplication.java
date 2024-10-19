@@ -17,6 +17,9 @@ public class TicketingSystemBackendApplication {
 
 		// Get ConfigurationService bean from the context
 		ConfigurationService configurationService = context.getBean(ConfigurationService.class);
+		TicketPool ticketPool = context.getBean(TicketPool.class);
+		VendorManager vendorManager = context.getBean(VendorManager.class);
+
 
 		// Load  config
 		Configuration config = null;
@@ -31,13 +34,12 @@ public class TicketingSystemBackendApplication {
 
 		// instance  of TicketPool from maxTicketCapacity
 		int maxTicketCapacity = config.getMaxTicketCapacity();
-		TicketPool ticketPool = new TicketPool(maxTicketCapacity);
+		ticketPool.initialize(maxTicketCapacity);
 
 		//  instance of VendorManager from ticketReleaseRate.
 		int ticketReleaseRate = config.getTicketReleaseRate();
-		int numberOfVendors = 10; //!no of vendors
-
-		VendorManager vendorManager = new VendorManager(ticketPool, numberOfVendors, ticketReleaseRate);
+		int numberOfVendors = 3;
+		vendorManager.initialize(numberOfVendors, ticketReleaseRate);
 
 		// Start vendors
 		vendorManager.startVendors();
