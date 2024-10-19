@@ -1,5 +1,7 @@
 package lk.W2051760.ticketing_system_backend;
 
+import lk.W2051760.ticketing_system_backend.consumer.CustomerManager;
+import lk.W2051760.ticketing_system_backend.consumer.Customer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -19,6 +21,7 @@ public class TicketingSystemBackendApplication {
 		ConfigurationService configurationService = context.getBean(ConfigurationService.class);
 		TicketPool ticketPool = context.getBean(TicketPool.class);
 		VendorManager vendorManager = context.getBean(VendorManager.class);
+		CustomerManager customerManager = context.getBean(CustomerManager.class);
 
 
 		// Load  config
@@ -44,10 +47,16 @@ public class TicketingSystemBackendApplication {
 		// Start vendors
 		vendorManager.startVendors();
 
+		// Initialize and start CustomerManager
+		int numberOfCustomers = 5;
+		int ticketsToPurchase = 2;
+		customerManager.initialize(numberOfCustomers, ticketsToPurchase);
+		customerManager.startCustomers();
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			System.out.println("Shutting down vendors...");
+			System.out.println("Shutting down vendors and customers...");
 			vendorManager.stopVendors();
+			customerManager.stopCustomers();
 		}));
 	}
 

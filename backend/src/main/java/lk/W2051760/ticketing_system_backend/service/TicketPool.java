@@ -17,13 +17,24 @@ public class TicketPool {
         this.totalTickets = 0;
         this.maxTicketCapacity = maxTicketCapacity;
     }
-
+// Sync methods - add //reove
     public synchronized void addTickets(int tickets) {
         if (totalTickets + tickets <= maxTicketCapacity) {
             totalTickets += tickets;
             System.out.println("Added " + tickets + " tickets. Total tickets: " + totalTickets);
         } else {
             System.out.println("Cannot add " + tickets + " tickets. Max capacity reached.");
+        }
+    }
+
+    public synchronized boolean removeTickets(int tickets) {
+        if (tickets <= totalTickets) {
+            totalTickets -= tickets;
+            System.out.println("Removed " + tickets + " tickets. Total tickets: " + totalTickets);
+            return true;
+        } else {
+            System.out.println("Cannot remove " + tickets + " tickets. Only " + totalTickets + " available.");
+            return false;
         }
     }
 
