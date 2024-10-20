@@ -1,3 +1,5 @@
+// src/main/java/lk/W2051760/ticketing_system_backend/service/ConfigurationService.java
+
 package lk.W2051760.ticketing_system_backend.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,8 +23,7 @@ public class ConfigurationService {
         if (file.exists()) {
             return objectMapper.readValue(file, Configuration.class);
         } else {
-            // Return default configuration if file doesn't exist
-            return new Configuration(100, 5, 2, 200);
+            return null;
         }
     }
 }

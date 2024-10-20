@@ -1,11 +1,10 @@
 package lk.W2051760.ticketing_system_backend.consumer;
 
-import lk.W2051760.ticketing_system_backend.controller.TicketUpdateController;
 import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
+import lk.W2051760.ticketing_system_backend.service.TicketUpdateService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 public class Customer implements Runnable {
 
@@ -14,14 +13,17 @@ public class Customer implements Runnable {
     private String customerName;
     private int ticketsToPurchase;
     private TicketPool ticketPool;
-    private TicketUpdateController ticketUpdateController;
     private volatile boolean running;
+    private final Object pauseLock = new Object();
+    private volatile boolean paused = false;
+    private TicketUpdateService ticketUpdateService;
 
-    public Customer(String customerName, int ticketsToPurchase, TicketPool ticketPool, TicketUpdateController ticketUpdateController) {
+
+    public Customer(String customerName, int ticketsToPurchase, TicketPool ticketPool, TicketUpdateService ticketUpdateService) {
         this.customerName = customerName;
         this.ticketsToPurchase = ticketsToPurchase;
         this.ticketPool = ticketPool;
-        this.ticketUpdateController = ticketUpdateController;
+        this.ticketUpdateService = ticketUpdateService;
         this.running = true;
     }
 
@@ -29,6 +31,11 @@ public class Customer implements Runnable {
     public void run() {
         while (running) {
             try {
+                synchronized (pauseLock) {
+                    while (paused) {
+                        pauseLock.wait();
+                    }
+                }
                 // purchase tickets
                 boolean success = ticketPool.removeTickets(ticketsToPurchase);
                 if (success) {
@@ -36,13 +43,13 @@ public class Customer implements Runnable {
 
                     // Send WebSocket
                     TicketUpdate update = new TicketUpdate("REMOVE", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getTotalTickets());
-                    ticketUpdateController.sendTicketUpdate(update);
+                    ticketUpdateService.sendTicketUpdate(update);
                 } else {
                     logger.warn("{} failed to purchase {} tickets. Not enough tickets available.", customerName, ticketsToPurchase);
 
                     // Send WebSocket
                     TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getTotalTickets());
-                    ticketUpdateController.sendTicketUpdate(update);
+                    ticketUpdateService.sendTicketUpdate(update);
                 }
 
                 //pause time
@@ -50,6 +57,7 @@ public class Customer implements Runnable {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 logger.error("{} was interrupted.", customerName, e);
+                break;
             } catch (Exception e) {
                 logger.error("Unexpected error in Customer {}: {}", customerName, e.getMessage(), e);
             }
@@ -57,7 +65,19 @@ public class Customer implements Runnable {
         logger.info("{} has stopped.", customerName);
     }
 
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        synchronized (pauseLock) {
+            paused = false;
+            pauseLock.notifyAll();
+        }
+    }
+
     public void stop() {
         running = false;
+        resume();
     }
 }

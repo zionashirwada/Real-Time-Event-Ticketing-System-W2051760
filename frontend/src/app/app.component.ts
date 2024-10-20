@@ -3,6 +3,7 @@ import { ConfigurationFormComponent } from './components/configuration-form/conf
 import { HttpClientModule } from '@angular/common/http';
 import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 import { TicketPoolStatusComponent } from './components/ticket-pool-status/ticket-pool-status.component';
+import { SystemControlComponent } from './components/system-control/system-control.component';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { TicketPoolStatusComponent } from './components/ticket-pool-status/ticke
     HttpClientModule,
     ToastContainerComponent,
     TicketPoolStatusComponent,
+    SystemControlComponent,
 
   ],
 })

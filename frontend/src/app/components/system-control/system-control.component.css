@@ -1,0 +1,56 @@
+/* src/app/components/system-control/system-control.component.css */
+
+.system-control {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.status-indicator {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+
+.status-indicator .running {
+  color: green;
+  font-weight: bold;
+}
+
+.status-indicator .paused {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-indicator .stopped {
+  color: red;
+  font-weight: bold;
+}
+
+.control-buttons button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  font-size: 1em;
+}
+
+.btn-start {
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+.btn-pause {
+  background-color: #ffc107;
+  color: white;
+  border: none;
+}
+
+.btn-stop {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

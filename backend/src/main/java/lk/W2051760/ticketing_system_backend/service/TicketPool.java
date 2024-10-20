@@ -1,7 +1,6 @@
 package lk.W2051760.ticketing_system_backend.service;
-import lk.W2051760.ticketing_system_backend.controller.TicketUpdateController;
+
 import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -11,9 +10,10 @@ public class TicketPool {
     private static final Logger logger = LogManager.getLogger(TicketPool.class);
     private int totalTickets;
     private int maxTicketCapacity;
-    private final TicketUpdateController ticketUpdateController;
-    public TicketPool(TicketUpdateController ticketUpdateController) {
-        this.ticketUpdateController = ticketUpdateController;
+    private final TicketUpdateService ticketUpdateService;
+
+    public TicketPool(TicketUpdateService ticketUpdateService) {
+        this.ticketUpdateService = ticketUpdateService;
     }
 
     public void initialize(int maxTicketCapacity) {
@@ -34,7 +34,7 @@ public synchronized int addTickets(int tickets) {
 
             // Send WebSocket update
             TicketUpdate update = new TicketUpdate("ADD", "SYSTEM", "TicketPool", tickets, totalTickets);
-            ticketUpdateController.sendTicketUpdate(update);
+            ticketUpdateService.sendTicketUpdate(update);
 
             return tickets;
         } else {
@@ -45,7 +45,7 @@ public synchronized int addTickets(int tickets) {
 
                 // Send WebSocket update
                 TicketUpdate update = new TicketUpdate("ADD_PARTIAL", "SYSTEM", "TicketPool", availableSpace, totalTickets);
-                ticketUpdateController.sendTicketUpdate(update);
+                ticketUpdateService.sendTicketUpdate(update);
 
                 return availableSpace;
             }
@@ -53,7 +53,7 @@ public synchronized int addTickets(int tickets) {
 
             // Send WebSocket update
             TicketUpdate update = new TicketUpdate("ADD_FAILED", "SYSTEM", "TicketPool", tickets, totalTickets);
-            ticketUpdateController.sendTicketUpdate(update);
+            ticketUpdateService.sendTicketUpdate(update);
 
             return 0;
         }
@@ -78,7 +78,7 @@ public synchronized int addTickets(int tickets) {
 
                 // Send WebSocket update
                 TicketUpdate update = new TicketUpdate("REMOVE", "SYSTEM", "TicketPool", tickets, totalTickets);
-                ticketUpdateController.sendTicketUpdate(update);
+                ticketUpdateService.sendTicketUpdate(update);
 
                 return true;
             } else {
@@ -86,7 +86,7 @@ public synchronized int addTickets(int tickets) {
 
                 // Send WebSocket update
                 TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "SYSTEM", "TicketPool", tickets, totalTickets);
-                ticketUpdateController.sendTicketUpdate(update);
+                ticketUpdateService.sendTicketUpdate(update);
 
                 return false;
             }
@@ -108,6 +108,10 @@ public synchronized int addTickets(int tickets) {
         }
     }
 
+    public synchronized void reset() {
+        this.totalTickets = 0;
+        logger.info("TicketPool has been reset.");
+    }
     public synchronized int getMaxTicketCapacity() {
         try {
             return maxTicketCapacity;

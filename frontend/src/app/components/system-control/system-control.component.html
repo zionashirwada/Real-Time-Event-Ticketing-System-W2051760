@@ -1,0 +1,36 @@
+<div class="system-control">
+  <h2>Ticketing System Control Panel</h2>
+
+  <!-- System Status Indicator -->
+  <div class="status-indicator">
+    <span>Status:</span>
+    <span [ngClass]="getStatusClass(systemStatus)">
+      {{ systemStatus }}
+    </span>
+  </div>
+
+  <!-- Control Buttons -->
+  <div class="control-buttons">
+    <button
+      (click)="startSystem()"
+      [disabled]="systemStatus === 'RUNNING'"
+      class="btn btn-start"
+    >
+      Start
+    </button>
+    <button
+      (click)="pauseSystem()"
+      [disabled]="systemStatus !== 'RUNNING'"
+      class="btn btn-pause"
+    >
+      Pause
+    </button>
+    <button
+      (click)="stopAndResetSystem()"
+      [disabled]="systemStatus === 'STOPPED'"
+      class="btn btn-stop"
+    >
+      Stop/Reset
+    </button>
+  </div>
+</div>

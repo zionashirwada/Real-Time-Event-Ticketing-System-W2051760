@@ -1,7 +1,8 @@
 package lk.W2051760.ticketing_system_backend.producer;
 
-import lk.W2051760.ticketing_system_backend.controller.TicketUpdateController;
+
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
+import lk.W2051760.ticketing_system_backend.service.TicketUpdateService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -18,36 +19,55 @@ public class VendorManager {
     private List<Thread> vendorThreads;
     private List<Vendor> vendors;
     private TicketPool ticketPool;
-    private final TicketUpdateController ticketUpdateController;
+    private final TicketUpdateService ticketUpdateService;
 
-    public VendorManager(TicketPool ticketPool, TicketUpdateController ticketUpdateController) {
+    private int numberOfVendors;
+    private int ticketsToRelease;
+    public VendorManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService) {
         this.ticketPool = ticketPool;
-        this.ticketUpdateController = ticketUpdateController;
+        this.ticketUpdateService = ticketUpdateService;
         this.vendorThreads = new ArrayList<>();
         this.vendors = new ArrayList<>();
     }
 
 //   initialize
     public void initialize(int numberOfVendors, int ticketsToRelease) {
-        for (int i = 1; i <= numberOfVendors; i++) {
-            Vendor vendor = new Vendor("Vendor " + i, ticketsToRelease, ticketPool, ticketUpdateController);
-            Thread thread = new Thread(vendor, "VendorThread-" + i);
-            thread.setDaemon(true); // Set as daemon to allow JVM to exit if only daemon threads are running
-            vendors.add(vendor);
-            vendorThreads.add(thread);
-            logger.info("Initialized {}", thread.getName());
-        }
+        this.numberOfVendors = numberOfVendors;
+        this.ticketsToRelease = ticketsToRelease;
     }
 
 //  Start vendors
     public void startVendors() {
+        vendors.clear();
+        vendorThreads.clear();
+        for (int i = 1; i <= numberOfVendors; i++) {
+            Vendor vendor = new Vendor("Vendor " + i, ticketsToRelease, ticketPool, ticketUpdateService);
+            Thread thread = new Thread(vendor, "VendorThread-" + i);
+            thread.setDaemon(true);
+            vendors.add(vendor);
+            vendorThreads.add(thread);
+            logger.info("Initialized {}", thread.getName());
+        }
         for (Thread thread : vendorThreads) {
             thread.start();
             logger.info("Started {}", thread.getName());
         }
     }
 
-//    Stop
+    public void pauseVendors() {
+        for (Vendor vendor : vendors) {
+            vendor.pause();
+        }
+        logger.info("All vendor threads have been requested to pause.");
+    }
+
+    public void resumeVendors() {
+        for (Vendor vendor : vendors) {
+            vendor.resume();
+        }
+        logger.info("All vendor threads have been requested to resume.");
+    }
+
     public void stopVendors() {
         for (Vendor vendor : vendors) {
             vendor.stop();

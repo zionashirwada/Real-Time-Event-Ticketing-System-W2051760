@@ -6,9 +6,10 @@ public class Configuration {
     private int customerRetrievalRate;
     private int maxTicketCapacity;
 
-    // Constructors
-    public Configuration() {}
-
+    // Constructor
+    public Configuration() {
+//        EMpty constructor created to resolve the deserialization
+    }
     public Configuration(int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
         this.totalTickets = totalTickets;
         this.ticketReleaseRate = ticketReleaseRate;
