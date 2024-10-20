@@ -14,67 +14,93 @@ public class CustomerManager {
 
     private static final Logger logger = LogManager.getLogger(CustomerManager.class);
 
-    private List<Thread> customerThreads;
-    private List<Customer> customers;
-    private TicketPool ticketPool;
+    private final List<Thread> customerThreads = new ArrayList<>();
+    private final List<Customer> customers = new ArrayList<>();
+    private final TicketPool ticketPool;
     private final TicketUpdateService ticketUpdateService;
 
-    private int numberOfCustomers;
-    private int ticketsToPurchase;
+    private int ticketsToPurchase; // Number of tickets each customer tries to purchase
 
     public CustomerManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService) {
         this.ticketPool = ticketPool;
         this.ticketUpdateService = ticketUpdateService;
-        this.customerThreads = new ArrayList<>();
-        this.customers = new ArrayList<>();
     }
 
-    // Initialize with the necessary parameters
-    public void initialize(int numberOfCustomers, int ticketsToPurchase) {
-        this.numberOfCustomers = numberOfCustomers;
+    // Initialize with initial customer count and tickets to purchase
+    public synchronized void initialize(int initialCustomerCount, int ticketsToPurchase) {
         this.ticketsToPurchase = ticketsToPurchase;
+        for (int i = 0; i < initialCustomerCount; i++) {
+            addCustomerThread();
+        }
     }
 
-    public void startCustomers() {
-        // Clear previous customers and threads
-        customers.clear();
-        customerThreads.clear();
-
-        // Create new Customer instances and threads
-        for (int i = 1; i <= numberOfCustomers; i++) {
-            Customer customer = new Customer("Customer " + i, ticketsToPurchase, ticketPool, ticketUpdateService);
-            Thread thread = new Thread(customer, "CustomerThread-" + i);
-            thread.setDaemon(true);
-            customers.add(customer);
-            customerThreads.add(thread);
-            logger.info("Initialized {}", thread.getName());
-        }
-
-        // Start new threads
+    // Start all customers
+    public synchronized void startCustomers() {
         for (Thread thread : customerThreads) {
-            thread.start();
-            logger.info("Started {}", thread.getName());
+            if (!thread.isAlive()) {
+                thread.start();
+            }
         }
+        logger.info("All customer threads have been started.");
     }
 
-    public void pauseCustomers() {
+    // Get the current number of customers
+    public synchronized int getCustomerCount() {
+        return customers.size();
+    }
+    // Pause all customers
+    public synchronized void pauseCustomers() {
         for (Customer customer : customers) {
             customer.pause();
         }
         logger.info("All customer threads have been requested to pause.");
     }
 
-    public void resumeCustomers() {
+    // Resume all customers
+    public synchronized void resumeCustomers() {
         for (Customer customer : customers) {
             customer.resume();
         }
         logger.info("All customer threads have been requested to resume.");
     }
 
-    public void stopCustomers() {
+    // Add a customer
+    public synchronized void addCustomer() {
+        addCustomerThread();
+        logger.info("Customer added. Total customers: {}", getCustomerCount());
+    }
+
+    // Remove a customer
+    public synchronized void removeCustomer() {
+        if (!customers.isEmpty()) {
+            int lastIndex = customers.size() - 1;
+            Customer customer = customers.remove(lastIndex);
+            customer.stop();
+            customerThreads.remove(lastIndex);
+            logger.info("Customer removed. Total customers: {}", getCustomerCount());
+        } else {
+            logger.warn("No customers to remove.");
+        }
+    }
+
+    // Stop all customers
+    public synchronized void stopAllCustomers() {
         for (Customer customer : customers) {
             customer.stop();
         }
-        logger.info("All customer threads have been requested to stop.");
+        customers.clear();
+        customerThreads.clear();
+        logger.info("All customer threads have been stopped.");
+    }
+
+    private void addCustomerThread() {
+        String customerName = "Customer " + (customers.size() + 1);
+        Customer customer = new Customer(customerName, ticketsToPurchase, ticketPool, ticketUpdateService);
+        Thread thread = new Thread(customer, customerName + "-Thread");
+        thread.setDaemon(true);
+        customers.add(customer);
+        customerThreads.add(thread);
+        thread.start();
+        logger.info("Started {}", thread.getName());
     }
 }

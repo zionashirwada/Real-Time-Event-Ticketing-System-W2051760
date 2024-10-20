@@ -34,8 +34,8 @@ public class SystemManagementService {
     private CustomerManager customerManager;
 
     private Configuration configuration;
-    private final int NUMBER_OF_VENDORS = 2;
-    private final int NUMBER_OF_CUSTOMERS = 5;
+    private final int INITIAL_VENDOR_COUNT = 3;
+    private final int INITIAL_CUSTOMER_COUNT = 2;
 
     @PostConstruct
     public void initialize() {
@@ -45,8 +45,8 @@ public class SystemManagementService {
                 currentState = SystemState.STOPPED;
                 // Initialize ticket pool and managers
                 ticketPool.initialize(configuration.getMaxTicketCapacity());
-                vendorManager.initialize(NUMBER_OF_VENDORS, configuration.getTicketReleaseRate());
-                customerManager.initialize(NUMBER_OF_CUSTOMERS, configuration.getCustomerRetrievalRate());
+                vendorManager.initialize(INITIAL_VENDOR_COUNT, configuration.getTicketReleaseRate());
+                customerManager.initialize(INITIAL_CUSTOMER_COUNT, configuration.getCustomerRetrievalRate());
                 broadcastState();
             }
         } catch (IOException e) {
@@ -74,14 +74,22 @@ public class SystemManagementService {
 
     public synchronized void pauseSystem() {
         if (currentState != SystemState.RUNNING) {
-            return; // Only running system can be paused
+            return;
         }
         currentState = SystemState.PAUSED;
-        broadcastState();
-
-        // Pause vendors and customers
         vendorManager.pauseVendors();
         customerManager.pauseCustomers();
+        broadcastState();
+    }
+
+    public synchronized void resumeSystem() {
+        if (currentState != SystemState.PAUSED) {
+            return;
+        }
+        currentState = SystemState.RUNNING;
+        vendorManager.resumeVendors();
+        customerManager.resumeCustomers();
+        broadcastState();
     }
 
     public synchronized void stopAndResetSystem() {
@@ -92,8 +100,8 @@ public class SystemManagementService {
         broadcastState();
 
         // Stop vendors and customers
-        vendorManager.stopVendors();
-        customerManager.stopCustomers();
+        vendorManager.stopAllVendors();
+        customerManager.stopAllCustomers();
 
         // Reset ticket data
         ticketPool.reset();
