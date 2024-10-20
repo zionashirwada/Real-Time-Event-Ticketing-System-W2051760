@@ -1,0 +1,21 @@
+2024-10-19 18:41:38 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - Starting TicketingSystemBackendApplicationTests using Java 17.0.10 with PID 46952 (started by ASUS in D:\IIT\Year 2 - Sem 1\OOP\CW\Real-Time-Event-Ticketing-System-W2051760\backend)
+2024-10-19 18:41:38 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2024-10-19 18:41:42 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - Started TicketingSystemBackendApplicationTests in 3.585 seconds (process running for 4.912)
+2024-10-19 18:41:42 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.producer.VendorManager - All vendor threads have been requested to stop.
+2024-10-19 18:41:42 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.producer.VendorManager - VendorManager is being destroyed. Vendor threads stopped.
+2024-10-19 18:41:42 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.consumer.CustomerManager - All customer threads have been requested to stop.
+2024-10-19 18:41:42 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.consumer.CustomerManager - CustomerManager is being destroyed. Customer threads stopped.
+2024-10-19 18:43:50 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - Starting TicketingSystemBackendApplicationTests using Java 17.0.10 with PID 47096 (started by ASUS in D:\IIT\Year 2 - Sem 1\OOP\CW\Real-Time-Event-Ticketing-System-W2051760\backend)
+2024-10-19 18:43:50 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2024-10-19 18:43:53 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - Started TicketingSystemBackendApplicationTests in 3.596 seconds (process running for 4.769)
+2024-10-19 18:43:54 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.producer.VendorManager - All vendor threads have been requested to stop.
+2024-10-19 18:43:54 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.producer.VendorManager - VendorManager is being destroyed. Vendor threads stopped.
+2024-10-19 18:43:54 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.consumer.CustomerManager - All customer threads have been requested to stop.
+2024-10-19 18:43:54 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.consumer.CustomerManager - CustomerManager is being destroyed. Customer threads stopped.
+2024-10-20 11:49:06 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - Starting TicketingSystemBackendApplicationTests using Java 17.0.10 with PID 9768 (started by ASUS in D:\IIT\Year 2 - Sem 1\OOP\CW\Real-Time-Event-Ticketing-System-W2051760\backend)
+2024-10-20 11:49:06 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2024-10-20 11:49:15 [main] INFO  lk.W2051760.ticketing_system_backend.TicketingSystemBackendApplicationTests - Started TicketingSystemBackendApplicationTests in 9.118 seconds (process running for 11.518)
+2024-10-20 11:49:17 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.producer.VendorManager - All vendor threads have been requested to stop.
+2024-10-20 11:49:17 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.producer.VendorManager - VendorManager is being destroyed. Vendor threads stopped.
+2024-10-20 11:49:17 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.consumer.CustomerManager - All customer threads have been requested to stop.
+2024-10-20 11:49:17 [SpringApplicationShutdownHook] INFO  lk.W2051760.ticketing_system_backend.consumer.CustomerManager - CustomerManager is being destroyed. Customer threads stopped.
