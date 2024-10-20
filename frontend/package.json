@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.8",
+    "@stomp/stompjs": "^7.0.0",
     "rxjs": "~7.8.0",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",

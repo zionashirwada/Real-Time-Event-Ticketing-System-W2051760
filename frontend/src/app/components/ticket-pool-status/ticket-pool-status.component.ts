@@ -30,7 +30,7 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
       },
       (error) => {
         console.error('Error loading ticket pool status:', error);
-        this.errorMessage = error;
+        this.errorMessage = error.message;
       }
     );
 

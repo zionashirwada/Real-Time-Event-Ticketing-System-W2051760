@@ -10,18 +10,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Define the WebSocket endpoint that clients will use to connect
         registry.addEndpoint("/ws-ticketing")
-                .setAllowedOriginPatterns("*") // Adjust allowed origins as needed
-                .withSockJS(); // Fallback options for browsers that don’t support WebSocket
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
     }
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        // Prefix for messages bound for methods annotated with @MessageMapping
-        config.setApplicationDestinationPrefixes("/app");
-
-        // Enable a simple in-memory broker with destinations prefixed with /topic
-        config.enableSimpleBroker("/topic");
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/topic");
+        registry.setApplicationDestinationPrefixes("/app");
     }
 }
