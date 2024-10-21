@@ -76,3 +76,4 @@ build/
 ### VS Code ###
 .vscode/
 *.log
+backend/logs/application.log
