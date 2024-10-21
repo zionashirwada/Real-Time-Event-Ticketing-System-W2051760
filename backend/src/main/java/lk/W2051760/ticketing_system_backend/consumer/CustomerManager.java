@@ -70,11 +70,43 @@ public class CustomerManager {
         }
         logger.info("All customer threads have been requested to resume.");
     }
+    // Add a customer
+    public synchronized void addCustomer() {
+        addCustomerThread();
+        logger.info("Customer added. Total customers: {}", getCustomerCount());
+    }
 
+    // Remove a customer
+    public synchronized void removeCustomer() {
+        if (!customers.isEmpty()) {
+            int lastIndex = customers.size() - 1;
+            Customer customer = customers.remove(lastIndex);
+            customer.stop();
+            customerThreads.remove(lastIndex);
+            logger.info("Customer removed. Total customers: {}", getCustomerCount());
+        } else {
+            logger.warn("No customers to remove.");
+        }
+    }
+    // Get the current number of customers
+    public synchronized int getCustomerCount() {
+        return customers.size();
+    }
     public void stopCustomers() {
         for (Customer customer : customers) {
             customer.stop();
         }
         logger.info("All customer threads have been requested to stop.");
+    }
+
+    private void addCustomerThread() {
+        String customerName = "Customer " + (customers.size() + 1);
+        Customer customer = new Customer(customerName, ticketsToPurchase, ticketPool, ticketUpdateService);
+        Thread thread = new Thread(customer, customerName + "-Thread");
+        thread.setDaemon(true);
+        customers.add(customer);
+        customerThreads.add(thread);
+        thread.start();
+        logger.info("Started {}", thread.getName());
     }
 }

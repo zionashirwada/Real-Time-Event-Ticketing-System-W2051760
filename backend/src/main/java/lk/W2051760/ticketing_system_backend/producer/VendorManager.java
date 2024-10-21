@@ -67,12 +67,44 @@ public class VendorManager {
         }
         logger.info("All vendor threads have been requested to resume.");
     }
+    // Get the current number of vendors
+    public synchronized int getVendorCount() {
+        return vendors.size();
+    }
 
+    // Add a vendor
+    public synchronized void addVendor() {
+        addVendorThread();
+        logger.info("Vendor added. Total vendors: {}", getVendorCount());
+    }
+
+    // Remove a vendor
+    public synchronized void removeVendor() {
+        if (!vendors.isEmpty()) {
+            int lastIndex = vendors.size() - 1;
+            Vendor vendor = vendors.remove(lastIndex);
+            vendor.stop();
+            vendorThreads.remove(lastIndex);
+            logger.info("Vendor removed. Total vendors: {}", getVendorCount());
+        } else {
+            logger.warn("No vendors to remove.");
+        }
+    }
     public void stopVendors() {
         for (Vendor vendor : vendors) {
             vendor.stop();
         }
         logger.info("All vendor threads have been requested to stop.");
+    }
+    private void addVendorThread() {
+        String vendorName = "Vendor " + (vendors.size() + 1);
+        Vendor vendor = new Vendor(vendorName, ticketsToRelease, ticketPool, ticketUpdateService);
+        Thread thread = new Thread(vendor, vendorName + "-Thread");
+        thread.setDaemon(true);
+        vendors.add(vendor);
+        vendorThreads.add(thread);
+        thread.start();
+        logger.info("Started {}", thread.getName());
     }
 
 //    called before destructed
