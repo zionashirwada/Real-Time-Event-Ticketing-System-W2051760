@@ -1,18 +1,19 @@
-<!-- src/app/components/ticket-pool-status/ticket-pool-status.component.html -->
+<div class="p-6">
+  <h2 class="text-lg font-semibold mb-4">Available Tickets</h2>
+  <div class="text-3xl font-bold mb-2">
+    <!-- {{availableTickets}} / {{config.totalTickets}} -->
+    {{ totalTickets }} / {{ maxTicketCapacity }}
 
-<div class="ticket-pool-status">
-  <h2 class="text-xl font-semibold mb-4">Ticket Pool Status</h2>
-  <p class="mb-2">Total Tickets: {{ totalTickets }}</p>
-  <p class="mb-4">Maximum Capacity: {{ maxTicketCapacity }}</p>
-
-  <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+  </div>
+  <div class="w-full bg-gray-200 rounded-full h-2">
     <div
-      class="bg-blue-600 h-4 rounded-full"
+      class="bg-blue-600 h-2 rounded-full"
       [style.width.%]="(totalTickets / maxTicketCapacity) * 100"
     ></div>
   </div>
-  <p>{{ ((totalTickets / maxTicketCapacity) * 100) | number:'1.0-2' }}% Full</p>
-
+  <div class="mt-4 text-sm text-gray-500">
+    Maximum capacity: {{ maxTicketCapacity }} tickets
+  </div>
   <!-- Error Message Display -->
   <div *ngIf="errorMessage" class="mt-4 p-2 bg-red-100 text-red-700 rounded">
     {{ errorMessage }}

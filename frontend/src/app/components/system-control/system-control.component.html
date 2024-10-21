@@ -1,36 +1,41 @@
-<div class="system-control">
-  <h2>Ticketing System Control Panel</h2>
-
-  <!-- System Status Indicator -->
-  <div class="status-indicator">
-    <span>Status:</span>
-    <span [ngClass]="getStatusClass(systemStatus)">
-      {{ systemStatus }}
-    </span>
-  </div>
+<div class="flex items-center gap-3">
+  <!-- Status Badge -->
+  <span class="px-2.5 py-1 text-sm font-medium rounded-full"
+        [ngClass]="{
+          'bg-red-100 text-red-800': systemStatus === 'STOPPED',
+          'bg-green-100 text-green-800': systemStatus === 'RUNNING',
+          'bg-yellow-100 text-yellow-800': systemStatus === 'PAUSED'
+        }">
+        ●  {{ systemStatus }}
+  </span>
 
   <!-- Control Buttons -->
-  <div class="control-buttons">
-    <button
-      (click)="startSystem()"
-      [disabled]="systemStatus === 'RUNNING'"
-      class="btn btn-start"
-    >
-      Start
-    </button>
-    <button
-      (click)="pauseSystem()"
-      [disabled]="systemStatus !== 'RUNNING'"
-      class="btn btn-pause"
-    >
-      Pause
-    </button>
-    <button
-      (click)="stopAndResetSystem()"
-      [disabled]="systemStatus === 'STOPPED'"
-      class="btn btn-stop"
-    >
-      Stop/Reset
-    </button>
-  </div>
+
+  <!-- Start Button -->
+  <button *ngIf="systemStatus === 'STOPPED'"
+          (click)="startSystem()"
+          class="w-auto h-8 p-2 flex items-center justify-center rounded-md bg-green-500 text-white hover:bg-green-600 transition-colors">
+    <span class="text-lg">Start ▶️</span>
+  </button>
+
+  <!-- Pause Button-->
+  <button *ngIf="systemStatus === 'RUNNING'"
+          (click)="pauseSystem()"
+          class="w-8 h-8 flex items-center justify-center rounded-md bg-amber-500 text-white hover:bg-amber-600 transition-colors">
+    <span class="text-lg">⏸️</span>
+  </button>
+
+  <!-- Resume Button  -->
+  <button *ngIf="systemStatus === 'PAUSED'"
+          (click)="startSystem()"
+          class="w-8 h-8 flex items-center justify-center rounded-md bg-green-500 text-white hover:bg-green-600 transition-colors">
+    <span class="text-lg">▶️</span>
+  </button>
+
+  <!-- Stop Button  -->
+  <button *ngIf="systemStatus !== 'STOPPED'"
+          (click)="stopAndResetSystem()"
+          class="w-8 h-8 flex items-center justify-center rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors">
+    <span class="text-lg">⏹️</span>
+  </button>
 </div>

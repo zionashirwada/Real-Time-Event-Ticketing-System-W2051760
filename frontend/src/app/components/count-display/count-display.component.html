@@ -1,35 +1,74 @@
-<div class="count-display text-center p-4">
-  <h3 class="text-xl font-bold mb-4">Current Counts</h3>
+<div class="grid grid-cols-3 gap-4">
 
-  <div class="count-section mb-6">
-    <p class="text-lg mb-2">Vendors: <span class="font-semibold">{{ vendorCount }}</span></p>
-    <button
+<!-- Vendors Card -->
+<div class="bg-white rounded-lg shadow p-6 count-display">
+  <div class="text-center">
+    <!-- <heroicon-users class="w-8 h-8 mx-auto text-blue-500 mb-2"></heroicon-users> -->
+    <div class="text-2xl font-bold">{{ vendorCount }}</div>
+    <div class="text-sm text-gray-500">Active Vendors</div>
+    <div class="mt-2 flex justify-center space-x-2">
+      <button
       (click)="addVendor()"
-      class="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
-    >
-      +
-    </button>
-    <button
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200"
+              title="addVendor">
+        <!-- <heroicon-plus class="w-4 h-4"></heroicon-plus> -->
+         +
+      </button>
+      <button
       (click)="removeVendor()"
-      class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-    >
-      –
-    </button>
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200"
+              title="removeVendor">
+        <!-- <heroicon-minus class="w-4 h-4"></heroicon-minus> -->
+         _
+      </button>
+    </div>
   </div>
+</div>
 
-  <div class="count-section">
-    <p class="text-lg mb-2">Customers: <span class="font-semibold">{{ customerCount }}</span></p>
-    <button
-      (click)="addCustomer()"
-      class="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
-    >
-      +
-    </button>
-    <button
+<!-- Customers Card -->
+<div class="bg-white rounded-lg shadow p-6">
+  <div class="text-center">
+    <!-- <heroicon-user class="w-8 h-8 mx-auto text-green-500 mb-2"></heroicon-user> -->
+    <div class="text-2xl font-bold">{{ customerCount }}</div>
+    <div class="text-sm text-gray-500">Active Customers</div>
+    <div class="mt-2 flex justify-center space-x-2">
+      <button (click)="addCustomer()"
+      title="addCustomer"
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200">
+        <!-- <heroicon-plus class="w-4 h-4"></heroicon-plus> -->
+         +
+      </button>
+      <button
       (click)="removeCustomer()"
-      class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-    >
-      –
-    </button>
+      title="removeCustomer"
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200">
+        <!-- <heroicon-minus class="w-4 h-4"></heroicon-minus> -->
+         -
+      </button>
+    </div>
   </div>
+</div>
+
+<!-- VIP Card -->
+<div class="bg-white rounded-lg shadow p-6">
+  <div class="text-center">
+    <!-- <heroicon-star class="w-8 h-8 mx-auto text-yellow-500 mb-2"></heroicon-star> -->
+    <div class="text-2xl font-bold">{{ customerCount }}</div>
+    <div class="text-sm text-gray-500">VIP Customers</div>
+    <div class="mt-2 flex justify-center space-x-2">
+      <button (click)="addCustomer()"
+      title="addCustomer"
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200">
+        <!-- <heroicon-plus class="w-4 h-4"></heroicon-plus> -->
+         +
+      </button>
+      <button (click)="removeCustomer()"
+      title="removeCustomer"
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200">
+        <!-- <heroicon-minus class="w-4 h-4"></heroicon-minus> -->
+         -
+      </button>
+    </div>
+  </div>
+</div>
 </div>
