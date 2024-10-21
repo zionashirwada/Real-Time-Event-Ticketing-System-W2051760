@@ -33,7 +33,6 @@ export class WebSocketService {
         this.stompClient?.subscribe('/topic/ticket-updates', (message: IMessage) => {
           if (message.body) {
             const ticketUpdate: TicketUpdate = JSON.parse(message.body);
-            console.log('Received TicketUpdate:', ticketUpdate);
             this.ticketUpdateSubject.next(ticketUpdate);
           }
         });
@@ -51,11 +50,10 @@ export class WebSocketService {
         this.stompClient?.subscribe('/topic/count-updates', (message: IMessage) => {
           if (message.body) {
             const countUpdate: CountUpdate = JSON.parse(message.body);
-            console.log('Received CountUpdate:', countUpdate);
             this.countUpdateSubject.next(countUpdate);
           }
         });
-        
+
       },
       onStompError: (frame) => {
         console.error('Broker reported error: ' + frame.headers['message']);
