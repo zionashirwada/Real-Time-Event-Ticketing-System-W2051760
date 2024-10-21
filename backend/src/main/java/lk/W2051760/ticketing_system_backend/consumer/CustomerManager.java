@@ -1,5 +1,6 @@
 package lk.W2051760.ticketing_system_backend.consumer;
 
+import lk.W2051760.ticketing_system_backend.service.CountUpdateService;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
 import lk.W2051760.ticketing_system_backend.service.TicketUpdateService;
 import org.apache.logging.log4j.LogManager;
@@ -21,10 +22,12 @@ public class CustomerManager {
 
     private int numberOfCustomers;
     private int ticketsToPurchase;
+    private final CountUpdateService countUpdateService;
 
-    public CustomerManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService) {
+    public CustomerManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService,CountUpdateService countUpdateService) {
         this.ticketPool = ticketPool;
         this.ticketUpdateService = ticketUpdateService;
+        this.countUpdateService = countUpdateService;
         this.customerThreads = new ArrayList<>();
         this.customers = new ArrayList<>();
     }
@@ -33,6 +36,7 @@ public class CustomerManager {
     public void initialize(int numberOfCustomers, int ticketsToPurchase) {
         this.numberOfCustomers = numberOfCustomers;
         this.ticketsToPurchase = ticketsToPurchase;
+        countUpdateService.updateCustomerCount(getCustomerCount());
     }
 
     public void startCustomers() {
@@ -48,6 +52,7 @@ public class CustomerManager {
             customers.add(customer);
             customerThreads.add(thread);
             logger.info("Initialized {}", thread.getName());
+            countUpdateService.updateCustomerCount(getCustomerCount());
         }
 
         // Start new threads
@@ -74,6 +79,7 @@ public class CustomerManager {
     public synchronized void addCustomer() {
         addCustomerThread();
         logger.info("Customer added. Total customers: {}", getCustomerCount());
+        countUpdateService.updateCustomerCount(getCustomerCount());
     }
 
     // Remove a customer
@@ -84,6 +90,7 @@ public class CustomerManager {
             customer.stop();
             customerThreads.remove(lastIndex);
             logger.info("Customer removed. Total customers: {}", getCustomerCount());
+            countUpdateService.updateCustomerCount(getCustomerCount());
         } else {
             logger.warn("No customers to remove.");
         }

@@ -1,6 +1,7 @@
 package lk.W2051760.ticketing_system_backend.producer;
 
 
+import lk.W2051760.ticketing_system_backend.service.CountUpdateService;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
 import lk.W2051760.ticketing_system_backend.service.TicketUpdateService;
 import org.apache.logging.log4j.LogManager;
@@ -23,9 +24,11 @@ public class VendorManager {
 
     private int numberOfVendors;
     private int ticketsToRelease;
-    public VendorManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService) {
+    private final CountUpdateService countUpdateService;
+    public VendorManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService,CountUpdateService countUpdateService) {
         this.ticketPool = ticketPool;
         this.ticketUpdateService = ticketUpdateService;
+        this.countUpdateService = countUpdateService;
         this.vendorThreads = new ArrayList<>();
         this.vendors = new ArrayList<>();
     }
@@ -34,6 +37,9 @@ public class VendorManager {
     public void initialize(int numberOfVendors, int ticketsToRelease) {
         this.numberOfVendors = numberOfVendors;
         this.ticketsToRelease = ticketsToRelease;
+        vendors = new ArrayList<>();
+        vendorThreads = new ArrayList<>();
+        countUpdateService.updateVendorCount(getVendorCount());
     }
 
 //  Start vendors
@@ -47,6 +53,7 @@ public class VendorManager {
             vendors.add(vendor);
             vendorThreads.add(thread);
             logger.info("Initialized {}", thread.getName());
+            countUpdateService.updateVendorCount(getVendorCount());
         }
         for (Thread thread : vendorThreads) {
             thread.start();
@@ -76,6 +83,7 @@ public class VendorManager {
     public synchronized void addVendor() {
         addVendorThread();
         logger.info("Vendor added. Total vendors: {}", getVendorCount());
+        countUpdateService.updateVendorCount(getVendorCount());
     }
 
     // Remove a vendor
@@ -86,6 +94,7 @@ public class VendorManager {
             vendor.stop();
             vendorThreads.remove(lastIndex);
             logger.info("Vendor removed. Total vendors: {}", getVendorCount());
+            countUpdateService.updateVendorCount(getVendorCount());
         } else {
             logger.warn("No vendors to remove.");
         }

@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 import { TicketPoolStatusComponent } from './components/ticket-pool-status/ticket-pool-status.component';
 import { SystemControlComponent } from './components/system-control/system-control.component';
+import { CountDisplayComponent } from './components/count-display/count-display.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ import { SystemControlComponent } from './components/system-control/system-contr
     ToastContainerComponent,
     TicketPoolStatusComponent,
     SystemControlComponent,
-
+    CountDisplayComponent,
   ],
 })
 export class AppComponent {

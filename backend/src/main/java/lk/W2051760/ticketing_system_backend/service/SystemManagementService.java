@@ -33,9 +33,13 @@ public class SystemManagementService {
     @Autowired
     private CustomerManager customerManager;
 
+    @Autowired
+    private CountUpdateService countUpdateService;
+
     private Configuration configuration;
-    private final int NUMBER_OF_VENDORS = 2;
-    private final int NUMBER_OF_CUSTOMERS = 5;
+
+    private final int NUMBER_OF_VENDORS = 1;
+    private final int NUMBER_OF_CUSTOMERS = 1;
 
     @PostConstruct
     public void initialize() {
@@ -48,6 +52,9 @@ public class SystemManagementService {
                 vendorManager.initialize(NUMBER_OF_VENDORS, configuration.getTicketReleaseRate());
                 customerManager.initialize(NUMBER_OF_CUSTOMERS, configuration.getCustomerRetrievalRate());
                 broadcastState();
+                // Send initial counts
+                countUpdateService.updateVendorCount(vendorManager.getVendorCount());
+                countUpdateService.updateCustomerCount(customerManager.getCustomerCount());
             }
         } catch (IOException e) {
             // Configuration not found or error reading it
@@ -69,6 +76,8 @@ public class SystemManagementService {
         // Start vendors and customers
         vendorManager.startVendors();
         customerManager.startCustomers();
+        countUpdateService.updateVendorCount(vendorManager.getVendorCount());
+        countUpdateService.updateCustomerCount(customerManager.getCustomerCount());
     }
 
 
@@ -82,6 +91,8 @@ public class SystemManagementService {
         // Pause vendors and customers
         vendorManager.pauseVendors();
         customerManager.pauseCustomers();
+        countUpdateService.updateVendorCount(vendorManager.getVendorCount());
+        countUpdateService.updateCustomerCount(customerManager.getCustomerCount());
     }
 
     public synchronized void stopAndResetSystem() {
@@ -98,7 +109,13 @@ public class SystemManagementService {
         // Reset ticket data
         ticketPool.reset();
 
-        // Optionally, broadcast a reset update
+        // Reset counts
+        countUpdateService.updateVendorCount(0);
+        countUpdateService.updateCustomerCount(0);
+        countUpdateService.updateVendorCount(vendorManager.getVendorCount());
+        countUpdateService.updateCustomerCount(customerManager.getCustomerCount());
+
+        // broadcast a reset update
         TicketUpdate update = new TicketUpdate(
                 "RESET",
                 "SYSTEM",

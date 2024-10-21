@@ -1,10 +1,9 @@
-// src/app/services/websocket.service.ts
-
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { TicketUpdate } from '../models/ticket-update.model';
+import { CountUpdate } from '../models/count-update.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +12,8 @@ export class WebSocketService {
   private stompClient?: Client;
   private ticketUpdateSubject: Subject<TicketUpdate> = new Subject<TicketUpdate>();
   private systemStatusSubject: Subject<string> = new Subject<string>();
+  private countUpdateSubject: Subject<CountUpdate> = new Subject<CountUpdate>();
+
 
   constructor() {
     this.connect();
@@ -45,6 +46,16 @@ export class WebSocketService {
             this.systemStatusSubject.next(systemStatus);
           }
         });
+
+        // Subscribe to count updates (Vendor/Consumer)
+        this.stompClient?.subscribe('/topic/count-updates', (message: IMessage) => {
+          if (message.body) {
+            const countUpdate: CountUpdate = JSON.parse(message.body);
+            console.log('Received CountUpdate:', countUpdate);
+            this.countUpdateSubject.next(countUpdate);
+          }
+        });
+        
       },
       onStompError: (frame) => {
         console.error('Broker reported error: ' + frame.headers['message']);
@@ -62,7 +73,9 @@ export class WebSocketService {
   getSystemStatus(): Observable<string> {
     return this.systemStatusSubject.asObservable();
   }
-
+  getCountUpdates(): Observable<CountUpdate> {
+    return this.countUpdateSubject.asObservable();
+  }
   disconnect() {
     if (this.stompClient?.active) {
       this.stompClient.deactivate();

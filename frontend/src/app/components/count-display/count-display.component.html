@@ -1,0 +1,35 @@
+<div class="count-display text-center p-4">
+  <h3 class="text-xl font-bold mb-4">Current Counts</h3>
+
+  <div class="count-section mb-6">
+    <p class="text-lg mb-2">Vendors: <span class="font-semibold">{{ vendorCount }}</span></p>
+    <button
+      (click)="addVendor()"
+      class="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
+    >
+      +
+    </button>
+    <button
+      (click)="removeVendor()"
+      class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+    >
+      –
+    </button>
+  </div>
+
+  <div class="count-section">
+    <p class="text-lg mb-2">Customers: <span class="font-semibold">{{ customerCount }}</span></p>
+    <button
+      (click)="addCustomer()"
+      class="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
+    >
+      +
+    </button>
+    <button
+      (click)="removeCustomer()"
+      class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+    >
+      –
+    </button>
+  </div>
+</div>
