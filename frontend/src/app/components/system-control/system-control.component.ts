@@ -5,13 +5,19 @@ import { SystemControlService } from '../../services/system-control.service';
 import { Subscription } from 'rxjs';
 import { WebSocketService } from '../../services/web-socket-service.service';
 import { CommonModule } from '@angular/common';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { bootstrapPauseFill, bootstrapPlayFill, bootstrapStopFill } from '@ng-icons/bootstrap-icons';
 
 @Component({
   selector: 'app-system-control',
   templateUrl: './system-control.component.html',
   styleUrls: ['./system-control.component.css'],
   standalone: true,
-  imports:[CommonModule]
+  imports:[
+    CommonModule,
+    NgIconComponent
+  ],
+  providers: [provideIcons({ bootstrapPlayFill,bootstrapPauseFill,bootstrapStopFill })],
 })
 export class SystemControlComponent implements OnInit, OnDestroy {
   systemStatus: string = 'Stopped';
@@ -91,6 +97,8 @@ export class SystemControlComponent implements OnInit, OnDestroy {
         return 'paused';
       case 'STOPPED':
         return 'stopped';
+      case 'NOT_CONFIGURED':
+        return 'not-configured';
       default:
         return '';
     }

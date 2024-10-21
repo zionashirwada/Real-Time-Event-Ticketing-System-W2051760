@@ -3,13 +3,18 @@ import { CommonModule } from '@angular/common';
 import { WebSocketService } from '../../services/web-socket-service.service';
 import { ManagementService } from '../../services/management.service';
 import { CountUpdate } from '../../models/count-update.model';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { bootstrapDashLg, bootstrapPeople, bootstrapPlusLg, bootstrapShop, bootstrapStars } from '@ng-icons/bootstrap-icons';
 
 @Component({
   selector: 'app-count-display',
   templateUrl: './count-display.component.html',
   styleUrls: ['./count-display.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,
+    NgIconComponent,
+  ],
+  providers: [provideIcons({ bootstrapPeople,bootstrapShop,bootstrapStars,bootstrapPlusLg,bootstrapDashLg})],
 })
 export class CountDisplayComponent implements OnInit {
   vendorCount: number = 0;

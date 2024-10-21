@@ -3,23 +3,24 @@
 <!-- Vendors Card -->
 <div class="bg-white rounded-lg shadow p-6 count-display">
   <div class="text-center">
-    <!-- <heroicon-users class="w-8 h-8 mx-auto text-blue-500 mb-2"></heroicon-users> -->
+    <ng-icon name="bootstrapShop" class="text-4xl mx-auto text-blue-500 mb-2"></ng-icon>
     <div class="text-2xl font-bold">{{ vendorCount }}</div>
     <div class="text-sm text-gray-500">Active Vendors</div>
     <div class="mt-2 flex justify-center space-x-2">
+
+      <button
+      (click)="removeVendor()"
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200 items-center justify-center text-center"
+              title="removeVendor">
+        <ng-icon name="bootstrapDashLg" class="w-4 h-4"></ng-icon>
+
+      </button>
       <button
       (click)="addVendor()"
               class="p-1 rounded bg-gray-100 hover:bg-gray-200"
               title="addVendor">
-        <!-- <heroicon-plus class="w-4 h-4"></heroicon-plus> -->
-         +
-      </button>
-      <button
-      (click)="removeVendor()"
-              class="p-1 rounded bg-gray-100 hover:bg-gray-200"
-              title="removeVendor">
-        <!-- <heroicon-minus class="w-4 h-4"></heroicon-minus> -->
-         _
+        <ng-icon name="bootstrapPlusLg" class="w-4 h-4"></ng-icon>
+
       </button>
     </div>
   </div>
@@ -28,22 +29,23 @@
 <!-- Customers Card -->
 <div class="bg-white rounded-lg shadow p-6">
   <div class="text-center">
-    <!-- <heroicon-user class="w-8 h-8 mx-auto text-green-500 mb-2"></heroicon-user> -->
+    <ng-icon name="bootstrapPeople" class="text-4xl mx-auto text-green-500 mb-2"></ng-icon>
     <div class="text-2xl font-bold">{{ customerCount }}</div>
     <div class="text-sm text-gray-500">Active Customers</div>
     <div class="mt-2 flex justify-center space-x-2">
-      <button (click)="addCustomer()"
-      title="addCustomer"
-              class="p-1 rounded bg-gray-100 hover:bg-gray-200">
-        <!-- <heroicon-plus class="w-4 h-4"></heroicon-plus> -->
-         +
-      </button>
+
       <button
       (click)="removeCustomer()"
       title="removeCustomer"
               class="p-1 rounded bg-gray-100 hover:bg-gray-200">
-        <!-- <heroicon-minus class="w-4 h-4"></heroicon-minus> -->
-         -
+        <ng-icon name="bootstrapDashLg" class="w-4 h-4"></ng-icon>
+
+      </button>
+      <button (click)="addCustomer()"
+      title="addCustomer"
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200">
+        <ng-icon name="bootstrapPlusLg" class="w-4 h-4"></ng-icon>
+
       </button>
     </div>
   </div>
@@ -52,21 +54,20 @@
 <!-- VIP Card -->
 <div class="bg-white rounded-lg shadow p-6">
   <div class="text-center">
-    <!-- <heroicon-star class="w-8 h-8 mx-auto text-yellow-500 mb-2"></heroicon-star> -->
+    <ng-icon name="bootstrapStars" class="text-4xl mx-auto text-yellow-500 mb-2"></ng-icon>
     <div class="text-2xl font-bold">{{ customerCount }}</div>
     <div class="text-sm text-gray-500">VIP Customers</div>
     <div class="mt-2 flex justify-center space-x-2">
-      <button (click)="addCustomer()"
-      title="addCustomer"
-              class="p-1 rounded bg-gray-100 hover:bg-gray-200">
-        <!-- <heroicon-plus class="w-4 h-4"></heroicon-plus> -->
-         +
-      </button>
+
       <button (click)="removeCustomer()"
       title="removeCustomer"
               class="p-1 rounded bg-gray-100 hover:bg-gray-200">
-        <!-- <heroicon-minus class="w-4 h-4"></heroicon-minus> -->
-         -
+              <ng-icon name="bootstrapDashLg" class="w-4 h-4"></ng-icon>
+      </button>
+      <button (click)="addCustomer()"
+      title="addCustomer"
+              class="p-1 rounded bg-gray-100 hover:bg-gray-200">
+              <ng-icon name="bootstrapPlusLg" class="w-4 h-4"></ng-icon>
       </button>
     </div>
   </div>

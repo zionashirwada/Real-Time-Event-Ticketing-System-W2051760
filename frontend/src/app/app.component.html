@@ -9,9 +9,9 @@
   <!-- Header -->
   <div class="bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <!-- <heroicon-star class="w-6 h-6 text-yellow-500"></heroicon-star> -->
-        <h1 class="text-xl font-bold">Event Ticketing System</h1>
+      <div class="flex items-center space-x-2 justify-center">
+         <h3 class="text-xl font-bold items-center"><ng-icon name="bootstrapTicketPerforated" class="w-6 h-6 text-yellow-500"></ng-icon>
+          Event Ticketing System</h3>
       </div>
       <div class="flex items-center space-x-4">
 
@@ -28,7 +28,7 @@
         <!-- Status Cards -->
 
           <app-count-display></app-count-display>
-        
+
         <!-- Tickets Status -->
         <div class="bg-white rounded-lg shadow">
           <app-ticket-pool-status></app-ticket-pool-status>
@@ -38,8 +38,8 @@
         <div class="bg-white rounded-lg shadow">
           <div class="p-6">
             <div class="flex items-center mb-4">
-              <!-- <heroicon-chart-bar class="w-5 h-5 mr-2"></heroicon-chart-bar> -->
-              <h2 class="text-lg font-semibold">Real-Time Sales Analytics</h2>
+
+              <h5 class="text-lg font-semibold items-center"><ng-icon name="bootstrapBarChartLine" class="mr-2"></ng-icon>Real-Time Sales Analytics</h5>
             </div>
             <div class="h-64">
               <!-- <canvas baseChart
@@ -62,7 +62,7 @@
         <!-- Transaction Logs -->
         <div class="bg-white rounded-lg shadow">
           <div class="p-6">
-            <h2 class="text-lg font-semibold mb-4">System Logs</h2>
+            <h5 class="text-lg font-semibold mb-4">System Logs</h5>
             <div class="h-96 overflow-y-auto space-y-2">
               <!-- <div
                 *ngFor="let log of logs"

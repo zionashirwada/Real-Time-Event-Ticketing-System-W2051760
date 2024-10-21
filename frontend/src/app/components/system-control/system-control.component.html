@@ -5,6 +5,7 @@
           'bg-red-100 text-red-800': systemStatus === 'STOPPED',
           'bg-green-100 text-green-800': systemStatus === 'RUNNING',
           'bg-yellow-100 text-yellow-800': systemStatus === 'PAUSED'
+          'bg-gray-400 text-gray-900: systemStatus === 'NOT_CONFIGURED'
         }">
         ●  {{ systemStatus }}
   </span>
@@ -15,27 +16,30 @@
   <button *ngIf="systemStatus === 'STOPPED'"
           (click)="startSystem()"
           class="w-auto h-8 p-2 flex items-center justify-center rounded-md bg-green-500 text-white hover:bg-green-600 transition-colors">
-    <span class="text-lg">Start ▶️</span>
+    <span class="text-lg">Start <ng-icon name="bootstrapPlayFill"></ng-icon></span>
   </button>
 
   <!-- Pause Button-->
   <button *ngIf="systemStatus === 'RUNNING'"
           (click)="pauseSystem()"
+          title="Pause System"
           class="w-8 h-8 flex items-center justify-center rounded-md bg-amber-500 text-white hover:bg-amber-600 transition-colors">
-    <span class="text-lg">⏸️</span>
+    <span class="text-lg text-center items-center"><ng-icon name="bootstrapPauseFill" class="text-center items-center"></ng-icon></span>
   </button>
 
   <!-- Resume Button  -->
   <button *ngIf="systemStatus === 'PAUSED'"
           (click)="startSystem()"
+          title="Resume System"
           class="w-8 h-8 flex items-center justify-center rounded-md bg-green-500 text-white hover:bg-green-600 transition-colors">
-    <span class="text-lg">▶️</span>
+    <span class="text-lg"><ng-icon name="bootstrapPlayFill"></ng-icon></span>
   </button>
 
   <!-- Stop Button  -->
   <button *ngIf="systemStatus !== 'STOPPED'"
           (click)="stopAndResetSystem()"
+          title="Stop System"
           class="w-8 h-8 flex items-center justify-center rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors">
-    <span class="text-lg">⏹️</span>
+    <span class="text-lg"><ng-icon name="bootstrapStopFill"></ng-icon></span>
   </button>
 </div>

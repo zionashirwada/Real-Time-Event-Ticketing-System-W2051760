@@ -5,6 +5,8 @@ import { ToastContainerComponent } from './components/toast-container/toast-cont
 import { TicketPoolStatusComponent } from './components/ticket-pool-status/ticket-pool-status.component';
 import { SystemControlComponent } from './components/system-control/system-control.component';
 import { CountDisplayComponent } from './components/count-display/count-display.component';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { bootstrapBarChartLine, bootstrapTicketPerforated } from '@ng-icons/bootstrap-icons';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,9 @@ import { CountDisplayComponent } from './components/count-display/count-display.
     TicketPoolStatusComponent,
     SystemControlComponent,
     CountDisplayComponent,
+    NgIconComponent,
   ],
+  providers: [provideIcons({ bootstrapTicketPerforated,bootstrapBarChartLine })],
 })
 export class AppComponent {
   title = 'frontend';
