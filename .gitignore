@@ -78,3 +78,6 @@ build/
 *.log
 backend/logs/application.log
 /backend/logs
+/backend/logs
+backend/configuration.json
+backend/logs/application.log
