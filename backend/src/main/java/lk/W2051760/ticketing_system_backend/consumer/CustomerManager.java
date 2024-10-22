@@ -3,6 +3,7 @@ package lk.W2051760.ticketing_system_backend.consumer;
 import lk.W2051760.ticketing_system_backend.service.CountUpdateService;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
 import lk.W2051760.ticketing_system_backend.service.TicketUpdateService;
+import lk.W2051760.ticketing_system_backend.service.TransactionLogService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,15 @@ public class CustomerManager {
     private int numberOfCustomers;
     private int ticketsToPurchase;
     private final CountUpdateService countUpdateService;
+    private final TransactionLogService transactionLogService;
 
-    public CustomerManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService,CountUpdateService countUpdateService) {
+    public CustomerManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService,
+                           CountUpdateService countUpdateService,TransactionLogService transactionLogService) {
         this.ticketPool = ticketPool;
         this.ticketUpdateService = ticketUpdateService;
         this.countUpdateService = countUpdateService;
         this.customerThreads = new ArrayList<>();
+        this.transactionLogService = transactionLogService;
         this.customers = new ArrayList<>();
     }
 
@@ -46,7 +50,7 @@ public class CustomerManager {
 
         // Create new Customer instances and threads
         for (int i = 1; i <= numberOfCustomers; i++) {
-            Customer customer = new Customer("Customer " + i, ticketsToPurchase, ticketPool, ticketUpdateService);
+            Customer customer = new Customer("Customer " + i, ticketsToPurchase, ticketPool, ticketUpdateService,transactionLogService);
             Thread thread = new Thread(customer, "CustomerThread-" + i);
             thread.setDaemon(true);
             customers.add(customer);
@@ -108,7 +112,7 @@ public class CustomerManager {
 
     private void addCustomerThread() {
         String customerName = "Customer " + (customers.size() + 1);
-        Customer customer = new Customer(customerName, ticketsToPurchase, ticketPool, ticketUpdateService);
+        Customer customer = new Customer(customerName, ticketsToPurchase, ticketPool, ticketUpdateService,transactionLogService);
         Thread thread = new Thread(customer, customerName + "-Thread");
         thread.setDaemon(true);
         customers.add(customer);

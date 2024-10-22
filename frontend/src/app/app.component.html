@@ -60,19 +60,12 @@
         </div>
 
         <!-- Transaction Logs -->
-        <div class="bg-white rounded-lg shadow">
-          <div class="p-6">
-            <h5 class="text-lg font-semibold mb-4">System Logs</h5>
-            <div class="h-96 overflow-y-auto space-y-2">
-              <!-- <div
-                *ngFor="let log of logs"
-                [class]="'p-2 rounded text-sm ' +
-                  (log.includes('purchased') ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-blue-700')"
-              >
-                {{log}}
-              </div> -->
-            </div>
-          </div>
+
+
+            <div class="">
+
+              <app-transaction-log></app-transaction-log>
+
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import { SystemControlComponent } from './components/system-control/system-contr
 import { CountDisplayComponent } from './components/count-display/count-display.component';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { bootstrapBarChartLine, bootstrapTicketPerforated } from '@ng-icons/bootstrap-icons';
+import { TransactionLogComponent } from './components/transaction-log/transaction-log.component';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ import { bootstrapBarChartLine, bootstrapTicketPerforated } from '@ng-icons/boot
     SystemControlComponent,
     CountDisplayComponent,
     NgIconComponent,
+    TransactionLogComponent
   ],
   providers: [provideIcons({ bootstrapTicketPerforated,bootstrapBarChartLine })],
 })

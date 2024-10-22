@@ -1,0 +1,17 @@
+<aside class="bg-black  text-white p-6 rounded-lg w-full max-w-lg font-mono transaction-log h-96 overflow-hidden space-y-2 shadow">
+  <div class="flex justify-between items-center">
+    <div class="flex space-x-2">
+      <div class="w-3 h-3 rounded-full bg-red-500"></div>
+      <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+      <div class="w-3 h-3 rounded-full bg-green-500"></div>
+    </div>
+    <p class="text-sm">Transaction Logs</p>
+  </div>
+  <div class="m-0 flex flex-col space-y-0" *ngFor="let log of transactionLogs">
+<p></p>
+    <p class="text-white m-0 p-0" [ngClass]="{'text-green-400': log.action === 'ADD', 'text-red-400': log.action !== 'ADD'}">{{ log.action === 'ADD' ? '+ $' : '- $' }}{{ log.tickets }} ticket(s)
+      {{ log.action === 'ADD' ? 'added' : 'purchased' }}</p>
+    <p class="text-white m-0 p-0">$ by: {{ log.name }}</p>
+    <p class="text-yellow-500 m-0 p-0">Total tickets: {{ log.totalTickets }}</p>
+  </div>
+</aside>

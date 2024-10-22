@@ -4,6 +4,7 @@ package lk.W2051760.ticketing_system_backend.producer;
 import lk.W2051760.ticketing_system_backend.service.CountUpdateService;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
 import lk.W2051760.ticketing_system_backend.service.TicketUpdateService;
+import lk.W2051760.ticketing_system_backend.service.TransactionLogService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -21,14 +22,17 @@ public class VendorManager {
     private List<Vendor> vendors;
     private TicketPool ticketPool;
     private final TicketUpdateService ticketUpdateService;
+    private final TransactionLogService transactionLogService;
 
     private int numberOfVendors;
     private int ticketsToRelease;
     private final CountUpdateService countUpdateService;
-    public VendorManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService,CountUpdateService countUpdateService) {
+    public VendorManager(TicketPool ticketPool, TicketUpdateService ticketUpdateService,
+                         CountUpdateService countUpdateService,TransactionLogService transactionLogService) {
         this.ticketPool = ticketPool;
         this.ticketUpdateService = ticketUpdateService;
         this.countUpdateService = countUpdateService;
+        this.transactionLogService = transactionLogService;
         this.vendorThreads = new ArrayList<>();
         this.vendors = new ArrayList<>();
     }
@@ -47,7 +51,7 @@ public class VendorManager {
         vendors.clear();
         vendorThreads.clear();
         for (int i = 1; i <= numberOfVendors; i++) {
-            Vendor vendor = new Vendor("Vendor " + i, ticketsToRelease, ticketPool, ticketUpdateService);
+            Vendor vendor = new Vendor("Vendor " + i, ticketsToRelease, ticketPool, ticketUpdateService, transactionLogService);
             Thread thread = new Thread(vendor, "VendorThread-" + i);
             thread.setDaemon(true);
             vendors.add(vendor);
@@ -107,7 +111,7 @@ public class VendorManager {
     }
     private void addVendorThread() {
         String vendorName = "Vendor " + (vendors.size() + 1);
-        Vendor vendor = new Vendor(vendorName, ticketsToRelease, ticketPool, ticketUpdateService);
+        Vendor vendor = new Vendor(vendorName, ticketsToRelease, ticketPool, ticketUpdateService,transactionLogService);
         Thread thread = new Thread(vendor, vendorName + "-Thread");
         thread.setDaemon(true);
         vendors.add(vendor);

@@ -1,8 +1,10 @@
 package lk.W2051760.ticketing_system_backend.producer;
 
 import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
+import lk.W2051760.ticketing_system_backend.model.TransactionLog;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
 import lk.W2051760.ticketing_system_backend.service.TicketUpdateService;
+import lk.W2051760.ticketing_system_backend.service.TransactionLogService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,14 +19,16 @@ public class Vendor implements Runnable {
     private final Object pauseLock = new Object();
     private volatile boolean paused = false;
     private TicketUpdateService ticketUpdateService;
+    private final TransactionLogService transactionLogService;
 
 
     public Vendor(String vendorName, int ticketsToRelease, TicketPool ticketPool,
-                  TicketUpdateService ticketUpdateService) {
+                  TicketUpdateService ticketUpdateService,TransactionLogService transactionLogService) {
         this.vendorName = vendorName;
         this.ticketsToRelease = ticketsToRelease;
         this.ticketPool = ticketPool;
         this.ticketUpdateService = ticketUpdateService;
+        this.transactionLogService = transactionLogService;
         this.running = true;
     }
 
@@ -46,6 +50,8 @@ public class Vendor implements Runnable {
                     TicketUpdate update = new TicketUpdate("ADD", "VENDOR", vendorName, addedTickets,
                             ticketPool.getTotalTickets());
                     ticketUpdateService.sendTicketUpdate(update);
+                    TransactionLog log = new TransactionLog("ADD", "VENDOR", vendorName, addedTickets, ticketPool.getTotalTickets());
+                    transactionLogService.sendTransactionLog(log);
                 } else {
                     logger.warn("{} failed to release {} tickets. Pool is full.", vendorName, ticketsToRelease);
 

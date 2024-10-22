@@ -4,6 +4,7 @@ import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { TicketUpdate } from '../models/ticket-update.model';
 import { CountUpdate } from '../models/count-update.model';
+import { TransactionLog } from '../models/transaction-log.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class WebSocketService {
   private ticketUpdateSubject: Subject<TicketUpdate> = new Subject<TicketUpdate>();
   private systemStatusSubject: Subject<string> = new Subject<string>();
   private countUpdateSubject: Subject<CountUpdate> = new Subject<CountUpdate>();
+  private transactionLogSubject: Subject<TransactionLog> = new Subject<TransactionLog>();
 
 
   constructor() {
@@ -54,6 +56,15 @@ export class WebSocketService {
           }
         });
 
+        // Subscribe to transaction logs
+  this.stompClient?.subscribe('/topic/transaction-logs', (message: IMessage) => {
+    if (message.body) {
+      const log: TransactionLog = JSON.parse(message.body);
+      console.log('Received TransactionLog:', log);
+      this.transactionLogSubject.next(log);
+    }
+  });
+
       },
       onStompError: (frame) => {
         console.error('Broker reported error: ' + frame.headers['message']);
@@ -73,6 +84,10 @@ export class WebSocketService {
   }
   getCountUpdates(): Observable<CountUpdate> {
     return this.countUpdateSubject.asObservable();
+  }
+
+  getTransactionLogs(): Observable<TransactionLog> {
+    return this.transactionLogSubject.asObservable();
   }
   disconnect() {
     if (this.stompClient?.active) {
