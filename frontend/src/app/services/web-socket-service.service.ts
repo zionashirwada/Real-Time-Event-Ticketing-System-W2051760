@@ -57,13 +57,12 @@ export class WebSocketService {
         });
 
         // Subscribe to transaction logs
-  this.stompClient?.subscribe('/topic/transaction-logs', (message: IMessage) => {
-    if (message.body) {
-      const log: TransactionLog = JSON.parse(message.body);
-      console.log('Received TransactionLog:', log);
-      this.transactionLogSubject.next(log);
-    }
-  });
+        this.stompClient?.subscribe('/topic/transaction-logs', (message: IMessage) => {
+          if (message.body) {
+            const log: TransactionLog = JSON.parse(message.body);
+            this.transactionLogSubject.next(log);
+          }
+        });
 
       },
       onStompError: (frame) => {

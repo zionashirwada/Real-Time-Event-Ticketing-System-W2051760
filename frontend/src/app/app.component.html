@@ -39,14 +39,15 @@
           <div class="p-6">
             <div class="flex items-center mb-4">
 
-              <h5 class="text-lg font-semibold items-center"><ng-icon name="bootstrapBarChartLine" class="mr-2"></ng-icon>Real-Time Sales Analytics</h5>
+              <h5 class="text-lg font-semibold items-center"><ng-icon name="bootstrapBarChartLine" class="mr-2"></ng-icon>Real-Time Transactions</h5>
             </div>
-            <div class="h-64">
+            <div class="h-auto">
               <!-- <canvas baseChart
                 [type]="'line'"
                 [data]="salesData"
                 [options]="chartOptions">
               </canvas> -->
+              <app-line-chart></app-line-chart>
             </div>
           </div>
         </div>
