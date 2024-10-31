@@ -8,7 +8,6 @@ public class Configuration {
 
     // Constructor
     public Configuration() {
-//        EMpty constructor created to resolve the deserialization
     }
     public Configuration(int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
         this.totalTickets = totalTickets;
