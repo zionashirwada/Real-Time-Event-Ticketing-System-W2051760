@@ -1,4 +1,3 @@
-// src/main/java/lk/W2051760/ticketing_system_backend/service/SystemManagementService.java
 
 package lk.W2051760.ticketing_system_backend.service;
 import lk.W2051760.ticketing_system_backend.producer.VendorManager;

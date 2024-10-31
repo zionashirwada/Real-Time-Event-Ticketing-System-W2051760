@@ -1,4 +1,3 @@
-// src/main/java/lk/W2051760/ticketing_system_backend/controller/SystemController.java
 
 package lk.W2051760.ticketing_system_backend.controller;
 

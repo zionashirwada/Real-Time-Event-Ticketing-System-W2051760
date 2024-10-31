@@ -1,10 +1,4 @@
-// src/main/java/lk/W2051760/ticketing_system_backend/model/SystemStateManager.java
-
 package lk.W2051760.ticketing_system_backend.model;
-
-import lk.W2051760.ticketing_system_backend.consumer.CustomerManager;
-import lk.W2051760.ticketing_system_backend.producer.VendorManager;
-import lk.W2051760.ticketing_system_backend.service.TicketPool;
 
 public class SystemStateManager {
     private volatile SystemState currentState = SystemState.STOPPED;
