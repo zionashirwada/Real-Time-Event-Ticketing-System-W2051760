@@ -1,5 +1,5 @@
 export interface Configuration {
-  totalTickets: number;
+  totalSystemTickets: number;
   ticketReleaseRate: number;
   customerRetrievalRate: number;
   maxTicketCapacity: number;

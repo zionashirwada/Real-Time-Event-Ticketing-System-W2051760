@@ -4,8 +4,10 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface TicketPoolStatus {
-  totalTickets: number;
+  poolTicketAmount: number;
   maxTicketCapacity: number;
+  totalReleasedTickets: number;
+  totalSystemTickets: number;
 }
 
 @Injectable({

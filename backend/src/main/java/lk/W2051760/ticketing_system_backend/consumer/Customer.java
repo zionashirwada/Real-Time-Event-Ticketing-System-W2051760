@@ -47,15 +47,15 @@ public class Customer implements Runnable {
                     logger.info("{} successfully purchased {} tickets.", customerName, ticketsToPurchase);
 
                     // Send WebSocket
-                    TicketUpdate update = new TicketUpdate("REMOVE", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getTotalTickets());
+                    TicketUpdate update = new TicketUpdate("REMOVE", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getPoolTicketAmount());
                     ticketUpdateService.sendTicketUpdate(update);
-                    TransactionLog log = new TransactionLog("REMOVE", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getTotalTickets());
+                    TransactionLog log = new TransactionLog("REMOVE", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getPoolTicketAmount());
                     transactionLogService.sendTransactionLog(log);
                 } else {
                     logger.warn("{} failed to purchase {} tickets. Not enough tickets available.", customerName, ticketsToPurchase);
 
                     // Send WebSocket
-                    TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getTotalTickets());
+                    TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getPoolTicketAmount());
                     ticketUpdateService.sendTicketUpdate(update);
                 }
 

@@ -1,18 +1,16 @@
 <div class="p-6">
   <h5 class="text-lg font-semibold mb-4">Available Tickets</h5>
   <div class="text-3xl font-bold mb-2">
-    <!-- {{availableTickets}} / {{config.totalTickets}} -->
-    {{ totalTickets }} / {{ maxTicketCapacity }}
-
+    {{ poolTicketAmount }} / {{ maxTicketCapacity }}
   </div>
   <div class="w-full bg-gray-200 rounded-full h-2">
     <div
       class="bg-blue-600 h-2 rounded-full"
-      [style.width.%]="(totalTickets / maxTicketCapacity) * 100"
+      [style.width.%]="(poolTicketAmount / maxTicketCapacity) * 100"
     ></div>
   </div>
   <div class="mt-4 text-sm text-gray-500">
-    Maximum capacity: {{ maxTicketCapacity }} tickets
+    Total Released: {{ totalReleasedTickets }} / {{ totalSystemTickets }}
   </div>
   <!-- Error Message Display -->
   <div *ngIf="errorMessage" class="mt-4 p-2 bg-red-100 text-red-700 rounded">

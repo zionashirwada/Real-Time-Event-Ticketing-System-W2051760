@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ConfigurationFormComponent implements OnInit {
   configuration: Configuration = {
-    totalTickets: 0,
+    totalSystemTickets: 0,
     ticketReleaseRate: 0,
     customerRetrievalRate: 0,
     maxTicketCapacity: 0,
@@ -39,7 +39,7 @@ export class ConfigurationFormComponent implements OnInit {
       error: (error) => {
         console.error('Error loading configuration:', error);
         this.configuration = {
-          totalTickets: 0,
+          totalSystemTickets: 0,
           ticketReleaseRate: 0,
           customerRetrievalRate: 0,
           maxTicketCapacity: 0

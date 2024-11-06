@@ -8,63 +8,82 @@ import org.springframework.stereotype.Service;
 @Service
 public class TicketPool {
     private static final Logger logger = LogManager.getLogger(TicketPool.class);
-    private int totalTickets;
+    private int poolTicketAmount;
     private int maxTicketCapacity;
+    private int totalReleasedTickets;
+    private int totalSystemTickets;
     private final TicketUpdateService ticketUpdateService;
 
     public TicketPool(TicketUpdateService ticketUpdateService) {
         this.ticketUpdateService = ticketUpdateService;
     }
 
-    public void initialize(int maxTicketCapacity) {
-        this.totalTickets = 0;
+    public void initialize(int maxTicketCapacity, int totalSystemTickets) {
+        this.poolTicketAmount = 0;
         this.maxTicketCapacity = maxTicketCapacity;
-        logger.info("TicketPool initialized with max capacity: {}", maxTicketCapacity);
+        this.totalSystemTickets = totalSystemTickets;
+        this.totalReleasedTickets = 0;
+        logger.info("TicketPool initialized with max capacity: {}, total system tickets: {}", 
+            maxTicketCapacity, totalSystemTickets);
     }
-// Sync methods - add //reove
-public synchronized int addTickets(int tickets) {
-    try {
-        if (tickets <= 0) {
-            throw new IllegalArgumentException("Number of tickets to add must be positive.");
-        }
 
-        if (totalTickets + tickets <= maxTicketCapacity) {
-            totalTickets += tickets;
-            logger.info("Added {} tickets. Total tickets: {}", tickets, totalTickets);
+    public synchronized int addTickets(int tickets) {
+        try {
+            if (tickets <= 0) {
+                throw new IllegalArgumentException("Number of tickets to add must be positive.");
+            }
 
-            // Send WebSocket update
-            TicketUpdate update = new TicketUpdate("ADD", "SYSTEM", "TicketPool", tickets, totalTickets);
-            ticketUpdateService.sendTicketUpdate(update);
+            // Check if we've reached total system limit
+            if (totalReleasedTickets >= totalSystemTickets) {
+                logger.warn("Cannot add more tickets. Total system limit reached ({}).", totalSystemTickets);
+                return 0;
+            }
 
-            return tickets;
-        } else {
-            int availableSpace = maxTicketCapacity - totalTickets;
-            if (availableSpace > 0) {
-                totalTickets += availableSpace;
-                logger.warn("Cannot add {} tickets. Added only {} to reach max capacity ({}).", tickets, availableSpace, maxTicketCapacity);
+            // Calculate how many tickets we can still add to the system
+            int remainingSystemCapacity = totalSystemTickets - totalReleasedTickets;
+            int ticketsToAdd = Math.min(tickets, remainingSystemCapacity);
 
-                // Send WebSocket update
-                TicketUpdate update = new TicketUpdate("ADD_PARTIAL", "SYSTEM", "TicketPool", availableSpace, totalTickets);
+            // Check pool capacity
+            if (poolTicketAmount + ticketsToAdd <= maxTicketCapacity) {
+                poolTicketAmount += ticketsToAdd;
+                totalReleasedTickets += ticketsToAdd;
+                logger.info("Added {} tickets. Pool amount: {}, Total released: {}", 
+                    ticketsToAdd, poolTicketAmount, totalReleasedTickets);
+
+                TicketUpdate update = new TicketUpdate("ADD", "SYSTEM", "TicketPool", 
+                    ticketsToAdd, poolTicketAmount);
                 ticketUpdateService.sendTicketUpdate(update);
 
-                return availableSpace;
+                return ticketsToAdd;
+            } else {
+                int availableSpace = maxTicketCapacity - poolTicketAmount;
+                if (availableSpace > 0) {
+                    poolTicketAmount += availableSpace;
+                    totalReleasedTickets += availableSpace;
+                    logger.warn("Cannot add {} tickets. Added only {} to reach max capacity ({}).", tickets, availableSpace, maxTicketCapacity);
+
+                    // Send WebSocket update
+                    TicketUpdate update = new TicketUpdate("ADD_PARTIAL", "SYSTEM", "TicketPool", availableSpace, poolTicketAmount);
+                    ticketUpdateService.sendTicketUpdate(update);
+
+                    return availableSpace;
+                }
+                logger.warn("Cannot add {} tickets. Max capacity reached ({}).", tickets, maxTicketCapacity);
+
+                // Send WebSocket update
+                TicketUpdate update = new TicketUpdate("ADD_FAILED", "SYSTEM", "TicketPool", tickets, poolTicketAmount);
+                ticketUpdateService.sendTicketUpdate(update);
+
+                return 0;
             }
-            logger.warn("Cannot add {} tickets. Max capacity reached ({}).", tickets, maxTicketCapacity);
-
-            // Send WebSocket update
-            TicketUpdate update = new TicketUpdate("ADD_FAILED", "SYSTEM", "TicketPool", tickets, totalTickets);
-            ticketUpdateService.sendTicketUpdate(update);
-
+        } catch (IllegalArgumentException e) {
+            logger.error("Invalid argument in addTickets: {}", e.getMessage(), e);
+            return 0;
+        } catch (Exception e) {
+            logger.error("Unexpected error in addTickets: {}", e.getMessage(), e);
             return 0;
         }
-    } catch (IllegalArgumentException e) {
-        logger.error("Invalid argument in addTickets: {}", e.getMessage(), e);
-        return 0;
-    } catch (Exception e) {
-        logger.error("Unexpected error in addTickets: {}", e.getMessage(), e);
-        return 0;
     }
-}
 
     public synchronized boolean removeTickets(int tickets) {
         try {
@@ -72,20 +91,21 @@ public synchronized int addTickets(int tickets) {
                 throw new IllegalArgumentException("Number of tickets to remove must be positive.");
             }
 
-            if (tickets <= totalTickets) {
-                totalTickets -= tickets;
-                logger.info("Removed {} tickets. Total tickets: {}", tickets, totalTickets);
+            if (tickets <= poolTicketAmount) {
+                poolTicketAmount -= tickets;
+                logger.info("Removed {} tickets. Pool amount: {}, Total released: {}", 
+                    tickets, poolTicketAmount, totalReleasedTickets);
 
-                // Send WebSocket update
-                TicketUpdate update = new TicketUpdate("REMOVE", "SYSTEM", "TicketPool", tickets, totalTickets);
+                TicketUpdate update = new TicketUpdate("REMOVE", "SYSTEM", "TicketPool", 
+                    tickets, poolTicketAmount);
                 ticketUpdateService.sendTicketUpdate(update);
 
                 return true;
             } else {
-                logger.warn("Cannot remove {} tickets. Only {} available.", tickets, totalTickets);
+                logger.warn("Cannot remove {} tickets. Only {} available.", tickets, poolTicketAmount);
 
                 // Send WebSocket update
-                TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "SYSTEM", "TicketPool", tickets, totalTickets);
+                TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "SYSTEM", "TicketPool", tickets, poolTicketAmount);
                 ticketUpdateService.sendTicketUpdate(update);
 
                 return false;
@@ -99,19 +119,24 @@ public synchronized int addTickets(int tickets) {
         }
     }
 
-    public synchronized int getTotalTickets() {
-        try {
-            return totalTickets;
-        } catch (Exception e) {
-            logger.error("Error while getting total tickets: {}", e.getMessage(), e);
-            return -1;
-        }
+    public synchronized int getPoolTicketAmount() {
+        return poolTicketAmount;
+    }
+
+    public synchronized int getTotalReleasedTickets() {
+        return totalReleasedTickets;
+    }
+
+    public synchronized int getTotalSystemTickets() {
+        return totalSystemTickets;
     }
 
     public synchronized void reset() {
-        this.totalTickets = 0;
+        this.poolTicketAmount = 0;
+        this.totalReleasedTickets = 0;
         logger.info("TicketPool has been reset.");
     }
+
     public synchronized int getMaxTicketCapacity() {
         try {
             return maxTicketCapacity;
@@ -121,3 +146,4 @@ public synchronized int addTickets(int tickets) {
         }
     }
 }
+

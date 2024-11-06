@@ -48,16 +48,16 @@ public class Vendor implements Runnable {
 
                     //  WebSocket - send
                     TicketUpdate update = new TicketUpdate("ADD", "VENDOR", vendorName, addedTickets,
-                            ticketPool.getTotalTickets());
+                            ticketPool.getPoolTicketAmount());
                     ticketUpdateService.sendTicketUpdate(update);
-                    TransactionLog log = new TransactionLog("ADD", "VENDOR", vendorName, addedTickets, ticketPool.getTotalTickets());
+                    TransactionLog log = new TransactionLog("ADD", "VENDOR", vendorName, addedTickets, ticketPool.getPoolTicketAmount());
                     transactionLogService.sendTransactionLog(log);
                 } else {
                     logger.warn("{} failed to release {} tickets. Pool is full.", vendorName, ticketsToRelease);
 
                     // Send WebSocket
                     TicketUpdate update = new TicketUpdate("ADD_FAILED", "VENDOR", vendorName,
-                            ticketsToRelease, ticketPool.getTotalTickets());
+                            ticketsToRelease, ticketPool.getPoolTicketAmount());
                     ticketUpdateService.sendTicketUpdate(update);
                 }
 

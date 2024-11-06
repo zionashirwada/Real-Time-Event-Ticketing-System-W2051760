@@ -13,8 +13,10 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
 })
 export class TicketPoolStatusComponent implements OnInit, OnDestroy {
-  totalTickets: number = 0;
+  poolTicketAmount: number = 0;
   maxTicketCapacity: number = 0;
+  totalReleasedTickets: number = 0;
+  totalSystemTickets: number = 0;
   errorMessage: string = '';
   private subscription?: Subscription;
   private websocketSubscription?: Subscription;
@@ -25,8 +27,7 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
     // Initial load
     this.ticketService.getTicketPoolStatus().subscribe(
       (status: TicketPoolStatus) => {
-        this.totalTickets = status.totalTickets;
-        this.maxTicketCapacity = status.maxTicketCapacity;
+        this.updateStatus(status);
       },
       (error) => {
         console.error('Error loading ticket pool status:', error);
@@ -39,15 +40,30 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
       (update: TicketUpdate) => {
         // Update local state based on the action
         if (update.action === 'ADD' || update.action === 'ADD_PARTIAL') {
-          this.totalTickets = update.totalTickets;
+          this.poolTicketAmount = update.currentPoolAmount;
+          this.totalReleasedTickets += update.tickets; // Update total released tickets
         } else if (update.action === 'REMOVE') {
-          this.totalTickets = update.totalTickets;
+          this.poolTicketAmount = update.currentPoolAmount;
+        } else if (update.action === 'RESET') {
+          // Handle system reset
+          this.poolTicketAmount = 0;
+          this.totalReleasedTickets = 0;
         }
       },
       (error) => {
         console.error('WebSocket error:', error);
       }
     );
+
+    this.checkTicketCapacity();
+  }
+
+  // Helper method to update all status values
+  private updateStatus(status: TicketPoolStatus) {
+    this.poolTicketAmount = status.poolTicketAmount;
+    this.maxTicketCapacity = status.maxTicketCapacity;
+    this.totalReleasedTickets = status.totalReleasedTickets;
+    this.totalSystemTickets = status.totalSystemTickets;
   }
 
   ngOnDestroy(): void {
@@ -58,5 +74,19 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
       this.websocketSubscription.unsubscribe();
     }
     this.webSocketService.disconnect();
+  }
+
+  // Method to check ticket capacity and show warning if needed
+  checkTicketCapacity(): void {
+    if (this.totalReleasedTickets >= this.totalSystemTickets) {
+      this.showWarningToaster();
+    }
+  }
+
+  // Method to show warning toaster
+  showWarningToaster(): void {
+    this.errorMessage = 'Maximum ticket capacity reached!';
+    // Logic to display a toaster notification can be added here
+    // For example, using a third-party library or Angular Material Snackbar
   }
 }

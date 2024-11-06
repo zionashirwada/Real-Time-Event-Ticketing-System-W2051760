@@ -15,28 +15,43 @@ public class TicketPoolController {
 
     @GetMapping("/ticket-pool-status")
     public ResponseEntity<?> getTicketPoolStatus() {
-        int totalTickets = ticketPool.getTotalTickets();
-        int maxTicketCapacity = ticketPool.getMaxTicketCapacity();
-
-        return ResponseEntity.ok(new TicketPoolStatus(totalTickets, maxTicketCapacity));
+        return ResponseEntity.ok(new TicketPoolStatus(
+            ticketPool.getPoolTicketAmount(),
+            ticketPool.getMaxTicketCapacity(),
+            ticketPool.getTotalReleasedTickets(),
+            ticketPool.getTotalSystemTickets()
+        ));
     }
 
     // Inner class to represent the status
     public static class TicketPoolStatus {
-        private int totalTickets;
+        private int poolTicketAmount;
         private int maxTicketCapacity;
+        private int totalReleasedTickets;
+        private int totalSystemTickets;
 
-        public TicketPoolStatus(int totalTickets, int maxTicketCapacity) {
-            this.totalTickets = totalTickets;
+        public TicketPoolStatus(int poolTicketAmount, int maxTicketCapacity, 
+                              int totalReleasedTickets, int totalSystemTickets) {
+            this.poolTicketAmount = poolTicketAmount;
             this.maxTicketCapacity = maxTicketCapacity;
+            this.totalReleasedTickets = totalReleasedTickets;
+            this.totalSystemTickets = totalSystemTickets;
         }
 
-        public int getTotalTickets() {
-            return totalTickets;
+        public int getPoolTicketAmount() {
+            return poolTicketAmount;
         }
 
         public int getMaxTicketCapacity() {
             return maxTicketCapacity;
+        }
+
+        public int getTotalReleasedTickets() {
+            return totalReleasedTickets;
+        }
+
+        public int getTotalSystemTickets() {
+            return totalSystemTickets;
         }
     }
 }

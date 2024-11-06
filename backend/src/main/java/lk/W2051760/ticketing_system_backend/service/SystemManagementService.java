@@ -1,4 +1,3 @@
-
 package lk.W2051760.ticketing_system_backend.service;
 import lk.W2051760.ticketing_system_backend.producer.VendorManager;
 import lk.W2051760.ticketing_system_backend.model.Configuration;
@@ -48,7 +47,7 @@ public class SystemManagementService {
             if (configuration != null) {
                 currentState = SystemState.STOPPED;
                 // Initialize ticket pool and managers
-                ticketPool.initialize(configuration.getMaxTicketCapacity());
+                ticketPool.initialize(configuration.getMaxTicketCapacity(), configuration.getTotalSystemTickets());
                 vendorManager.initialize(NUMBER_OF_VENDORS, configuration.getTicketReleaseRate());
                 customerManager.initialize(NUMBER_OF_CUSTOMERS, configuration.getCustomerRetrievalRate());
                 broadcastState();
@@ -121,7 +120,7 @@ public class SystemManagementService {
                 "SYSTEM",
                 "System Reset",
                 0,
-                ticketPool.getTotalTickets()
+                ticketPool.getPoolTicketAmount()
         );
         messagingTemplate.convertAndSend("/topic/ticket-updates", update);
     }

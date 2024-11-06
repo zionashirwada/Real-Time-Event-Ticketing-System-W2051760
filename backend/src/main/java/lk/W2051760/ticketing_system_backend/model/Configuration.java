@@ -1,7 +1,7 @@
 package lk.W2051760.ticketing_system_backend.model;
 
 public class Configuration {
-    private int totalTickets;
+    private int totalSystemTickets;
     private int ticketReleaseRate;
     private int customerRetrievalRate;
     private int maxTicketCapacity;
@@ -9,20 +9,20 @@ public class Configuration {
     // Constructor
     public Configuration() {
     }
-    public Configuration(int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
-        this.totalTickets = totalTickets;
+    public Configuration(int totalSystemTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
+        this.totalSystemTickets = totalSystemTickets;
         this.ticketReleaseRate = ticketReleaseRate;
         this.customerRetrievalRate = customerRetrievalRate;
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
     // Getters and Setters
-    public int getTotalTickets() {
-        return totalTickets;
+    public int getTotalSystemTickets() {
+        return totalSystemTickets;
     }
 
-    public void setTotalTickets(int totalTickets) {
-        this.totalTickets = totalTickets;
+    public void setTotalSystemTickets(int totalSystemTickets) {
+        this.totalSystemTickets = totalSystemTickets;
     }
 
     public int getTicketReleaseRate() {

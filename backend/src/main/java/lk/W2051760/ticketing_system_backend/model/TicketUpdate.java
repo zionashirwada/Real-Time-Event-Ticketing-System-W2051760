@@ -5,17 +5,17 @@ public class TicketUpdate {
     private String entity;        //  "VENDOR", "CUSTOMER", "SYSTEM"
     private String name;          // Name of the vendor/customer
     private int tickets;          // Number of tickets added/removed
-    private int totalTickets;     // Current total tickets in the pool
+    private int currentPoolAmount;  //  remaining in pool
 
     // Constructors
     public TicketUpdate() {}
 
-    public TicketUpdate(String action, String entity, String name, int tickets, int totalTickets) {
+    public TicketUpdate(String action, String entity, String name, int tickets, int currentPoolAmount) {
         this.action = action;
         this.entity = entity;
         this.name = name;
         this.tickets = tickets;
-        this.totalTickets = totalTickets;
+        this.currentPoolAmount = currentPoolAmount;
     }
 
     // Getters and Setters
@@ -53,12 +53,12 @@ public class TicketUpdate {
         this.tickets = tickets;
     }
 
-    public int getTotalTickets() {
-        return totalTickets;
+    public int getCurrentPoolAmount() {
+        return currentPoolAmount;
     }
 
-    public void setTotalTickets(int totalTickets) {
-        this.totalTickets = totalTickets;
+    public void setCurrentPoolAmount(int currentPoolAmount) {
+        this.currentPoolAmount = currentPoolAmount;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class TicketUpdate {
                 ", entity='" + entity + '\'' +
                 ", name='" + name + '\'' +
                 ", tickets=" + tickets +
-                ", totalTickets=" + totalTickets +
+                ", currentPoolAmount=" + currentPoolAmount +
                 '}';
     }
 }

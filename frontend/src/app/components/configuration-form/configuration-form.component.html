@@ -1,105 +1,121 @@
-<form (ngSubmit)="onSubmit()" #configForm="ngForm" class="space-y-6">
+<form (ngSubmit)="onSubmit()" #configForm="ngForm" class="space-y-4">
 <div class="p-6">
-  <h5 class="text-sm  font-semibold mb-4">System Configuration</h5>
-  <div class="space-y-4">
-     <!-- Total Number of Tickets -->
-    <div>
-      <label class="block text-sm font-medium mb-1">Total Tickets</label>
-      <input
+  <h5 class="text-lg font-semibold mb-4">System Configuration</h5>
+  <!-- Total System Tickets -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Total System Tickets</label>
+    <input
       type="number"
-      [(ngModel)]="configuration.totalTickets"
-      name="totalTickets"
+      [(ngModel)]="configuration.totalSystemTickets"
+      name="totalSystemTickets"
+      required
       min="1"
-      title="Total number of tickets must be greater than 0"
-      #totalTickets="ngModel"
-        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-
-      />
-      <div *ngIf="totalTickets.invalid && (totalTickets.dirty || totalTickets.touched)" class="text-red-500 text-xs mt-1">
-        <small *ngIf="totalTickets.errors?.['required']">
-          Total Number of Tickets is required.
-        </small>
-        <small *ngIf="totalTickets.errors?.['min']">
-          Total Number of Tickets must be at least 1.
-        </small>
-      </div>
+      title="Total System Tickets must be greater than 0"
+      #totalSystemTickets="ngModel"
+      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <p class="text-gray-500 text-xs mt-1">
+      The total number of tickets available for the entire event
+    </p>
+    <div *ngIf="totalSystemTickets.invalid && (totalSystemTickets.dirty || totalSystemTickets.touched)" class="text-red-500 text-xs mt-1">
+      <small *ngIf="totalSystemTickets.errors?.['required']">
+        Total System Tickets is required.
+      </small>
+      <small *ngIf="totalSystemTickets.errors?.['min']">
+        Total System Tickets must be at least 1.
+      </small>
     </div>
-    <!-- Ticket Release Rate -->
-    <div>
-      <label class="block text-sm font-medium mb-1">Release Rate</label>
-      <input
+  </div>
+
+  <!-- Ticket Release Rate -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Ticket Release Rate</label>
+    <input
       type="number"
       [(ngModel)]="configuration.ticketReleaseRate"
       name="ticketReleaseRate"
       required
       min="1"
-      title="Ticket release rate must be greater than 0"
+      title="Ticket Release Rate must be greater than 0"
       #ticketReleaseRate="ngModel"
-        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-      />
-      <div *ngIf="ticketReleaseRate.invalid && (ticketReleaseRate.dirty || ticketReleaseRate.touched)" class="text-red-500 text-xs mt-1">
-        <small *ngIf="ticketReleaseRate.errors?.['required']">
-          Total Number of Tickets is required.
-        </small>
-        <small *ngIf="ticketReleaseRate.errors?.['min']">
-          Total Number of Tickets must be at least 1.
-        </small>
-      </div>
+      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <p class="text-gray-500 text-xs mt-1">
+      Number of tickets each vendor releases per transaction
+    </p>
+    <div *ngIf="ticketReleaseRate.invalid && (ticketReleaseRate.dirty || ticketReleaseRate.touched)" class="text-red-500 text-xs mt-1">
+      <small *ngIf="ticketReleaseRate.errors?.['required']">
+        Ticket Release Rate is required.
+      </small>
+      <small *ngIf="ticketReleaseRate.errors?.['min']">
+        Ticket Release Rate must be at least 1.
+      </small>
     </div>
-    <!-- Customer Retrieval Rate -->
-    <div>
-      <label class="block text-sm font-medium mb-1">Retrieval Rate</label>
-      <input
+  </div>
+
+  <!-- Customer Retrieval Rate -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Customer Retrieval Rate</label>
+    <input
       type="number"
       [(ngModel)]="configuration.customerRetrievalRate"
       name="customerRetrievalRate"
       required
       min="1"
-      title="Customer retrieval rate must be greater than 0"
+      title="Customer Retrieval Rate must be greater than 0"
       #customerRetrievalRate="ngModel"
-        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-
-      />
-      <div *ngIf="customerRetrievalRate.invalid && (customerRetrievalRate.dirty || customerRetrievalRate.touched)" class="text-red-500 text-xs mt-1">
-        <small *ngIf="customerRetrievalRate.errors?.['required']">
-          Total Number of Tickets is required.
-        </small>
-        <small *ngIf="customerRetrievalRate.errors?.['min']">
-          Total Number of Tickets must be at least 1.
-        </small>
-      </div>
+      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <p class="text-gray-500 text-xs mt-1">
+      Number of tickets each customer purchases per transaction
+    </p>
+    <div *ngIf="customerRetrievalRate.invalid && (customerRetrievalRate.dirty || customerRetrievalRate.touched)" class="text-red-500 text-xs mt-1">
+      <small *ngIf="customerRetrievalRate.errors?.['required']">
+        Customer Retrieval Rate is required.
+      </small>
+      <small *ngIf="customerRetrievalRate.errors?.['min']">
+        Customer Retrieval Rate must be at least 1.
+      </small>
     </div>
-    <!-- Maximum Ticket Capacity -->
-    <div>
-      <label class="block text-sm font-medium mb-1">Max Capacity</label>
-      <input
+  </div>
+
+  <!-- Maximum Ticket Capacity -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Max Capacity</label>
+    <input
       type="number"
       [(ngModel)]="configuration.maxTicketCapacity"
       name="maxTicketCapacity"
       required
       min="1"
-      title="Maximum ticket capacity must be greater than 0"
-      [attr.min]="configuration.totalTickets"
+      [max]="configuration.totalSystemTickets"
+      title="Maximum ticket capacity must be greater than 0 and cannot exceed total system tickets"
       #maxTicketCapacity="ngModel"
-        class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-
-      />
-      <div *ngIf="maxTicketCapacity.invalid && (maxTicketCapacity.dirty || maxTicketCapacity.touched)" class="text-red-500 text-xs mt-1">
-        <small *ngIf="maxTicketCapacity.errors?.['required']">
-          Total Number of Tickets is required.
-        </small>
-        <small *ngIf="maxTicketCapacity.errors?.['min']">
-          Total Number of Tickets must be at least 1.
-        </small>
-      </div>
+      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    />
+    <p class="text-gray-500 text-xs mt-1">
+      Maximum number of tickets that can be in the pool at once (cannot exceed total system tickets)
+    </p>
+    <div *ngIf="maxTicketCapacity.invalid && (maxTicketCapacity.dirty || maxTicketCapacity.touched)" class="text-red-500 text-xs mt-1">
+      <small *ngIf="maxTicketCapacity.errors?.['required']">
+        Maximum Ticket Capacity is required.
+      </small>
+      <small *ngIf="maxTicketCapacity.errors?.['min']">
+        Maximum Ticket Capacity must be at least 1.
+      </small>
+      <small *ngIf="maxTicketCapacity.errors?.['max']">
+        Maximum Ticket Capacity cannot exceed Total System Tickets ({{configuration.totalSystemTickets}})
+      </small>
     </div>
-    <!-- Submit Button -->
-    <button
-      type="submit"
-      class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-md transition-colors duration-200 disabled:bg-blue-300 disabled:cursor-not-allowed"
-      [disabled]="configForm.invalid">
-      Save Configuration
-    </button>
   </div>
+
+  <!-- Submit Button -->
+  <button
+    type="submit"
+    [disabled]="!configForm.form.valid"
+    class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+  >
+    Save Configuration
+  </button>
 </div>
 </form>
