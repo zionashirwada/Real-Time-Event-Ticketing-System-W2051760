@@ -33,9 +33,14 @@ public class TicketPool {
                 throw new IllegalArgumentException("Number of tickets to add must be positive.");
             }
 
-            // Check if we've reached total system limit
+            // Check if we've reached the total system limit
             if (totalReleasedTickets >= totalSystemTickets) {
                 logger.warn("Cannot add more tickets. Total system limit reached ({}).", totalSystemTickets);
+
+                // Send WebSocket update 
+                TicketUpdate update = new TicketUpdate("ADD_FAILED", "SYSTEM", "TicketPool", tickets, poolTicketAmount);
+                ticketUpdateService.sendTicketUpdate(update);
+
                 return 0;
             }
 
@@ -44,38 +49,23 @@ public class TicketPool {
             int ticketsToAdd = Math.min(tickets, remainingSystemCapacity);
 
             // Check pool capacity
-            if (poolTicketAmount + ticketsToAdd <= maxTicketCapacity) {
-                poolTicketAmount += ticketsToAdd;
-                totalReleasedTickets += ticketsToAdd;
-                logger.info("Added {} tickets. Pool amount: {}, Total released: {}", 
-                    ticketsToAdd, poolTicketAmount, totalReleasedTickets);
-
-                TicketUpdate update = new TicketUpdate("ADD", "SYSTEM", "TicketPool", 
-                    ticketsToAdd, poolTicketAmount);
-                ticketUpdateService.sendTicketUpdate(update);
-
-                return ticketsToAdd;
-            } else {
-                int availableSpace = maxTicketCapacity - poolTicketAmount;
-                if (availableSpace > 0) {
-                    poolTicketAmount += availableSpace;
-                    totalReleasedTickets += availableSpace;
-                    logger.warn("Cannot add {} tickets. Added only {} to reach max capacity ({}).", tickets, availableSpace, maxTicketCapacity);
-
-                    // Send WebSocket update
-                    TicketUpdate update = new TicketUpdate("ADD_PARTIAL", "SYSTEM", "TicketPool", availableSpace, poolTicketAmount);
-                    ticketUpdateService.sendTicketUpdate(update);
-
-                    return availableSpace;
-                }
-                logger.warn("Cannot add {} tickets. Max capacity reached ({}).", tickets, maxTicketCapacity);
-
-                // Send WebSocket update
-                TicketUpdate update = new TicketUpdate("ADD_FAILED", "SYSTEM", "TicketPool", tickets, poolTicketAmount);
-                ticketUpdateService.sendTicketUpdate(update);
-
-                return 0;
+            int availableSpace = maxTicketCapacity - poolTicketAmount;
+            if (ticketsToAdd > availableSpace) {
+                ticketsToAdd = availableSpace;
+                logger.warn("Cannot add requested number of tickets. Added only {} to reach max capacity ({}).", ticketsToAdd, maxTicketCapacity);
             }
+
+            // Update pool and system ticket counts
+            poolTicketAmount += ticketsToAdd;
+            totalReleasedTickets += ticketsToAdd;
+            logger.info("Added {} tickets. Pool amount: {}, Total released: {}", ticketsToAdd, poolTicketAmount, totalReleasedTickets);
+
+            // Send WebSocket update
+            TicketUpdate update = new TicketUpdate("ADD", "SYSTEM", "TicketPool", ticketsToAdd, poolTicketAmount);
+            ticketUpdateService.sendTicketUpdate(update);
+
+            return ticketsToAdd;
+
         } catch (IllegalArgumentException e) {
             logger.error("Invalid argument in addTickets: {}", e.getMessage(), e);
             return 0;
@@ -84,6 +74,7 @@ public class TicketPool {
             return 0;
         }
     }
+
 
     public synchronized boolean removeTickets(int tickets) {
         try {

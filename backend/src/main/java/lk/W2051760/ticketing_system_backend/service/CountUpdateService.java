@@ -12,13 +12,15 @@ public class CountUpdateService {
     private static final Logger logger = LogManager.getLogger(CountUpdateService.class);
 
     private final SimpMessagingTemplate messagingTemplate;
+    private final TicketPool ticketPool;
 
     // Store the current counts
     private int currentVendorCount = 0;
     private int currentCustomerCount =0;
 
-    public CountUpdateService(SimpMessagingTemplate messagingTemplate) {
+    public CountUpdateService(SimpMessagingTemplate messagingTemplate, TicketPool ticketPool) {
         this.messagingTemplate = messagingTemplate;
+        this.ticketPool = ticketPool;
     }
 
     public synchronized void updateVendorCount(int vendorCount) {
@@ -32,8 +34,14 @@ public class CountUpdateService {
     }
 
     private void sendCountUpdate() {
-        CountUpdate countUpdate = new CountUpdate(currentVendorCount, currentCustomerCount);
+        CountUpdate countUpdate = new CountUpdate(
+            currentVendorCount,
+            currentCustomerCount,
+            ticketPool.getPoolTicketAmount(),
+            ticketPool.getTotalReleasedTickets()
+        );
         messagingTemplate.convertAndSend("/topic/count-updates", countUpdate);
-        logger.info("Broadcasted count update: Vendors={}, Customers={}", currentVendorCount, currentCustomerCount);
+        logger.info("Broadcasted count update: Vendors={}, Customers={}, PoolTickets={}, TotalReleased={}",
+            currentVendorCount, currentCustomerCount, countUpdate.getPoolTicketAmount(), countUpdate.getTotalReleasedTickets());
     }
 }
