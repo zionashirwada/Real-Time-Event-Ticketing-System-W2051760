@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { TicketUpdate } from '../../models/ticket-update.model';
 import { WebSocketService } from '../../services/web-socket-service.service';
 import { CommonModule } from '@angular/common';
+import { SystemControlService } from '../../services/system-control.service';
 
 @Component({
   selector: 'app-ticket-pool-status',
@@ -21,7 +22,7 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
   private subscription?: Subscription;
   private websocketSubscription?: Subscription;
 
-  constructor(private ticketService: TicketService, private webSocketService: WebSocketService) {}
+  constructor(private ticketService: TicketService, private webSocketService: WebSocketService,private systemControlService: SystemControlService) {}
 
   ngOnInit(): void {
     // Initial load
@@ -41,7 +42,7 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
         // Update local state based on the action
         if (update.action === 'ADD' || update.action === 'ADD_PARTIAL') {
           this.poolTicketAmount = update.currentPoolAmount;
-          this.totalReleasedTickets += update.tickets; // Update total released tickets
+          this.totalReleasedTickets += update.tickets;
         } else if (update.action === 'REMOVE') {
           this.poolTicketAmount = update.currentPoolAmount;
         } else if (update.action === 'RESET') {
@@ -49,13 +50,14 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
           this.poolTicketAmount = 0;
           this.totalReleasedTickets = 0;
         }
+        this.checkTicketCapacity();
       },
       (error) => {
         console.error('WebSocket error:', error);
       }
     );
 
-    this.checkTicketCapacity();
+
   }
 
   // Helper method to update all status values
@@ -76,17 +78,19 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
     this.webSocketService.disconnect();
   }
 
-  // Method to check ticket capacity and show warning if needed
+  // Method to check ticket capacity
   checkTicketCapacity(): void {
     if (this.totalReleasedTickets >= this.totalSystemTickets) {
-      this.showWarningToaster();
+      this.errorMessage = 'All the ' + this.totalReleasedTickets + ' tickets have been released. Maximum capacity reached!';
+      this.systemControlService.pauseSystem().subscribe(
+        (response: string) => {
+          console.log('System paused due to capacity reached:', response);
+        },
+        (error) => {
+          console.error('Error pausing system:', error);
+        }
+      );
     }
   }
 
-  // Method to show warning toaster
-  showWarningToaster(): void {
-    this.errorMessage = 'Maximum ticket capacity reached!';
-    // Logic to display a toaster notification can be added here
-    // For example, using a third-party library or Angular Material Snackbar
-  }
 }

@@ -61,6 +61,7 @@ export class ConfigurationFormComponent implements OnInit {
           'Configuration has been saved successfully',
           'Success'
         );
+        this.loadConfiguration();
       },
       (error) => {
         console.error('Error saving configuration:', error);
