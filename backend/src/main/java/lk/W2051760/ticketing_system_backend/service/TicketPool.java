@@ -1,117 +1,109 @@
 package lk.W2051760.ticketing_system_backend.service;
 
+import lk.W2051760.ticketing_system_backend.model.Ticket;
 import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Service
 public class TicketPool {
     private static final Logger logger = LogManager.getLogger(TicketPool.class);
-    private int poolTicketAmount;
-    private int maxTicketCapacity;
-    private int totalReleasedTickets;
-    private int totalSystemTickets;
-    private final TicketUpdateService ticketUpdateService;
 
-    public TicketPool(TicketUpdateService ticketUpdateService) {
-        this.ticketUpdateService = ticketUpdateService;
+    private BlockingQueue<Ticket> ticketPool;
+    private int maxTicketCapacity;
+    private int totalSystemTickets;
+    private volatile int totalReleasedTickets = 0;
+
+    @Autowired
+    private TicketUpdateService ticketUpdateService;
+
+    public TicketPool() {
+        this.ticketPool = new LinkedBlockingQueue<>();
     }
 
-    public void initialize(int maxTicketCapacity, int totalSystemTickets) {
-        this.poolTicketAmount = 0;
+    public synchronized void initialize(int maxTicketCapacity, int totalSystemTickets) {
         this.maxTicketCapacity = maxTicketCapacity;
         this.totalSystemTickets = totalSystemTickets;
         this.totalReleasedTickets = 0;
-        logger.info("TicketPool initialized with max capacity: {}, total system tickets: {}", 
-            maxTicketCapacity, totalSystemTickets);
+        this.ticketPool.clear();
     }
 
-    public synchronized int addTickets(int tickets) {
-        try {
-            if (tickets <= 0) {
-                throw new IllegalArgumentException("Number of tickets to add must be positive.");
-            }
-
-            // Check if we've reached the total system limit
-            if (totalReleasedTickets >= totalSystemTickets) {
-                logger.warn("Cannot add more tickets. Total system limit reached ({}).", totalSystemTickets);
-
-                // Send WebSocket update 
-                TicketUpdate update = new TicketUpdate("ADD_FAILED", "SYSTEM", "TicketPool", tickets, poolTicketAmount);
-                ticketUpdateService.sendTicketUpdate(update);
-
-                return 0;
-            }
-
-            // Calculate how many tickets we can still add to the system
-            int remainingSystemCapacity = totalSystemTickets - totalReleasedTickets;
-            int ticketsToAdd = Math.min(tickets, remainingSystemCapacity);
-
-            // Check pool capacity
-            int availableSpace = maxTicketCapacity - poolTicketAmount;
-            if (ticketsToAdd > availableSpace) {
-                ticketsToAdd = availableSpace;
-                logger.warn("Cannot add requested number of tickets. Added only {} to reach max capacity ({}).", ticketsToAdd, maxTicketCapacity);
-            }
-
-            // Update pool and system ticket counts
-            poolTicketAmount += ticketsToAdd;
-            totalReleasedTickets += ticketsToAdd;
-            logger.info("Added {} tickets. Pool amount: {}, Total released: {}", ticketsToAdd, poolTicketAmount, totalReleasedTickets);
-
-            // Send WebSocket update
-            TicketUpdate update = new TicketUpdate("ADD", "SYSTEM", "TicketPool", ticketsToAdd, poolTicketAmount);
-            ticketUpdateService.sendTicketUpdate(update);
-
-            return ticketsToAdd;
-
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid argument in addTickets: {}", e.getMessage(), e);
-            return 0;
-        } catch (Exception e) {
-            logger.error("Unexpected error in addTickets: {}", e.getMessage(), e);
+    public synchronized int addTickets(int amount) {
+        // Check if adding these tickets would exceed total system tickets
+        if (totalReleasedTickets >= totalSystemTickets) {
+            logger.warn("Cannot add more tickets: Total system tickets limit ({}) reached", totalSystemTickets);
             return 0;
         }
+
+        // Calculate how many tickets we can actually add
+        int remainingSystemTickets = totalSystemTickets - totalReleasedTickets;
+        int availablePoolSpace = maxTicketCapacity - ticketPool.size();
+        int actualAmount = Math.min(Math.min(amount, remainingSystemTickets), availablePoolSpace);
+
+        if (actualAmount <= 0) {
+            return 0;
+        }
+
+        // Add the tickets
+        for (int i = 0; i < actualAmount; i++) {
+            ticketPool.offer(new Ticket(totalReleasedTickets + i + 1));
+        }
+        totalReleasedTickets += actualAmount;
+        
+        return actualAmount;
     }
 
-
-    public synchronized boolean removeTickets(int tickets) {
-        try {
-            if (tickets <= 0) {
-                throw new IllegalArgumentException("Number of tickets to remove must be positive.");
-            }
-
-            if (tickets <= poolTicketAmount) {
-                poolTicketAmount -= tickets;
-                logger.info("Removed {} tickets. Pool amount: {}, Total released: {}", 
-                    tickets, poolTicketAmount, totalReleasedTickets);
-
-                TicketUpdate update = new TicketUpdate("REMOVE", "SYSTEM", "TicketPool", 
-                    tickets, poolTicketAmount);
-                ticketUpdateService.sendTicketUpdate(update);
-
-                return true;
-            } else {
-                logger.warn("Cannot remove {} tickets. Only {} available.", tickets, poolTicketAmount);
-
-                // Send WebSocket update
-                TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "SYSTEM", "TicketPool", tickets, poolTicketAmount);
-                ticketUpdateService.sendTicketUpdate(update);
-
-                return false;
-            }
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid argument in removeTickets: {}", e.getMessage(), e);
-            return false;
-        } catch (Exception e) {
-            logger.error("Unexpected error in removeTickets: {}", e.getMessage(), e);
+    public synchronized boolean removeTickets(int amount) {
+        if (ticketPool.size() < amount) {
             return false;
         }
+
+        for (int i = 0; i < amount; i++) {
+            ticketPool.poll();
+        }
+        return true;
+    }
+
+    public synchronized void reset() {
+        ticketPool.clear();
+        totalReleasedTickets = 0;
+        // Send WebSocket update about the reset
+        TicketUpdate update = new TicketUpdate(
+            "RESET",
+            "SYSTEM",
+            "System",
+            0,
+            0
+        );
+        ticketUpdateService.sendTicketUpdate(update);
+        logger.info("Ticket pool has been reset");
+    }
+
+    public synchronized void stopAndReset() {
+        reset();
+        // Send WebSocket update about the stop and reset
+        TicketUpdate update = new TicketUpdate(
+            "STOP_RESET",
+            "SYSTEM",
+            "System",
+            0,
+            0
+        );
+        ticketUpdateService.sendTicketUpdate(update);
+        logger.info("Ticket pool has been stopped and reset");
     }
 
     public synchronized int getPoolTicketAmount() {
-        return poolTicketAmount;
+        return ticketPool.size();
+    }
+
+    public synchronized int getMaxTicketCapacity() {
+        return maxTicketCapacity;
     }
 
     public synchronized int getTotalReleasedTickets() {
@@ -120,21 +112,6 @@ public class TicketPool {
 
     public synchronized int getTotalSystemTickets() {
         return totalSystemTickets;
-    }
-
-    public synchronized void reset() {
-        this.poolTicketAmount = 0;
-        this.totalReleasedTickets = 0;
-        logger.info("TicketPool has been reset.");
-    }
-
-    public synchronized int getMaxTicketCapacity() {
-        try {
-            return maxTicketCapacity;
-        } catch (Exception e) {
-            logger.error("Error while getting max ticket capacity: {}", e.getMessage(), e);
-            return -1;
-        }
     }
 }
 
