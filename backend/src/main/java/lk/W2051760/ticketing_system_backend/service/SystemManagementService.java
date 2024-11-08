@@ -1,8 +1,8 @@
 package lk.W2051760.ticketing_system_backend.service;
-import lk.W2051760.ticketing_system_backend.producer.VendorManager;
+import lk.W2051760.ticketing_system_backend.model.producer.VendorManager;
 import lk.W2051760.ticketing_system_backend.model.Configuration;
 import lk.W2051760.ticketing_system_backend.model.SystemState;
-import lk.W2051760.ticketing_system_backend.consumer.CustomerManager;
+import lk.W2051760.ticketing_system_backend.model.consumer.CustomerManager;
 import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -109,8 +109,8 @@ public class SystemManagementService {
         ticketPool.reset();
 
         // Reset counts
-        countUpdateService.updateVendorCount(0);
-        countUpdateService.updateCustomerCount(0);
+        countUpdateService.updateVendorCount(1);
+        countUpdateService.updateCustomerCount(1);
         countUpdateService.updateVendorCount(vendorManager.getVendorCount());
         countUpdateService.updateCustomerCount(customerManager.getCustomerCount());
 

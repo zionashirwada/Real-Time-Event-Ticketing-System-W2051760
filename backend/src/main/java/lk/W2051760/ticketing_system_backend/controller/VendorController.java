@@ -1,6 +1,6 @@
 package lk.W2051760.ticketing_system_backend.controller;
 
-import lk.W2051760.ticketing_system_backend.producer.VendorManager;
+import lk.W2051760.ticketing_system_backend.model.producer.VendorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
