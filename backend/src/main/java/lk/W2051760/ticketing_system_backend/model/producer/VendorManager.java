@@ -1,4 +1,4 @@
-package lk.W2051760.ticketing_system_backend.producer;
+package lk.W2051760.ticketing_system_backend.model.producer;
 
 
 import lk.W2051760.ticketing_system_backend.service.CountUpdateService;

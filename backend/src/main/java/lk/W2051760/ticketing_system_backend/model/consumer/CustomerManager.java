@@ -1,4 +1,4 @@
-package lk.W2051760.ticketing_system_backend.consumer;
+package lk.W2051760.ticketing_system_backend.model.consumer;
 
 import lk.W2051760.ticketing_system_backend.service.CountUpdateService;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
