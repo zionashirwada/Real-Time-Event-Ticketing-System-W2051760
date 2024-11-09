@@ -2,13 +2,14 @@ package lk.W2051760.ticketing_system_backend.model.consumer;
 
 import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
 import lk.W2051760.ticketing_system_backend.model.TransactionLog;
+import lk.W2051760.ticketing_system_backend.model.User;
 import lk.W2051760.ticketing_system_backend.service.TicketPool;
 import lk.W2051760.ticketing_system_backend.service.TicketUpdateService;
 import lk.W2051760.ticketing_system_backend.service.TransactionLogService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Customer implements Runnable {
+public class Customer extends User implements Runnable {
 
     private static final Logger logger = LogManager.getLogger(Customer.class);
 
@@ -22,9 +23,9 @@ public class Customer implements Runnable {
     private final TransactionLogService transactionLogService;
 
 
-    public Customer(String customerName, int ticketsToPurchase, TicketPool ticketPool,
-                    TicketUpdateService ticketUpdateService,TransactionLogService transactionLogService) {
-        this.customerName = customerName;
+   public Customer(int id, String name, int ticketsToPurchase, TicketPool ticketPool,
+                   TicketUpdateService ticketUpdateService, TransactionLogService transactionLogService) {
+        super(id, name);
         this.ticketsToPurchase = ticketsToPurchase;
         this.ticketPool = ticketPool;
         this.ticketUpdateService = ticketUpdateService;

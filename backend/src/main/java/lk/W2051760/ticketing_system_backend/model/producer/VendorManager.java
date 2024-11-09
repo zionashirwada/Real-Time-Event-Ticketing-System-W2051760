@@ -51,7 +51,7 @@ public class VendorManager {
         vendors.clear();
         vendorThreads.clear();
         for (int i = 1; i <= numberOfVendors; i++) {
-            Vendor vendor = new Vendor("Vendor " + i, ticketsToRelease, ticketPool, ticketUpdateService, transactionLogService);
+            Vendor vendor = new Vendor(i,"Vendor " + i, ticketsToRelease, ticketPool, ticketUpdateService, transactionLogService);
             Thread thread = new Thread(vendor, "VendorThread-" + i);
             thread.setDaemon(true);
             vendors.add(vendor);
@@ -111,7 +111,8 @@ public class VendorManager {
     }
     private void addVendorThread() {
         String vendorName = "Vendor " + (vendors.size() + 1);
-        Vendor vendor = new Vendor(vendorName, ticketsToRelease, ticketPool, ticketUpdateService,transactionLogService);
+        int vendorID = (vendors.size() + 1);
+        Vendor vendor = new Vendor(vendorID,vendorName, ticketsToRelease, ticketPool, ticketUpdateService,transactionLogService);
         Thread thread = new Thread(vendor, vendorName + "-Thread");
         thread.setDaemon(true);
         vendors.add(vendor);

@@ -50,7 +50,7 @@ public class CustomerManager {
 
         // Create new Customer instances and threads
         for (int i = 1; i <= numberOfCustomers; i++) {
-            Customer customer = new Customer("Customer " + i, ticketsToPurchase, ticketPool, ticketUpdateService,transactionLogService);
+            Customer customer = new Customer(i,"Customer " + i, ticketsToPurchase, ticketPool, ticketUpdateService,transactionLogService);
             Thread thread = new Thread(customer, "CustomerThread-" + i);
             thread.setDaemon(true);
             customers.add(customer);
@@ -112,7 +112,8 @@ public class CustomerManager {
 
     private void addCustomerThread() {
         String customerName = "Customer " + (customers.size() + 1);
-        Customer customer = new Customer(customerName, ticketsToPurchase, ticketPool, ticketUpdateService,transactionLogService);
+        int customerId = customers.size() + 1;
+        Customer customer = new Customer(customerId,customerName, ticketsToPurchase, ticketPool, ticketUpdateService,transactionLogService);
         Thread thread = new Thread(customer, customerName + "-Thread");
         thread.setDaemon(true);
         customers.add(customer);
