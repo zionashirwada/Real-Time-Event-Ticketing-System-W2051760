@@ -55,8 +55,7 @@
 
 ## 📍 Overview
 
-This Real-Time Event Ticketing System is designed to manage concurrent ticket releases by vendors and purchases by customers, leveraging multi-threading and the Producer-Consumer pattern. The system maintains data integrity in a dynamic, real-time environment and provides essential reporting features, making it ideal for handling high-demand events with concurrent ticketing needs.
-This system demonstrates it power of handeling cocurent requests using multithreading 
+This Real-Time Event Ticketing System is designed to manage concurrent ticket releases by vendors and purchases by customers, leveraging multi-threading and the Producer-Consumer pattern. The system maintains data integrity in a dynamic, real-time environment and provides essential reporting features, making it ideal for handling high-demand events with concurrent ticketing needs. This system demonstrates the power of handling concurrent requests using multithreading.
 
 ---
 
@@ -67,8 +66,8 @@ This system demonstrates it power of handeling cocurent requests using multithre
 - Multi-threaded Environment: Employs producer-consumer threading to manage multiple vendors and customers.
 - Real-Time Updates: Provides a UI with real-time status on ticket availability and transactions.
 - Basic Logging: Tracks and records system activities for audit and troubleshooting.
-- Websocket Usage : using websockets for realtime updates 
-- Api Usage : Using api to connect front end and backend
+- Websocket Usage: Using websockets for real-time updates.
+- API Usage: Using API to connect frontend and backend.
 
 ---
 
@@ -94,9 +93,6 @@ This system demonstrates it power of handeling cocurent requests using multithre
     │            ├── config
     │            │    ├── CorsConfig.java
     │            │    └── WebsocketConfig.java
-    │            ├── consumer
-    │            │    ├── Customer.java
-    │            │    └── CustomerManager.java
     │            ├── controller
     │            │    ├── ConfigurationController.java
     │            │    ├── CustomerController.java
@@ -105,6 +101,12 @@ This system demonstrates it power of handeling cocurent requests using multithre
     │            │    └── VendorController.java
     │            ├── model
     │            │    ├── Configuration.java
+    │            │    ├── consumer
+    │            │    │    ├── Customer.java
+    │            │    │    └── CustomerManager.java
+    │            │    ├── producer
+    │            │    │    ├── Vendor.java
+    │            │    │    └── VendorManager.java
     │            │    ├── CountUpdate.java
     │            │    ├── SystemState.java
     │            │    ├── SystemStateManager.java
@@ -240,10 +242,12 @@ This system demonstrates it power of handeling cocurent requests using multithre
 **Java Development Kit (JDK)** 	[![Java](https://img.shields.io/badge/Java-%23ED8B00.svg?logo=openjdk&logoColor=white)](#) : `version Java 17 or higher` </br>
 **Node.js** [![NodeJS](https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white)](#): `Version: >= 16.x.x` </br>
 **npm** 	[![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=fff)](#) : `Version: >= 8.x.x` </br>
-**Angular CLI** [![Angular](https://img.shields.io/badge/Angular-%23DD0031.svg?logo=angular&logoColor=white)](#): `Version: ^18.2.8` </br>
+**Angular CLI** [![Angular](https://img.shields.io/badge/Angular-%23DD0031.svg?logo=angular&logoColor=white)](#): `Version: 18.2.9` </br>
 **Tailwind CSS** [![TailwindCSS](https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white)](#): `Version: >= 3.x.x` </br>
-**TypeScript** [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](#): `Version: >= 4.x.x` </br>'
+**TypeScript** [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](#): `Version: >= 4.x.x` </br>
 **Maven**: `Version: 3.9.9` </br>
+**Spring Boot**: `Version: 3.2.0` </br>
+**WebSocket**: `Version: 5.3.0` </br>
 
 ### 📦 Installation
 
@@ -335,7 +339,7 @@ Execute the test suite using the following command:
 - [ ] **`Ticket Management and Logging Enhancements`**: Enhance TicketPool for edge cases, improve logging with timestamps, strengthen error handling, start documentation, and test concurrency.
 - [ ] **`Dynamic Vendor/Customer Management`**: Implement functionality to start or stop vendor and customer threads dynamically, and ensure UI support and backend synchronization
 -  [ ] **`Real-Time Analytics`**: Develop a real-time analytics dashboard to display ticket sales, integrate with data sources, and test live data updates.
-
+---
 ---
 
 ## 🤝 API Documentation
@@ -353,10 +357,10 @@ For additional details on using each endpoint, refer to the full API documentati
    - **Response**:
      ```json
      {
-       "totalTickets": 0,
-       "ticketReleaseRate": 0,
-       "customerRetrievalRate": 0,
-       "maxTicketCapacity": 0
+       "totalSystemTickets": 5000,
+       "ticketReleaseRate": 5,
+       "customerRetrievalRate": 3,
+       "maxTicketCapacity": 900
      }
      ```
 
@@ -366,10 +370,10 @@ For additional details on using each endpoint, refer to the full API documentati
    - **Request Body**:
      ```json
      {
-       "totalTickets": 100,
+       "totalSystemTickets": 5000,
        "ticketReleaseRate": 5,
        "customerRetrievalRate": 3,
-       "maxTicketCapacity": 200
+       "maxTicketCapacity": 900
      }
      ```
 
