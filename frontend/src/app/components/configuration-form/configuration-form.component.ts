@@ -5,6 +5,7 @@ import { ConfigurationService } from '../../services/configuration.service';
 import { ToastContainerComponent } from '../toast-container/toast-container.component';
 import { ToastService } from '../../services/toast.service';
 import { CommonModule } from '@angular/common';
+import { WebSocketService } from '../../services/web-socket-service.service'
 
 @Component({
   selector: 'app-configuration-form',
@@ -20,14 +21,26 @@ export class ConfigurationFormComponent implements OnInit {
     customerRetrievalRate: 0,
     maxTicketCapacity: 0,
   };
+  systemStatus: string = 'STOPPED'
 
   constructor(
     private configService: ConfigurationService,
-    private toast: ToastService
+    private toast: ToastService,
+    private webSocketService: WebSocketService
   ) {}
 
   ngOnInit(): void {
     this.loadConfiguration();
+
+    // Subscribe to system status updates
+    this.webSocketService.getSystemStatus().subscribe({
+      next: (status: string) => {
+        this.systemStatus = status
+      },
+      error: (error) => {
+        console.error('Error getting system status:', error)
+      }
+    })
   }
 
   loadConfiguration(): void {
@@ -71,6 +84,10 @@ export class ConfigurationFormComponent implements OnInit {
         );
       }
     );
+  }
+
+  isConfigDisabled(): boolean {
+    return this.systemStatus === 'RUNNING' || this.systemStatus === 'PAUSED'
   }
 
 }

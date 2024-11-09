@@ -1,7 +1,7 @@
 <form (ngSubmit)="onSubmit()" #configForm="ngForm" class="space-y-4">
 <div class="p-6">
   <h5 class="text-lg font-semibold mb-4">System Configuration</h5>
-  <!-- Total System Tickets -->
+  <!-- Total Tickets -->
   <div>
     <label class="block text-sm font-medium mb-1">Total System Tickets</label>
     <input
@@ -10,9 +10,10 @@
       name="totalSystemTickets"
       required
       min="1"
+      [disabled]="isConfigDisabled()"
       title="Total System Tickets must be greater than 0"
       #totalSystemTickets="ngModel"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
     />
     <p class="text-gray-500 text-xs mt-1">
       The total number of tickets available for the entire System
@@ -36,9 +37,10 @@
       name="ticketReleaseRate"
       required
       min="1"
+      [disabled]="isConfigDisabled()"
       title="Ticket Release Rate must be greater than 0"
       #ticketReleaseRate="ngModel"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
     />
     <p class="text-gray-500 text-xs mt-1">
       Number of tickets each vendor releases per transaction
@@ -62,9 +64,10 @@
       name="customerRetrievalRate"
       required
       min="1"
+      [disabled]="isConfigDisabled()"
       title="Customer Retrieval Rate must be greater than 0"
       #customerRetrievalRate="ngModel"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
     />
     <p class="text-gray-500 text-xs mt-1">
       Number of tickets each customer purchases per transaction
@@ -89,9 +92,10 @@
       required
       min="1"
       [max]="configuration.totalSystemTickets"
+      [disabled]="isConfigDisabled()"
       title="Maximum ticket capacity must be greater than 0 and cannot exceed total system tickets"
       #maxTicketCapacity="ngModel"
-      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
     />
     <p class="text-gray-500 text-xs mt-1">
       Maximum number of tickets that can be in the pool at once (cannot exceed total system tickets)
@@ -112,7 +116,7 @@
   <!-- Submit Button -->
   <button
     type="submit"
-    [disabled]="!configForm.form.valid"
+    [disabled]="!configForm.form.valid || isConfigDisabled()"
     class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
   >
     Save Configuration
