@@ -12,8 +12,7 @@ import org.apache.logging.log4j.Logger;
 public class Customer extends User implements Runnable {
 
     private static final Logger logger = LogManager.getLogger(Customer.class);
-
-    private String customerName;
+    
     private int ticketsToPurchase;
     private TicketPool ticketPool;
     private volatile boolean running;
@@ -45,18 +44,18 @@ public class Customer extends User implements Runnable {
                 // purchase tickets
                 boolean success = ticketPool.removeTickets(ticketsToPurchase);
                 if (success) {
-                    logger.info("{} successfully purchased {} tickets.", customerName, ticketsToPurchase);
+                    logger.info("{} successfully purchased {} tickets.", getName(), ticketsToPurchase);
 
                     // Send WebSocket
-                    TicketUpdate update = new TicketUpdate("REMOVE", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getPoolTicketAmount());
+                    TicketUpdate update = new TicketUpdate("REMOVE", "CUSTOMER", getName(), ticketsToPurchase, ticketPool.getPoolTicketAmount());
                     ticketUpdateService.sendTicketUpdate(update);
-                    TransactionLog log = new TransactionLog("REMOVE", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getPoolTicketAmount());
+                    TransactionLog log = new TransactionLog("REMOVE", "CUSTOMER", getName(), ticketsToPurchase, ticketPool.getPoolTicketAmount());
                     transactionLogService.sendTransactionLog(log);
                 } else {
-                    logger.warn("{} failed to purchase {} tickets. Not enough tickets available.", customerName, ticketsToPurchase);
+                    logger.warn("{} failed to purchase {} tickets. Not enough tickets available.", getName(), ticketsToPurchase);
 
                     // Send WebSocket
-                    TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "CUSTOMER", customerName, ticketsToPurchase, ticketPool.getPoolTicketAmount());
+                    TicketUpdate update = new TicketUpdate("REMOVE_FAILED", "CUSTOMER", getName(), ticketsToPurchase, ticketPool.getPoolTicketAmount());
                     ticketUpdateService.sendTicketUpdate(update);
                 }
 
@@ -64,13 +63,13 @@ public class Customer extends User implements Runnable {
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                logger.error("{} was interrupted.", customerName, e);
+                logger.error("{} was interrupted.", getName(), e);
                 break;
             } catch (Exception e) {
-                logger.error("Unexpected error in Customer {}: {}", customerName, e.getMessage(), e);
+                logger.error("Unexpected error in Customer {}: {}", getName(), e.getMessage(), e);
             }
         }
-        logger.info("{} has stopped.", customerName);
+        logger.info("{} has stopped.", getName());
     }
 
     public void pause() {

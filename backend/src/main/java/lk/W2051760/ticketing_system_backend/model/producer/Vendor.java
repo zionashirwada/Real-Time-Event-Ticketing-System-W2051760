@@ -12,8 +12,7 @@ import org.apache.logging.log4j.Logger;
 public class Vendor extends User implements Runnable {
 
     private static final Logger logger = LogManager.getLogger(Vendor.class);
-
-    private String vendorName;
+    
     private int ticketsToRelease;
     private TicketPool ticketPool;
     private volatile boolean running;
@@ -45,19 +44,19 @@ public class Vendor extends User implements Runnable {
                 // add tickets to the pool
                 int addedTickets = ticketPool.addTickets(ticketsToRelease);
                 if (addedTickets > 0) {
-                    logger.info("{} successfully released {} tickets.", vendorName, addedTickets);
+                    logger.info("{} successfully released {} tickets.", getName(), addedTickets);
 
                     //  WebSocket - send
-                    TicketUpdate update = new TicketUpdate("ADD", "VENDOR", vendorName, addedTickets,
+                    TicketUpdate update = new TicketUpdate("ADD", "VENDOR", getName(), addedTickets,
                             ticketPool.getPoolTicketAmount());
                     ticketUpdateService.sendTicketUpdate(update);
-                    TransactionLog log = new TransactionLog("ADD", "VENDOR", vendorName, addedTickets, ticketPool.getPoolTicketAmount());
+                    TransactionLog log = new TransactionLog("ADD", "VENDOR", getName(), addedTickets, ticketPool.getPoolTicketAmount());
                     transactionLogService.sendTransactionLog(log);
                 } else {
-                    logger.warn("{} failed to release {} tickets. Pool is full.", vendorName, ticketsToRelease);
+                    logger.warn("{} failed to release {} tickets. Pool is full.", getName(), ticketsToRelease);
 
                     // Send WebSocket
-                    TicketUpdate update = new TicketUpdate("ADD_FAILED", "VENDOR", vendorName,
+                    TicketUpdate update = new TicketUpdate("ADD_FAILED", "VENDOR", getName(),
                             ticketsToRelease, ticketPool.getPoolTicketAmount());
                     ticketUpdateService.sendTicketUpdate(update);
                 }
@@ -66,13 +65,13 @@ public class Vendor extends User implements Runnable {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                logger.error("{} was interrupted.", vendorName, e);
+                logger.error("{} was interrupted.", getName(), e);
                 break;
             } catch (Exception e) {
-                logger.error("Unexpected error in Vendor {}: {}", vendorName, e.getMessage(), e);
+                logger.error("Unexpected error in Vendor {}: {}", getName(), e.getMessage(), e);
             }
         }
-        logger.info("{} has stopped.", vendorName);
+        logger.info("{} has stopped.", getName());
     }
 
     public void pause() {
