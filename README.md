@@ -1,6 +1,3 @@
-# Real-Time-Event Ticketing System-W2051760
- Real-Time Event Ticketing System with Producer-Consumer Pattern
-
 # `REAL-TIME-EVENT-TICKETING-SYSTEM-W2051760`
 
 
@@ -22,8 +19,7 @@
 
 <details><summary>Table of Contents</summary>
 
-- [Real-Time-Event Ticketing System-W2051760](#real-time-event-ticketing-system-w2051760)
-- [`REAL-TIME-EVENT-TICKETING-SYSTEM-W2051760`](#real-time-event-ticketing-system-w2051760-1)
+- [`REAL-TIME-EVENT-TICKETING-SYSTEM-W2051760`](#real-time-event-ticketing-system-w2051760)
   - [📍 Overview](#-overview)
   - [👾 Features](#-features)
   - [📂 Repository Structure](#-repository-structure)
@@ -37,14 +33,16 @@
     - [🤖 Usage](#-usage)
       - [Backend Usage](#backend-usage)
       - [Frontend Usage](#frontend-usage)
-    - [🧪 Tests](#-tests)
-      - [Run frontend unit tests:](#run-frontend-unit-tests)
-      - [Run backend tests:](#run-backend-tests)
-  - [📌 Project Roadmap](#-project-roadmap)
+  - [📌 System Architecture](#-system-architecture)
+    - [Backend Components](#backend-components)
+    - [Frontend Components](#frontend-components)
+  - [🧑‍💻 System Workflow](#-system-workflow)
+  - [💻 OOP Concepts Utilized](#-oop-concepts-utilized)
   - [🤝 API Documentation](#-api-documentation)
       - [Configuration](#configuration)
       - [System State](#system-state)
       - [Customer Manager](#customer-manager)
+      - [VIP Customer Manager](#vip-customer-manager)
       - [Vendor Manager](#vendor-manager)
       - [Ticket Pool](#ticket-pool)
   - [🎗 License](#-license)
@@ -55,7 +53,7 @@
 
 ## 📍 Overview
 
-This Real-Time Event Ticketing System is designed to manage concurrent ticket releases by vendors and purchases by customers, leveraging multi-threading and the Producer-Consumer pattern. The system maintains data integrity in a dynamic, real-time environment and provides essential reporting features, making it ideal for handling high-demand events with concurrent ticketing needs. This system demonstrates the power of handling concurrent requests using multithreading.
+This Real-Time Event Ticketing System manages concurrent ticket releases and purchases by leveraging the Producer-Consumer pattern with a multithreaded architecture. The system is composed of a Spring Boot backend and an Angular frontend, connected via REST APIs and WebSocket for real-time communication.
 
 ---
 
@@ -70,9 +68,10 @@ This Real-Time Event Ticketing System is designed to manage concurrent ticket re
 - API Usage: Using API to connect frontend and backend.
 
 ---
-
+<details closed>
+<summary>
 ## 📂 Repository Structure
-
+</summary>
 ```sh
 └── Real-Time-Event-Ticketing-System-W2051760/
     ├── LICENSE
@@ -142,6 +141,8 @@ This Real-Time Event Ticketing System is designed to manage concurrent ticket re
         ├── tsconfig.app.json
         ├── tsconfig.json
         └── tsconfig.spec.json
+
+</details>
 ```
 
 ---
@@ -316,31 +317,73 @@ To run the project, execute the following command:
 ```sh
 ❯ ng serve
 ```
-
-### 🧪 Tests
-
-Execute the test suite using the following command:
-
-#### Run frontend unit tests:
-```sh
-❯ ng test
-```
-#### Run backend tests:
-```sh
-❯ ./mvnw test
-```
+This will start the development server at `http://localhost:4200`.
 
 ---
 
-## 📌 Project Roadmap
+## 📌 System Architecture
 
-- [X] **` Project Setup and Planning`**: <strike>Plan project structure, set up folders and files, install prerequisites, review requirements, choose tech stack, initialize Git repository, and draft architecture diagrams</strike>
-- [ ] **`Configuration Module and Core Classes`**: Build the configuration module, implement TicketPool with synchronization, create Vendor and Customer classes with threading, and test multi-threading with sample threads.
-- [ ] **`Multi-threading and Synchronization`**: Enhance thread safety, add vendor ticket release and customer purchase logic, set up logging, and add error handling.
-- [ ] **`User Interface (UI) Development`**: Design and implement UI layout and controls, connect UI to backend, and test real-time updates.
-- [ ] **`Ticket Management and Logging Enhancements`**: Enhance TicketPool for edge cases, improve logging with timestamps, strengthen error handling, start documentation, and test concurrency.
-- [ ] **`Dynamic Vendor/Customer Management`**: Implement functionality to start or stop vendor and customer threads dynamically, and ensure UI support and backend synchronization
--  [ ] **`Real-Time Analytics`**: Develop a real-time analytics dashboard to display ticket sales, integrate with data sources, and test live data updates.
+### Backend Components
+1. System States
+ - NOT_CONFIGURED: Initial state; awaiting configuration.
+ - STOPPED: Configuration loaded; system idle.
+ - RUNNING: Actively processing tickets.
+ - PAUSED: Operations temporarily suspended.
+
+2. Key Components
+- TicketPool:
+   - Shared resource holding tickets.
+   - Manages ticket addition/removal with max capacity constraints.
+   - Thread-safe, preventing race conditions in ticket operations.
+- User (Abstract Class):
+   - Base class for user entities, including common fields `id` and `name`.
+   - Inherited by `Customer`, `Vendor`, and `VIPCustomer` classes.
+- Vendors (Producer):
+   - Separate threads releasing tickets at intervals.
+   - Managed by `VendorManager` for lifecycle control.
+   - Can be paused, resumed, or stopped.
+- Customers (Consumer):
+   - Threads attempting to purchase tickets.
+   - Managed by `CustomerManager`.
+- VIPCustomer (Customer Subclass):
+   - Specialized consumer with unique ticket-purchasing behavior.
+   - Manages `loyaltyPoints` and other VIP-specific properties.
+### Frontend Components
+1. SystemControlComponent:
+- Displays system status.
+- Provides controls to start, pause, stop, and reset the system.
+- Real-time updates via WebSocket.
+2. TicketPoolStatusComponent:
+- Displays ticket pool statistics, including capacity and total tickets.
+- Monitors capacity, triggering auto-pause if limits are reached.
+3. LineChartComponent:
+- Visualizes ticket operations over time.
+- Tracks cumulative tickets released/purchased, updating in real time.
+---
+---
+## 🧑‍💻 System Workflow
+1. Initialization
+Upon starting the application, the backend loads configuration details and initializes system components as per `configuration.json`.
+
+2. System Operations
+- Start System:
+
+ - Triggered by UI via `/api/system/start`.
+ - Initiates Vendor and Customer threads to begin ticket processing.
+- Ticket Release (Vendor):
+
+ - Periodic release of tickets into `TicketPool`.
+ - Validates against pool capacity.
+- Ticket Purchase (Customer):
+
+ - Customers attempt to purchase tickets from `TicketPool`.
+ - System tracks successful and failed purchases with real-time updates.
+3. Real-Time Updates
+- WebSocket broadcasts for ticket and system status updates.
+- Displays current pool size, ticket counts, and transaction logs.
+---
+---
+## 💻 OOP Concepts Utilized
 ---
 ---
 
@@ -425,6 +468,30 @@ For additional details on using each endpoint, refer to the full API documentati
 5. **Resume Customer**
    - **Endpoint**: `POST /api/customers/resume`
    - **Description**: Resumes actions for a specific customer.
+
+---
+---
+#### VIP Customer Manager
+
+1. **Retrieve VIP Customer Count**
+   - **Endpoint**: `GET /api/vip-customers/count`
+   - **Description**: Gets the count of active VIP customers.
+
+2. **Add VIP Customer**
+   - **Endpoint**: `POST /api/vip-customers/add`
+   - **Description**: Adds a new VIP customer to the system.
+
+3. **Remove VIP Customer**
+   - **Endpoint**: `POST /api/vip-customers/remove`
+   - **Description**: Removes a VIP customer from the system.
+
+4. **Pause VIP Customer**
+   - **Endpoint**: `POST /api/vip-customers/pause`
+   - **Description**: Pauses actions for a specific VIP customer.
+
+5. **Resume VIP Customer**
+   - **Endpoint**: `POST /api/vip-customers/resume`
+   - **Description**: Resumes actions for a specific VIP customer.
 
 ---
 
