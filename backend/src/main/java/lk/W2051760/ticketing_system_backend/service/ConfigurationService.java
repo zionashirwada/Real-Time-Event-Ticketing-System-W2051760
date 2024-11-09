@@ -21,7 +21,8 @@ public class ConfigurationService {
             File file = Paths.get(CONFIG_PATH).toFile();
 
             if (!file.exists()) {
-                throw new IOException("Configuration file not found at: " + CONFIG_PATH);
+                logger.warn("Configuration file not found at: {}", CONFIG_PATH);
+                return null;
             }
 
             Configuration config = mapper.readValue(file, Configuration.class);
@@ -29,17 +30,19 @@ public class ConfigurationService {
             // Validate configuration
             if (config.getTotalSystemTickets() <= 0 || config.getMaxTicketCapacity() <= 0
                     || config.getTicketReleaseRate() <= 0 || config.getCustomerRetrievalRate() <= 0) {
-                throw new IllegalArgumentException("All configuration values must be positive");
+                logger.warn("Invalid configuration values: all values must be positive");
+                return null;
             }
 
             if (config.getMaxTicketCapacity() > config.getTotalSystemTickets()) {
-                throw new IllegalArgumentException("Max capacity cannot be greater than total system tickets");
+                logger.warn("Invalid configuration: Max capacity cannot be greater than total system tickets");
+                return null;
             }
 
             return config;
         } catch (Exception e) {
-            logger.error("Error loading configuration: {}", e.getMessage(), e);
-            throw e;
+            logger.warn("Error loading configuration: {}", e.getMessage(), e);
+            return null;
         }
     }
 

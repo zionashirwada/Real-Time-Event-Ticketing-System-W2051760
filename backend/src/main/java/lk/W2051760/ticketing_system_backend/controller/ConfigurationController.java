@@ -27,13 +27,15 @@ public class ConfigurationController {
     }
 
     @GetMapping("/configuration")
-    public ResponseEntity<Configuration> getConfiguration() {
+    public ResponseEntity<Object> getConfiguration() {
         try {
             Configuration config = configurationService.loadConfiguration();
+            if (config == null) {
+                return ResponseEntity.status(404).body("System not configured");
+            }
             return ResponseEntity.ok(config);
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body("Error loading configuration");
         }
     }
 }

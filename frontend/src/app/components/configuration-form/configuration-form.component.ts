@@ -21,7 +21,8 @@ export class ConfigurationFormComponent implements OnInit {
     customerRetrievalRate: 0,
     maxTicketCapacity: 0,
   };
-  systemStatus: string = 'STOPPED'
+  systemStatus: string = 'NOT_CONFIGURED'
+  isNotConfigured: boolean = true
 
   constructor(
     private configService: ConfigurationService,
@@ -46,23 +47,32 @@ export class ConfigurationFormComponent implements OnInit {
   loadConfiguration(): void {
     this.configService.getConfiguration().subscribe({
       next: (config) => {
-        this.configuration = config;
-        console.log('Data Loaded from the Existing Json:', this.configuration);
+        this.configuration = config
+        this.isNotConfigured = false
+        console.log('Data Loaded from the Existing Json:', this.configuration)
       },
       error: (error) => {
-        console.error('Error loading configuration:', error);
+        console.error('Error loading configuration:', error)
+        this.isNotConfigured = true
         this.configuration = {
           totalSystemTickets: 0,
           ticketReleaseRate: 0,
           customerRetrievalRate: 0,
           maxTicketCapacity: 0
-        };
-        this.toast.error(
-          'Failed to load configuration. Please try again later.',
-          'Error'
-        );
+        }
+        if (error.status === 404) {
+          this.toast.warning(
+            'System is not configured. Please configure the system.',
+            'Warning'
+          )
+        } else {
+          this.toast.error(
+            'Failed to load configuration. Please try again later.',
+            'Error'
+          )
+        }
       }
-    });
+    })
   }
 
   onSubmit(): void {

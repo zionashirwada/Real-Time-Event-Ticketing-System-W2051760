@@ -1,5 +1,11 @@
 <form (ngSubmit)="onSubmit()" #configForm="ngForm" class="space-y-4">
 <div class="p-6">
+  <!-- Warning Banner -->
+  <div *ngIf="isNotConfigured" class="mb-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+    <p class="font-medium">System Not Configured</p>
+    <p class="text-sm">Please configure the system parameters below to start.</p>
+  </div>
+
   <h5 class="text-lg font-semibold mb-4">System Configuration</h5>
   <!-- Total Tickets -->
   <div>
