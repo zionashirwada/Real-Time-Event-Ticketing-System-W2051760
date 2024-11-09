@@ -14,6 +14,7 @@ public class Vendor extends User implements Runnable {
     private static final Logger logger = LogManager.getLogger(Vendor.class);
     
     private int ticketsToRelease;
+    private long ticketReleaseRate;
     private TicketPool ticketPool;
     private volatile boolean running;
     private final Object pauseLock = new Object();
@@ -22,10 +23,11 @@ public class Vendor extends User implements Runnable {
     private final TransactionLogService transactionLogService;
 
 
-    public Vendor(int id, String name, int ticketsToRelease, TicketPool ticketPool,
+    public Vendor(int id, String name, int ticketsToRelease,long ticketReleaseRate, TicketPool ticketPool,
                   TicketUpdateService ticketUpdateService, TransactionLogService transactionLogService) {
         super(id, name);
         this.ticketsToRelease = ticketsToRelease;
+        this.ticketReleaseRate = ticketReleaseRate;
         this.ticketPool = ticketPool;
         this.ticketUpdateService = ticketUpdateService;
         this.transactionLogService = transactionLogService;
@@ -62,7 +64,7 @@ public class Vendor extends User implements Runnable {
                 }
 
                 //pause time
-                Thread.sleep(2000);
+                Thread.sleep(ticketReleaseRate);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 logger.error("{} was interrupted.", getName(), e);

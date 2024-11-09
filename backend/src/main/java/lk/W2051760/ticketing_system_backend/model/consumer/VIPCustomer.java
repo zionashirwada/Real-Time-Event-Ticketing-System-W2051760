@@ -7,8 +7,8 @@ import lk.W2051760.ticketing_system_backend.service.TransactionLogService;
 public class VIPCustomer extends Customer {
     private int loyaltyPoints;
 
-    public VIPCustomer(int id, String name, int ticketsToPurchase, TicketPool ticketPool, TicketUpdateService ticketUpdateService, TransactionLogService transactionLogService) {
-        super(id, name, ticketsToPurchase, ticketPool, ticketUpdateService, transactionLogService);
+    public VIPCustomer(int id, String name, int ticketsToPurchase,long customerRetrievalRate, TicketPool ticketPool, TicketUpdateService ticketUpdateService, TransactionLogService transactionLogService) {
+        super(id, name, ticketsToPurchase,customerRetrievalRate, ticketPool, ticketUpdateService, transactionLogService);
     }
 
 }

@@ -23,6 +23,8 @@ public class CustomerManager {
 
     private int numberOfCustomers;
     private int ticketsToPurchase;
+
+    private long customerRetrievalRate;
     private final CountUpdateService countUpdateService;
     private final TransactionLogService transactionLogService;
 
@@ -50,7 +52,7 @@ public class CustomerManager {
 
         // Create new Customer instances and threads
         for (int i = 1; i <= numberOfCustomers; i++) {
-            Customer customer = new Customer(i,"Customer " + i, ticketsToPurchase, ticketPool, ticketUpdateService,transactionLogService);
+            Customer customer = new Customer(i,"Customer " + i, ticketsToPurchase,customerRetrievalRate, ticketPool, ticketUpdateService,transactionLogService);
             Thread thread = new Thread(customer, "CustomerThread-" + i);
             thread.setDaemon(true);
             customers.add(customer);
@@ -113,7 +115,7 @@ public class CustomerManager {
     private void addCustomerThread() {
         String customerName = "Customer " + (customers.size() + 1);
         int customerId = customers.size() + 1;
-        Customer customer = new Customer(customerId,customerName, ticketsToPurchase, ticketPool, ticketUpdateService,transactionLogService);
+        Customer customer = new Customer(customerId,customerName, ticketsToPurchase,customerRetrievalRate, ticketPool, ticketUpdateService,transactionLogService);
         Thread thread = new Thread(customer, customerName + "-Thread");
         thread.setDaemon(true);
         customers.add(customer);
@@ -125,7 +127,9 @@ public class CustomerManager {
     protected int getTicketsToPurchase() {
         return ticketsToPurchase;
     }
-
+    protected long getcustomerRetrievalRate(){
+        return customerRetrievalRate;
+    }
     protected TicketPool getTicketPool() {
         return ticketPool;
     }
