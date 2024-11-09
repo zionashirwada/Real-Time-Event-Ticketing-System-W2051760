@@ -28,4 +28,13 @@ export class ManagementService {
   removeCustomer(): Observable<any> {
     return this.http.post(`${this.apiUrl}/customers/remove`, {}, { responseType: 'text' });
   }
+
+  // VIP Customer management methods
+  addVIPCustomer(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/vip-customers/add`, {}, { responseType: 'text' })
+  }
+
+  removeVIPCustomer(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/vip-customers/remove`, {}, { responseType: 'text' })
+  }
 }

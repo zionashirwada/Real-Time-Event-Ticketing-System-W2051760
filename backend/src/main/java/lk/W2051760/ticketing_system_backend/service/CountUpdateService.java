@@ -17,6 +17,7 @@ public class CountUpdateService {
     // Store the current counts
     private int currentVendorCount = 0;
     private int currentCustomerCount =0;
+    private int currentVIPCustomerCount = 0;
 
     public CountUpdateService(SimpMessagingTemplate messagingTemplate, TicketPool ticketPool) {
         this.messagingTemplate = messagingTemplate;
@@ -33,15 +34,22 @@ public class CountUpdateService {
         sendCountUpdate();
     }
 
+    public synchronized void updateVIPCustomerCount(int vipCustomerCount) {
+        this.currentVIPCustomerCount = vipCustomerCount;
+        sendCountUpdate();
+    }
+
     private void sendCountUpdate() {
         CountUpdate countUpdate = new CountUpdate(
             currentVendorCount,
             currentCustomerCount,
+            currentVIPCustomerCount,
             ticketPool.getPoolTicketAmount(),
             ticketPool.getTotalReleasedTickets()
         );
         messagingTemplate.convertAndSend("/topic/count-updates", countUpdate);
-        logger.info("Broadcasted count update: Vendors={}, Customers={}, PoolTickets={}, TotalReleased={}",
-            currentVendorCount, currentCustomerCount, countUpdate.getPoolTicketAmount(), countUpdate.getTotalReleasedTickets());
+        logger.info("Broadcasted count update: Vendors={}, Customers={}, VIPCustomers={}, PoolTickets={}, TotalReleased={}",
+            currentVendorCount, currentCustomerCount, currentVIPCustomerCount, 
+            countUpdate.getPoolTicketAmount(), countUpdate.getTotalReleasedTickets());
     }
 }

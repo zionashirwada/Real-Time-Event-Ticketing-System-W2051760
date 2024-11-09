@@ -121,4 +121,24 @@ public class CustomerManager {
         thread.start();
         logger.info("Started {}", thread.getName());
     }
+
+    protected int getTicketsToPurchase() {
+        return ticketsToPurchase;
+    }
+
+    protected TicketPool getTicketPool() {
+        return ticketPool;
+    }
+
+    protected TicketUpdateService getTicketUpdateService() {
+        return ticketUpdateService;
+    }
+
+    protected TransactionLogService getTransactionLogService() {
+        return transactionLogService;
+    }
+
+    protected CountUpdateService getCountUpdateService() {
+        return countUpdateService;
+    }
 }

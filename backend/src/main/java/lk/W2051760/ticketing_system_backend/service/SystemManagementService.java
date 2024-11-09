@@ -42,6 +42,8 @@ public class SystemManagementService {
     private final int NUMBER_OF_VENDORS = 1;
     private final int NUMBER_OF_CUSTOMERS = 1;
 
+    private final int NUMBER_OF_VIPCUSTOMERS = 0;
+
     private static final Logger logger = LoggerFactory.getLogger(SystemManagementService.class);
 
     @PostConstruct
