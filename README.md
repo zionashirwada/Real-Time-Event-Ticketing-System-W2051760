@@ -103,7 +103,8 @@ This Real-Time Event Ticketing System is designed to manage concurrent ticket re
     │            │    ├── Configuration.java
     │            │    ├── consumer
     │            │    │    ├── Customer.java
-    │            │    │    └── CustomerManager.java
+    │            │    │    ├── CustomerManager.java
+    │            │    │    └── VIPCustomer.java
     │            │    ├── producer
     │            │    │    ├── Vendor.java
     │            │    │    └── VendorManager.java
@@ -112,7 +113,8 @@ This Real-Time Event Ticketing System is designed to manage concurrent ticket re
     │            │    ├── SystemStateManager.java
     │            │    ├── Ticket.java
     │            │    ├── TicketUpdate.java
-    │            │    └── TransactionLog.java
+    │            │    ├── TransactionLog.java
+    │            │    └── User.java
     │            ├── producer
     │            │    ├── Vendor.java
     │            │    └── VendorManager.java
