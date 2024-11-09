@@ -4,6 +4,8 @@ import lk.W2051760.ticketing_system_backend.model.Configuration;
 import lk.W2051760.ticketing_system_backend.model.SystemState;
 import lk.W2051760.ticketing_system_backend.model.consumer.CustomerManager;
 import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,8 @@ public class SystemManagementService {
 
     private final int NUMBER_OF_VENDORS = 1;
     private final int NUMBER_OF_CUSTOMERS = 1;
+
+    private static final Logger logger = LoggerFactory.getLogger(SystemManagementService.class);
 
     @PostConstruct
     public void initialize() {
@@ -131,5 +135,25 @@ public class SystemManagementService {
 
     private void broadcastState() {
         messagingTemplate.convertAndSend("/topic/system-status", currentState.name());
+    }
+
+    public void reinitializeSystem(Configuration config) {
+        // Stop any running processes first
+        if (currentState != SystemState.STOPPED && currentState != SystemState.NOT_CONFIGURED) {
+            stopAndResetSystem();
+        }
+
+        // Initialize system with new configuration
+        ticketPool.initialize(config.getMaxTicketCapacity(),config.getTotalSystemTickets());
+        vendorManager.initialize(1,config.getTicketReleaseRate());
+        customerManager.initialize(1,config.getCustomerRetrievalRate());
+        
+        // Update system state
+        currentState = SystemState.STOPPED;
+        
+        // Notify clients about the state change
+        messagingTemplate.convertAndSend("/topic/system-status", currentState.toString());
+        
+        logger.info("System reinitialized with new configuration");
     }
 }

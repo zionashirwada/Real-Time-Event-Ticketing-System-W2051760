@@ -76,24 +76,37 @@ export class ConfigurationFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.configService.saveConfiguration(this.configuration).subscribe(
-      (response) => {
-        console.log(response);
-        console.log('Data entered to the Json:', this.configuration,response);
+    this.configService.saveConfiguration(this.configuration).subscribe({
+      next: (response) => {
+        console.log('Configuration saved:', this.configuration)
         this.toast.success(
           'Configuration has been saved successfully',
           'Success'
-        );
-        this.loadConfiguration();
+        )
+
+        // Reload configuration and reinitialize system
+        this.configService.reloadSystem().subscribe({
+          next: () => {
+            this.loadConfiguration()
+            this.isNotConfigured = false
+          },
+          error: (error) => {
+            console.error('Error reinitializing system:', error)
+            this.toast.error(
+              'Failed to reinitialize system. Please try again.',
+              'Error'
+            )
+          }
+        })
       },
-      (error) => {
-        console.error('Error saving configuration:', error);
-        this.toast.success(
-          'Error saving configuration'+ error.message,
+      error: (error) => {
+        console.error('Error saving configuration:', error)
+        this.toast.error(
+          'Error saving configuration: ' + error.message,
           'Error'
-        );
+        )
       }
-    );
+    })
   }
 
   isConfigDisabled(): boolean {

@@ -19,4 +19,8 @@ export class ConfigurationService {
   getConfiguration(): Observable<Configuration> {
     return this.http.get<Configuration>(this.apiUrl);
   }
+
+  reloadSystem(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reload`, {}, { responseType: 'text' });
+  }
 }
