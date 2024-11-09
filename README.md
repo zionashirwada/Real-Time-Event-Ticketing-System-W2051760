@@ -22,7 +22,6 @@
 - [`REAL-TIME-EVENT-TICKETING-SYSTEM-W2051760`](#real-time-event-ticketing-system-w2051760)
   - [📍 Overview](#-overview)
   - [👾 Features](#-features)
-  - [📂 Repository Structure](#-repository-structure)
   - [🧩 Modules](#-modules)
   - [🚀 Getting Started](#-getting-started)
     - [🔖 Prerequisites](#-prerequisites)
@@ -45,6 +44,7 @@
       - [VIP Customer Manager](#vip-customer-manager)
       - [Vendor Manager](#vendor-manager)
       - [Ticket Pool](#ticket-pool)
+  - [📂 Repository Structure](#-repository-structure)
   - [🎗 License](#-license)
   - [🙌 Acknowledgments](#-acknowledgments)
 
@@ -66,84 +66,6 @@ This Real-Time Event Ticketing System manages concurrent ticket releases and pur
 - Basic Logging: Tracks and records system activities for audit and troubleshooting.
 - Websocket Usage: Using websockets for real-time updates.
 - API Usage: Using API to connect frontend and backend.
-
----
-<details closed>
-<summary>
-## 📂 Repository Structure
-</summary>
-```sh
-└── Real-Time-Event-Ticketing-System-W2051760/
-    ├── LICENSE
-    ├── README.md
-    ├── backend
-    │   ├── .gitattributes
-    │   ├── .gitignore
-    │   ├── .mvn
-    │   ├── configuration.json
-    │   ├── desktop.ini
-    │   ├── logs
-    │   │    └── application.log
-    │   ├── mvnw
-    │   ├── mvnw.cmd
-    │   ├── pom.xml
-    │   └── src
-    │        └── main
-    │            ├── config
-    │            │    ├── CorsConfig.java
-    │            │    └── WebsocketConfig.java
-    │            ├── controller
-    │            │    ├── ConfigurationController.java
-    │            │    ├── CustomerController.java
-    │            │    ├── SystemController.java
-    │            │    ├── TicketPoolController.java
-    │            │    └── VendorController.java
-    │            ├── model
-    │            │    ├── Configuration.java
-    │            │    ├── consumer
-    │            │    │    ├── Customer.java
-    │            │    │    ├── CustomerManager.java
-    │            │    │    └── VIPCustomer.java
-    │            │    ├── producer
-    │            │    │    ├── Vendor.java
-    │            │    │    └── VendorManager.java
-    │            │    ├── CountUpdate.java
-    │            │    ├── SystemState.java
-    │            │    ├── SystemStateManager.java
-    │            │    ├── Ticket.java
-    │            │    ├── TicketUpdate.java
-    │            │    ├── TransactionLog.java
-    │            │    └── User.java
-    │            ├── producer
-    │            │    ├── Vendor.java
-    │            │    └── VendorManager.java
-    │            ├── service
-    │            │    ├── ConfigurationService.java
-    │            │    ├── CountUpdateService.java
-    │            │    ├── SystemManagementService.java
-    │            │    ├── TicketPool.java
-    │            │    ├── TicketUpdateService.java
-    │            │    └── TransactionLogService.java
-    │            └──TicketingSystemBackendApplication.java
-    └── frontend
-        ├── .angular
-        ├── .editorconfig
-        ├── .gitignore
-        ├── README.md
-        ├── angular.json
-        ├── desktop.ini
-        ├── package-lock.json
-        ├── package.json
-        ├── postcss.config.js
-        ├── public
-        ├── src
-        ├── tailwind.config.js
-        ├── tsconfig.app.json
-        ├── tsconfig.json
-        └── tsconfig.spec.json
-
-</details>
-```
 
 ---
 
@@ -350,16 +272,15 @@ This will start the development server at `http://localhost:4200`.
    - Manages `loyaltyPoints` and other VIP-specific properties.
 ### Frontend Components
 1. SystemControlComponent:
-- Displays system status.
-- Provides controls to start, pause, stop, and reset the system.
-- Real-time updates via WebSocket.
+	- Displays system status.
+	- Provides controls to start, pause, stop, and reset the system.
+	- Real-time updates via WebSocket.
 2. TicketPoolStatusComponent:
-- Displays ticket pool statistics, including capacity and total tickets.
-- Monitors capacity, triggering auto-pause if limits are reached.
+	- Displays ticket pool statistics, including capacity and total tickets.
+	- Monitors capacity, triggering auto-pause if limits are reached.
 3. LineChartComponent:
-- Visualizes ticket operations over time.
-- Tracks cumulative tickets released/purchased, updating in real time.
----
+	- Visualizes ticket operations over time.
+	- Tracks cumulative tickets released/purchased, updating in real time.
 ---
 ## 🧑‍💻 System Workflow
 1. Initialization
@@ -382,9 +303,35 @@ Upon starting the application, the backend loads configuration details and initi
 - WebSocket broadcasts for ticket and system status updates.
 - Displays current pool size, ticket counts, and transaction logs.
 ---
----
+
 ## 💻 OOP Concepts Utilized
----
+
+| Concept                              | Status     | Notes                                                                 |
+|--------------------------------------|------------|-----------------------------------------------------------------------|
+| **Class Declaration**                | ✅         | Implemented `User`, `Customer`, `Vendor`, and `VIPCustomer` classes  |
+| **Object as Instance of Class**      | ✅         | Instances created, with endpoints for `VIPCustomer` management       |
+| **Access Modifiers**                 | ✅         | Used `public`, `private`, `protected`                                |
+| **Passing by Reference / Value**     | ✅         | Objects passed by reference, primitives by value                     |
+| **Static Methods and Variables**     | ✅         | Used `static` variables like `logger`                                |
+| **Static / Non-Static Context**      | ✅         | Used both contexts across different classes                          |
+| **Instance, Class, Local Variables** | ✅         | `id`, `name` as instance variables; static variables for logging     |
+| **Java Predefined Classes**          | ✅         | Used classes like `Thread`, `BlockingQueue`, `Logger`                |
+| **String Class**                     | ✅         | Used for fields like `id` and `name` in `User`                       |
+| **Packages**                         | ✅         | Organized classes into packages                                      |
+| **Inheritance**                      | ✅         | `Customer` and `Vendor` inherit from `User`                          |
+| **Creating Subclasses**              | ✅         | Created `VIPCustomer` as subclass of `Customer`                      |
+| **Override Methods**       	       | ✅         |  Implemented `run()` method from `Runnable` in `Customer`            |
+| **Substitution Principle**           | ✅         | Implemented with `User` parent type                                  |
+| **Dynamic Binding**                  | ✅         | `run()` method dynamically bound at runtime                          |
+| **Polymorphism**                     | ✅         | `User` type allows handling of `Customer`, `Vendor`, etc.            |
+| **Object Class in Java**             | ✅         | Used `toString()` method override in `TicketUpdate`,`Ticket`         |
+| **Final Classes and Methods**        | ✅         | Used `final` for `SystemStateManager` class.                         |
+| **Abstract Classes**                 | ✅         | `User` is an abstract class                                          |
+| **Interfaces**                       | ✅         | Implemented `Runnable` interface in `Customer`                       |
+| **Collections and Data Structure**   | ✅         | Used `List`, `BlockingQueue`, etc.                                   |
+| **List, Queue, Map**                 | ✅         | `List` and `BlockingQueue` used                                      |
+
+
 ---
 
 ## 🤝 API Documentation
@@ -470,7 +417,7 @@ For additional details on using each endpoint, refer to the full API documentati
    - **Description**: Resumes actions for a specific customer.
 
 ---
----
+
 #### VIP Customer Manager
 
 1. **Retrieve VIP Customer Count**
@@ -533,6 +480,81 @@ For additional details on using each endpoint, refer to the full API documentati
      ```
 
 
+
+---
+
+## 📂 Repository Structure
+	
+```sh
+└── Real-Time-Event-Ticketing-System-W2051760/
+    ├── LICENSE
+    ├── README.md
+    ├── backend
+    │   ├── .gitattributes
+    │   ├── .gitignore
+    │   ├── .mvn
+    │   ├── configuration.json
+    │   ├── desktop.ini
+    │   ├── logs
+    │   │    └── application.log
+    │   ├── mvnw
+    │   ├── mvnw.cmd
+    │   ├── pom.xml
+    │   └── src
+    │        └── main
+    │            ├── config
+    │            │    ├── CorsConfig.java
+    │            │    └── WebsocketConfig.java
+    │            ├── controller
+    │            │    ├── ConfigurationController.java
+    │            │    ├── CustomerController.java
+    │            │    ├── SystemController.java
+    │            │    ├── TicketPoolController.java
+    │            │    └── VendorController.java
+    │            ├── model
+    │            │    ├── Configuration.java
+    │            │    ├── consumer
+    │            │    │    ├── Customer.java
+    │            │    │    ├── CustomerManager.java
+    │            │    │    └── VIPCustomer.java
+    │            │    ├── producer
+    │            │    │    ├── Vendor.java
+    │            │    │    └── VendorManager.java
+    │            │    ├── CountUpdate.java
+    │            │    ├── SystemState.java
+    │            │    ├── SystemStateManager.java
+    │            │    ├── Ticket.java
+    │            │    ├── TicketUpdate.java
+    │            │    ├── TransactionLog.java
+    │            │    └── User.java
+    │            ├── producer
+    │            │    ├── Vendor.java
+    │            │    └── VendorManager.java
+    │            ├── service
+    │            │    ├── ConfigurationService.java
+    │            │    ├── CountUpdateService.java
+    │            │    ├── SystemManagementService.java
+    │            │    ├── TicketPool.java
+    │            │    ├── TicketUpdateService.java
+    │            │    └── TransactionLogService.java
+    │            └──TicketingSystemBackendApplication.java
+    └── frontend
+        ├── .angular
+        ├── .editorconfig
+        ├── .gitignore
+        ├── README.md
+        ├── angular.json
+        ├── desktop.ini
+        ├── package-lock.json
+        ├── package.json
+        ├── postcss.config.js
+        ├── public
+        ├── src
+        ├── tailwind.config.js
+        ├── tsconfig.app.json
+        ├── tsconfig.json
+        └── tsconfig.spec.json
+```
 
 ---
 
