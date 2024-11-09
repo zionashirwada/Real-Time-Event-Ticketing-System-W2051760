@@ -144,15 +144,16 @@ public class SystemManagementService {
         }
 
         // Initialize system with new configuration
-        ticketPool.initialize(config.getMaxTicketCapacity(),config.getTotalSystemTickets());
-        vendorManager.initialize(1,config.getTicketReleaseRate());
-        customerManager.initialize(1,config.getCustomerRetrievalRate());
+        ticketPool.initialize(config.getMaxTicketCapacity(), config.getTotalSystemTickets());
+        vendorManager.initialize(1, config.getTicketReleaseRate());
+        customerManager.initialize(1, config.getCustomerRetrievalRate());
         
         // Update system state
         currentState = SystemState.STOPPED;
         
-        // Notify clients about the state change
+        // Notify clients about the state change and new configuration
         messagingTemplate.convertAndSend("/topic/system-status", currentState.toString());
+        messagingTemplate.convertAndSend("/topic/configuration-update", config);
         
         logger.info("System reinitialized with new configuration");
     }

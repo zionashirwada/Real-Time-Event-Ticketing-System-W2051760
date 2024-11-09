@@ -5,6 +5,7 @@ import { TicketUpdate } from '../../models/ticket-update.model';
 import { WebSocketService } from '../../services/web-socket-service.service';
 import { CommonModule } from '@angular/common';
 import { SystemControlService } from '../../services/system-control.service';
+import { Configuration } from '../../models/configuration.model';
 
 @Component({
   selector: 'app-ticket-pool-status',
@@ -21,6 +22,7 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   private subscription?: Subscription;
   private websocketSubscription?: Subscription;
+  private configSubscription?: Subscription;
 
   constructor(private ticketService: TicketService, private webSocketService: WebSocketService,private systemControlService: SystemControlService) {}
 
@@ -57,7 +59,12 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
       }
     );
 
-
+    // Subscribe to configuration updates
+    this.configSubscription = this.webSocketService.getConfigurationUpdates()
+      .subscribe((config: Configuration) => {
+        this.maxTicketCapacity = config.maxTicketCapacity
+        this.totalSystemTickets = config.totalSystemTickets
+      })
   }
 
   // Helper method to update all status values
@@ -76,6 +83,7 @@ export class TicketPoolStatusComponent implements OnInit, OnDestroy {
       this.websocketSubscription.unsubscribe();
     }
     this.webSocketService.disconnect();
+    this.configSubscription?.unsubscribe()
   }
 
   // Method to check ticket capacity

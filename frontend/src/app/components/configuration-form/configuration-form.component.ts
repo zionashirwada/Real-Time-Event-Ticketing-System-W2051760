@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Configuration } from '../../models/configuration.model';
 import { ConfigurationService } from '../../services/configuration.service';
@@ -6,6 +6,7 @@ import { ToastContainerComponent } from '../toast-container/toast-container.comp
 import { ToastService } from '../../services/toast.service';
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from '../../services/web-socket-service.service'
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-configuration-form',
@@ -14,7 +15,7 @@ import { WebSocketService } from '../../services/web-socket-service.service'
   standalone: true,
   imports: [FormsModule, ToastContainerComponent,CommonModule],
 })
-export class ConfigurationFormComponent implements OnInit {
+export class ConfigurationFormComponent implements OnInit, OnDestroy {
   configuration: Configuration = {
     totalSystemTickets: 0,
     ticketReleaseRate: 0,
@@ -23,6 +24,7 @@ export class ConfigurationFormComponent implements OnInit {
   };
   systemStatus: string = 'NOT_CONFIGURED'
   isNotConfigured: boolean = true
+  private configSubscription?: Subscription
 
   constructor(
     private configService: ConfigurationService,
@@ -42,6 +44,17 @@ export class ConfigurationFormComponent implements OnInit {
         console.error('Error getting system status:', error)
       }
     })
+
+    // Subscribe to configuration updates
+    this.configSubscription = this.webSocketService.getConfigurationUpdates()
+      .subscribe((config: Configuration) => {
+        this.configuration = config
+        this.isNotConfigured = false
+      })
+  }
+
+  ngOnDestroy(): void {
+    this.configSubscription?.unsubscribe()
   }
 
   loadConfiguration(): void {
@@ -87,7 +100,7 @@ export class ConfigurationFormComponent implements OnInit {
         // Reload configuration and reinitialize system
         this.configService.reloadSystem().subscribe({
           next: () => {
-            this.loadConfiguration()
+            // No need to call loadConfiguration() as we'll receive the update via WebSocket
             this.isNotConfigured = false
           },
           error: (error) => {

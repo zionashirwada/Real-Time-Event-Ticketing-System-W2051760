@@ -5,6 +5,7 @@ import SockJS from 'sockjs-client';
 import { TicketUpdate } from '../models/ticket-update.model';
 import { CountUpdate } from '../models/count-update.model';
 import { TransactionLog } from '../models/transaction-log.model';
+import { Configuration } from '../models/configuration.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class WebSocketService {
   private systemStatusSubject: Subject<string> = new Subject<string>();
   private countUpdateSubject: Subject<CountUpdate> = new Subject<CountUpdate>();
   private transactionLogSubject: Subject<TransactionLog> = new Subject<TransactionLog>();
-
+  private configurationSubject = new Subject<Configuration>()
 
   constructor() {
     this.connect();
@@ -64,6 +65,12 @@ export class WebSocketService {
           }
         });
 
+        // Add subscription for configuration updates
+        this.stompClient?.subscribe('/topic/configuration-update', (message) => {
+          const config: Configuration = JSON.parse(message.body)
+          this.configurationSubject.next(config)
+        })
+
       },
       onStompError: (frame) => {
         console.error('Broker reported error: ' + frame.headers['message']);
@@ -88,6 +95,12 @@ export class WebSocketService {
   getTransactionLogs(): Observable<TransactionLog> {
     return this.transactionLogSubject.asObservable();
   }
+
+  // Add method to get configuration updates
+  getConfigurationUpdates(): Observable<Configuration> {
+    return this.configurationSubject.asObservable()
+  }
+
   disconnect() {
     if (this.stompClient?.active) {
       this.stompClient.deactivate();
