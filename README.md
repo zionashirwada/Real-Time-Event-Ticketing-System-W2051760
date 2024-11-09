@@ -486,74 +486,150 @@ For additional details on using each endpoint, refer to the full API documentati
 ## 📂 Repository Structure
 	
 ```sh
-└── Real-Time-Event-Ticketing-System-W2051760/
-    ├── LICENSE
+├── .angulardoc.json
+├── .gitignore
+├── LICENSE
+├── README.md
+├── backend
+    ├── .gitattributes
+    ├── .gitignore
+    ├── .mvn
+    │   └── wrapper
+    │   │   └── maven-wrapper.properties
+    ├── config
+    │   └── configuration.json
+    ├── mvnw
+    ├── mvnw.cmd
+    ├── pom.xml
+    └── src
+    │   ├── main
+    │       ├── java
+    │       │   └── lk
+    │       │   │   └── W2051760
+    │       │   │       └── ticketing_system_backend
+    │       │   │           ├── TicketingSystemBackendApplication.java
+    │       │   │           ├── config
+    │       │   │               ├── CorsConfig.java
+    │       │   │               └── WebSocketConfig.java
+    │       │   │           ├── controller
+    │       │   │               ├── ConfigurationController.java
+    │       │   │               ├── CustomerController.java
+    │       │   │               ├── SystemController.java
+    │       │   │               ├── TicketPoolController.java
+    │       │   │               ├── VIPCustomerController.java
+    │       │   │               └── VendorController.java
+    │       │   │           ├── model
+    │       │   │               ├── Configuration.java
+    │       │   │               ├── CountUpdate.java
+    │       │   │               ├── SystemState.java
+    │       │   │               ├── SystemStateManager.java
+    │       │   │               ├── Ticket.java
+    │       │   │               ├── TicketUpdate.java
+    │       │   │               ├── TransactionLog.java
+    │       │   │               ├── User.java
+    │       │   │               ├── consumer
+    │       │   │               │   ├── Customer.java
+    │       │   │               │   ├── CustomerManager.java
+    │       │   │               │   ├── VIPCustomer.java
+    │       │   │               │   └── VIPCustomerManager.java
+    │       │   │               └── producer
+    │       │   │               │   ├── Vendor.java
+    │       │   │               │   └── VendorManager.java
+    │       │   │           └── service
+    │       │   │               ├── ConfigurationService.java
+    │       │   │               ├── CountUpdateService.java
+    │       │   │               ├── SystemManagementService.java
+    │       │   │               ├── TicketPool.java
+    │       │   │               ├── TicketUpdateService.java
+    │       │   │               └── TransactionLogService.java
+    │       └── resources
+    │       │   ├── application.properties
+    │       │   ├── configuration.json
+    │       │   └── log4j2.xml
+    │   └── test
+    │       └── java
+    │           └── lk
+    │               └── W2051760
+    │                   └── ticketing_system_backend
+    │                       └── TicketingSystemBackendApplicationTests.java
+└── frontend
+    ├── .angular
+        └── desktop.ini
+    ├── .editorconfig
+    ├── .gitignore
     ├── README.md
-    ├── backend
-    │   ├── .gitattributes
-    │   ├── .gitignore
-    │   ├── .mvn
-    │   ├── configuration.json
-    │   ├── desktop.ini
-    │   ├── logs
-    │   │    └── application.log
-    │   ├── mvnw
-    │   ├── mvnw.cmd
-    │   ├── pom.xml
-    │   └── src
-    │        └── main
-    │            ├── config
-    │            │    ├── CorsConfig.java
-    │            │    └── WebsocketConfig.java
-    │            ├── controller
-    │            │    ├── ConfigurationController.java
-    │            │    ├── CustomerController.java
-    │            │    ├── SystemController.java
-    │            │    ├── TicketPoolController.java
-    │            │    └── VendorController.java
-    │            ├── model
-    │            │    ├── Configuration.java
-    │            │    ├── consumer
-    │            │    │    ├── Customer.java
-    │            │    │    ├── CustomerManager.java
-    │            │    │    └── VIPCustomer.java
-    │            │    ├── producer
-    │            │    │    ├── Vendor.java
-    │            │    │    └── VendorManager.java
-    │            │    ├── CountUpdate.java
-    │            │    ├── SystemState.java
-    │            │    ├── SystemStateManager.java
-    │            │    ├── Ticket.java
-    │            │    ├── TicketUpdate.java
-    │            │    ├── TransactionLog.java
-    │            │    └── User.java
-    │            ├── producer
-    │            │    ├── Vendor.java
-    │            │    └── VendorManager.java
-    │            ├── service
-    │            │    ├── ConfigurationService.java
-    │            │    ├── CountUpdateService.java
-    │            │    ├── SystemManagementService.java
-    │            │    ├── TicketPool.java
-    │            │    ├── TicketUpdateService.java
-    │            │    └── TransactionLogService.java
-    │            └──TicketingSystemBackendApplication.java
-    └── frontend
-        ├── .angular
-        ├── .editorconfig
-        ├── .gitignore
-        ├── README.md
-        ├── angular.json
-        ├── desktop.ini
-        ├── package-lock.json
-        ├── package.json
-        ├── postcss.config.js
-        ├── public
-        ├── src
-        ├── tailwind.config.js
-        ├── tsconfig.app.json
-        ├── tsconfig.json
-        └── tsconfig.spec.json
+    ├── angular.json
+    ├── package-lock.json
+    ├── package.json
+    ├── postcss.config.js
+    ├── public
+        └── favicon.ico
+    ├── src
+        ├── app
+        │   ├── app.component.css
+        │   ├── app.component.html
+        │   ├── app.component.spec.ts
+        │   ├── app.component.ts
+        │   ├── app.config.ts
+        │   ├── app.routes.ts
+        │   ├── components
+        │   │   ├── configuration-form
+        │   │   │   ├── configuration-form.component.css
+        │   │   │   ├── configuration-form.component.html
+        │   │   │   ├── configuration-form.component.spec.ts
+        │   │   │   └── configuration-form.component.ts
+        │   │   ├── count-display
+        │   │   │   ├── count-display.component.css
+        │   │   │   ├── count-display.component.html
+        │   │   │   ├── count-display.component.spec.ts
+        │   │   │   └── count-display.component.ts
+        │   │   ├── line-chart
+        │   │   │   ├── line-chart.component.spec.ts
+        │   │   │   └── line-chart.component.ts
+        │   │   ├── system-control
+        │   │   │   ├── system-control.component.css
+        │   │   │   ├── system-control.component.html
+        │   │   │   ├── system-control.component.spec.ts
+        │   │   │   └── system-control.component.ts
+        │   │   ├── ticket-pool-status
+        │   │   │   ├── ticket-pool-status.component.css
+        │   │   │   ├── ticket-pool-status.component.html
+        │   │   │   ├── ticket-pool-status.component.spec.ts
+        │   │   │   └── ticket-pool-status.component.ts
+        │   │   ├── toast-container
+        │   │   │   └── toast-container.component.ts
+        │   │   └── transaction-log
+        │   │   │   ├── transaction-log.component.css
+        │   │   │   ├── transaction-log.component.html
+        │   │   │   ├── transaction-log.component.spec.ts
+        │   │   │   └── transaction-log.component.ts
+        │   ├── models
+        │   │   ├── configuration.model.ts
+        │   │   ├── count-update.model.ts
+        │   │   ├── ticket-update.model.ts
+        │   │   └── transaction-log.model.ts
+        │   └── services
+        │   │   ├── configuration.service.spec.ts
+        │   │   ├── configuration.service.ts
+        │   │   ├── management.service.spec.ts
+        │   │   ├── management.service.ts
+        │   │   ├── system-control.service.spec.ts
+        │   │   ├── system-control.service.ts
+        │   │   ├── ticket.service.spec.ts
+        │   │   ├── ticket.service.ts
+        │   │   ├── toast.service.ts
+        │   │   ├── web-socket-service.service.spec.ts
+        │   │   └── web-socket-service.service.ts
+        ├── environments
+        │   ├── environment.prod.ts
+        │   └── environment.ts
+        ├── index.html
+        ├── main.ts
+        └── styles.css
+    ├── tailwind.config.js
+    ├── tsconfig.app.json
+    ├── tsconfig.json
+    └── tsconfig.spec.json
 ```
 
 ---
