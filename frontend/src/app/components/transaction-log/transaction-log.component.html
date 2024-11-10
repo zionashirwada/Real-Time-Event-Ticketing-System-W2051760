@@ -9,8 +9,10 @@
   </div>
   <div class="m-0 flex flex-col space-y-0" *ngFor="let log of transactionLogs">
 <p></p>
-    <p class="text-white m-0 p-0" [ngClass]="{'text-green-400': log.action === 'ADD', 'text-red-400': log.action !== 'ADD'}">{{ log.action === 'ADD' ? '+ $' : '- $' }}{{ log.tickets }} ticket(s)
-      {{ log.action === 'ADD' ? 'added' : 'purchased' }}</p>
+    <p class=" m-0 p-0" [class]="log.action === 'ADD' ? 'text-green-400' : 'text-red-400'">
+      {{ log.action === 'ADD' ? '+ $' : '- $' }}{{ log.tickets }} ticket(s)
+      {{ log.action === 'ADD' ? 'added' : 'purchased' }}
+    </p>
     <p class="text-white m-0 p-0">$ by: {{ log.name }}</p>
     <p class="text-yellow-500 m-0 p-0">Total tickets: {{ log.totalTickets }}</p>
   </div>
