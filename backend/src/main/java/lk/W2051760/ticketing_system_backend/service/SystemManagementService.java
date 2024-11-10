@@ -1,5 +1,4 @@
 package lk.W2051760.ticketing_system_backend.service;
-import lk.W2051760.ticketing_system_backend.model.consumer.VIPCustomerManager;
 import lk.W2051760.ticketing_system_backend.model.producer.VendorManager;
 import lk.W2051760.ticketing_system_backend.model.Configuration;
 import lk.W2051760.ticketing_system_backend.model.SystemState;
@@ -36,9 +35,6 @@ public class SystemManagementService {
     private CustomerManager customerManager;
 
     @Autowired
-    private VIPCustomerManager vipCustomerManager;
-
-    @Autowired
     private CountUpdateService countUpdateService;
 
     private Configuration configuration;
@@ -58,9 +54,8 @@ public class SystemManagementService {
                 currentState = SystemState.STOPPED;
                 // Initialize ticket pool and managers
                 ticketPool.initialize(configuration.getMaxTicketCapacity(), configuration.getTotalSystemTickets());
-                vendorManager.initialize(NUMBER_OF_VENDORS, 1);
-                customerManager.initialize(NUMBER_OF_CUSTOMERS, 1);
-                vipCustomerManager.initialize(NUMBER_OF_VIPCUSTOMERS,1);
+                vendorManager.initialize(NUMBER_OF_VENDORS, configuration.getTicketReleaseRate());
+                customerManager.initialize(NUMBER_OF_CUSTOMERS, configuration.getCustomerRetrievalRate());
                 broadcastState();
                 // Send initial counts
                 countUpdateService.updateVendorCount(vendorManager.getVendorCount());
@@ -152,8 +147,8 @@ public class SystemManagementService {
 
         // Initialize system with new configuration
         ticketPool.initialize(config.getMaxTicketCapacity(), config.getTotalSystemTickets());
-        vendorManager.initialize(1, 1);
-        customerManager.initialize(1, 1);
+        vendorManager.initialize(1, config.getTicketReleaseRate());
+        customerManager.initialize(1, config.getCustomerRetrievalRate());
         
         // Update system state
         currentState = SystemState.STOPPED;

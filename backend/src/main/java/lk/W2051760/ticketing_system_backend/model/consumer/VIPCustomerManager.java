@@ -18,7 +18,6 @@ public class VIPCustomerManager extends CustomerManager {
     private List<Thread> vipCustomerThreads;
     private List<VIPCustomer> vipCustomers;
     private int numberOfVIPCustomers;
-    private long customerRetrievalRate;
 
     public VIPCustomerManager(TicketPool ticketPool, 
                             TicketUpdateService ticketUpdateService,
@@ -47,7 +46,6 @@ public class VIPCustomerManager extends CustomerManager {
                 i,
                 "VIP Customer " + i, 
                 getTicketsToPurchase(),
-                getcustomerRetrievalRate(),
                 getTicketPool(),
                 getTicketUpdateService(),
                 getTransactionLogService()
@@ -118,7 +116,6 @@ public class VIPCustomerManager extends CustomerManager {
             customerId,
             customerName, 
             getTicketsToPurchase(),
-            getcustomerRetrievalRate(),
             getTicketPool(),
             getTicketUpdateService(),
             getTransactionLogService()
