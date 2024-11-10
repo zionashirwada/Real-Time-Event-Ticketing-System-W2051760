@@ -76,4 +76,32 @@ export class CountDisplayComponent implements OnInit {
       error: (error) => console.error('Error removing VIP customer:', error),
     })
   }
+
+  pauseVendorThreads() {
+    this.managementService.pauseVendorThreads().subscribe({
+      next: (response) => console.log('Vendor threads paused:', response),
+      error: (error) => console.error('Error pausing vendor threads:', error),
+    })
+  }
+
+  resumeVendorThreads() {
+    this.managementService.resumeVendorThreads().subscribe({
+      next: (response) => console.log('Vendor threads resumed:', response),
+      error: (error) => console.error('Error resuming vendor threads:', error),
+    })
+  }
+
+  pauseCustomerThreads() {
+    this.managementService.pauseCustomerThreads().subscribe({
+      next: (response) => console.log('Customer threads paused:', response),
+      error: (error) => console.error('Error pausing customer threads:', error),
+    })
+  }
+
+  resumeCustomerThreads() {
+    this.managementService.resumeCustomerThreads().subscribe({
+      next: (response) => console.log('Customer threads resumed:', response),
+      error: (error) => console.error('Error resuming customer threads:', error),
+    })
+  }
 }

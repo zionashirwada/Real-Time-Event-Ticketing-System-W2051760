@@ -23,6 +23,16 @@
 
       </button>
     </div>
+    <div class="mt-2 flex justify-center space-x-2">
+      <button
+      (click)="pauseVendorThreads()"
+       title="resetVendorCount" class="p-1 rounded bg-yellow-100 hover:bg-yellow-200">Pause</button>
+      <button
+      (click)="resumeVendorThreads()"
+      title="resumeVendorThreads"
+      class="p-1 rounded bg-green-100 hover:bg-green-200">Resume
+      </button>
+    </div>
   </div>
 </div>
 
@@ -48,6 +58,18 @@
 
       </button>
     </div>
+    <div class="mt-2 flex justify-center space-x-2">
+      <button
+      (click)="pauseCustomerThreads()"
+      title="pauseCustomerThreads"
+      class="p-1 rounded bg-yellow-100 hover:bg-yellow-200">Pause
+    </button>
+    <button
+    (click)="resumeCustomerThreads()"
+    title="resumeCustomerThreads"
+    class="p-1 rounded bg-green-100 hover:bg-green-200">Resume
+    </button>
+    </div>
   </div>
 </div>
 
@@ -71,6 +93,7 @@
         <ng-icon name="bootstrapPlusLg" class="w-4 h-4"></ng-icon>
       </button>
     </div>
+
   </div>
 </div>
 </div>

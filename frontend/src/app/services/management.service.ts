@@ -37,4 +37,22 @@ export class ManagementService {
   removeVIPCustomer(): Observable<any> {
     return this.http.post(`${this.apiUrl}/vip-customers/remove`, {}, { responseType: 'text' })
   }
+
+  // Vendor Thread management methods
+  pauseVendorThreads(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/vendors/pause`, {}, { responseType: 'text' })
+  }
+
+  resumeVendorThreads(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/vendors/resume`, {}, { responseType: 'text' })
+  }
+
+  // Customer Thread management methods
+  pauseCustomerThreads(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/customers/pause`, {}, { responseType: 'text' })
+  }
+
+  resumeCustomerThreads(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/customers/resume`, {}, { responseType: 'text' })
+  }
 }
