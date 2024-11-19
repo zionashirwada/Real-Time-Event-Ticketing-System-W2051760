@@ -26,24 +26,30 @@ public class ConfigurationService {
             }
 
             Configuration config = mapper.readValue(file, Configuration.class);
+            logger.info("Configuration loaded successfully from {}", CONFIG_PATH);
 
             // Validate configuration
-            if (config.getTotalSystemTickets() <= 0 || config.getMaxTicketCapacity() <= 0
-                    || config.getTicketReleaseRate() <= 0 || config.getCustomerRetrievalRate() <= 0) {
-                logger.warn("Invalid configuration values: all values must be positive");
-                return null;
-            }
-
-            if (config.getMaxTicketCapacity() > config.getTotalSystemTickets()) {
-                logger.warn("Invalid configuration: Max capacity cannot be greater than total system tickets");
+            if (!isValidConfiguration(config)) {
+                logger.warn("Invalid configuration values: total tickets, max capacity, release rate, and retrieval rate must all be positive, and max capacity must not exceed total tickets.");
                 return null;
             }
 
             return config;
+        } catch (IOException e) {
+            logger.warn("Error loading configuration file: {}", e.getMessage(), e);
+            throw e;
         } catch (Exception e) {
-            logger.warn("Error loading configuration: {}", e.getMessage(), e);
+            logger.warn("Unexpected error while loading configuration: {}", e.getMessage(), e);
             return null;
         }
+    }
+
+    public boolean isValidConfiguration(Configuration config) {
+        return config.getTotalSystemTickets() > 0 &&
+                config.getMaxTicketCapacity() > 0 &&
+                config.getTicketReleaseRate() > 0 &&
+                config.getCustomerRetrievalRate() > 0 &&
+                config.getMaxTicketCapacity() <= config.getTotalSystemTickets();
     }
 
     public void saveConfiguration(Configuration configuration) throws IOException {

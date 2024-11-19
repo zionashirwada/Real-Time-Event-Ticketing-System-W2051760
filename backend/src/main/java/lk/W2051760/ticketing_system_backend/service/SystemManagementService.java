@@ -4,6 +4,7 @@ import lk.W2051760.ticketing_system_backend.model.Configuration;
 import lk.W2051760.ticketing_system_backend.model.SystemState;
 import lk.W2051760.ticketing_system_backend.model.consumer.CustomerManager;
 import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
+import org.hibernate.boot.jaxb.SourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.Scanner;
 
 
 @Service
@@ -48,9 +50,38 @@ public class SystemManagementService {
 
     @PostConstruct
     public void initialize() {
+        Scanner scanner = new Scanner(System.in);  // Initialize the scanner
+
         try {
             configuration = configurationService.loadConfiguration();
-            if (configuration != null) {
+
+            if (configuration == null) {
+                // Configuration not set via GUI, use CLI
+                System.out.println("Enter total tickets:");
+                int totalTickets = scanner.nextInt();
+                System.out.println("Enter ticket release rate:");
+                int ticketReleaseRate = scanner.nextInt();
+                System.out.println("Enter customer retrieval rate:");
+                int customerRetrievalRate = scanner.nextInt();
+                System.out.println("Enter Maximum Ticket Capacity: ");
+                int maxTicketCapacity = scanner.nextInt();
+
+                if (maxTicketCapacity>ticketReleaseRate){
+                    System.out.println("! ! Maximum Ticket Capacity cannot be greater than Total Tickets  ! !");
+                    System.out.println("Enter Maximum Ticket Capacity: ");
+                     maxTicketCapacity = scanner.nextInt();
+                }
+
+
+                // Set up configuration manually
+                configuration = new Configuration(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity);
+                if (!configurationService.isValidConfiguration(configuration)) {
+                    logger.warn("Invalid configuration values: total tickets, max capacity, release rate, and retrieval rate must all be positive, and max capacity must not exceed total tickets.");
+                    return;
+                }
+                configurationService.saveConfiguration(configuration);
+                currentState = SystemState.STOPPED;
+            }
                 currentState = SystemState.STOPPED;
                 // Initialize ticket pool and managers
                 ticketPool.initialize(configuration.getMaxTicketCapacity(), configuration.getTotalSystemTickets());
@@ -60,11 +91,13 @@ public class SystemManagementService {
                 // Send initial counts
                 countUpdateService.updateVendorCount(vendorManager.getVendorCount());
                 countUpdateService.updateCustomerCount(customerManager.getCustomerCount());
-            }
+
         } catch (IOException e) {
             // Configuration not found or error reading it
             currentState = SystemState.NOT_CONFIGURED;
             e.printStackTrace();
+        } finally {
+            scanner.close();
         }
     }
 
