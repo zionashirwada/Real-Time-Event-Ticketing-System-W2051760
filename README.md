@@ -21,8 +21,6 @@
 
 - [`REAL-TIME-EVENT-TICKETING-SYSTEM-W2051760`](#real-time-event-ticketing-system-w2051760)
   - [📍 Overview](#-overview)
-  - [👾 Features](#-features)
-  - [🧩 Modules](#-modules)
   - [🚀 Getting Started](#-getting-started)
     - [🔖 Prerequisites](#-prerequisites)
     - [📦 Installation](#-installation)
@@ -32,6 +30,8 @@
     - [🤖 Usage](#-usage)
       - [Backend Usage](#backend-usage)
       - [Frontend Usage](#frontend-usage)
+  - [👾 Features](#-features)
+  - [🧩 Modules](#-modules)
   - [📌 System Architecture](#-system-architecture)
     - [Backend Components](#backend-components)
     - [Frontend Components](#frontend-components)
@@ -56,6 +56,89 @@
 This Real-Time Event Ticketing System manages concurrent ticket releases and purchases by leveraging the Producer-Consumer pattern with a multithreaded architecture. The system is composed of a Spring Boot backend and an Angular frontend, connected via REST APIs and WebSocket for real-time communication.
 
 ---
+## 🚀 Getting Started
+
+### 🔖 Prerequisites
+
+**Java Development Kit (JDK)** 	[![Java](https://img.shields.io/badge/Java-%23ED8B00.svg?logo=openjdk&logoColor=white)](#) : `version Java 17 or higher` </br>
+**Node.js** [![NodeJS](https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white)](#): `Version: >= 16.x.x` </br>
+**npm** 	[![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=fff)](#) : `Version: >= 8.x.x` </br>
+**Angular CLI** [![Angular](https://img.shields.io/badge/Angular-%23DD0031.svg?logo=angular&logoColor=white)](#): `Version: 18.2.9` </br>
+**Tailwind CSS** [![TailwindCSS](https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white)](#): `Version: >= 3.x.x` </br>
+**TypeScript** [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](#): `Version: >= 4.x.x` </br>
+**Maven**: `Version: 3.9.9` </br>
+**Spring Boot**: `Version: 3.2.0` </br>
+**WebSocket**: `Version: 5.3.0` </br>
+
+### 📦 Installation
+
+#### Build the project from source:
+
+1. Clone the Real-Time-Event-Ticketing-System-W2051760 repository:
+```sh
+❯ git clone https://github.com/zionashirwada/Real-Time-Event-Ticketing-System-W2051760
+```
+
+2. Navigate to the project directory:
+```sh
+❯ cd Real-Time-Event-Ticketing-System-W2051760
+```
+
+#### Backend Installation and Usage
+
+1. Navigate to the backend directory:
+```sh
+❯ cd backend
+```
+2. Install dependencies and build the project:
+```sh
+❯ ./mvnw clean install
+```
+
+#### Frontend Installation and Usage
+
+1. Navigate to the frontend directory:
+```sh
+❯ cd frontend
+```
+2. Install dependencies:
+```sh
+❯ npm install
+```
+
+
+
+### 🤖 Usage
+
+To run the project, execute the following command:
+
+#### Backend Usage
+
+1. Navigate to the backend directory:
+```sh
+❯ cd backend
+```
+2. Run the backend server:
+```sh
+❯ ./mvnw spring-boot:run
+```
+
+#### Frontend Usage
+
+1. Navigate to the frontend directory:
+```sh
+❯ cd frontend
+```
+
+2. Run the frontend development server:
+
+```sh
+❯ ng serve
+```
+This will start the development server at `http://localhost:4200`.
+
+---
+
 
 ## 👾 Features
 
@@ -157,89 +240,6 @@ This Real-Time Event Ticketing System manages concurrent ticket releases and pur
 | [ConfigurationService.java](https://github.com/zionashirwada/Real-Time-Event-Ticketing-System-W2051760/blob/main/backend/src/main/java/lk/W2051760/ticketing_system_backend/service/ConfigurationService.java) | The `ConfigurationService` class is a Spring service that handles saving and loading configuration data to and from a JSON file using Jackson's `ObjectMapper`. It provides methods for serializing and deserializing a `Configuration` object. |
 
 </details>
-
----
-
-## 🚀 Getting Started
-
-### 🔖 Prerequisites
-
-**Java Development Kit (JDK)** 	[![Java](https://img.shields.io/badge/Java-%23ED8B00.svg?logo=openjdk&logoColor=white)](#) : `version Java 17 or higher` </br>
-**Node.js** [![NodeJS](https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white)](#): `Version: >= 16.x.x` </br>
-**npm** 	[![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=fff)](#) : `Version: >= 8.x.x` </br>
-**Angular CLI** [![Angular](https://img.shields.io/badge/Angular-%23DD0031.svg?logo=angular&logoColor=white)](#): `Version: 18.2.9` </br>
-**Tailwind CSS** [![TailwindCSS](https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white)](#): `Version: >= 3.x.x` </br>
-**TypeScript** [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](#): `Version: >= 4.x.x` </br>
-**Maven**: `Version: 3.9.9` </br>
-**Spring Boot**: `Version: 3.2.0` </br>
-**WebSocket**: `Version: 5.3.0` </br>
-
-### 📦 Installation
-
-#### Build the project from source:
-
-1. Clone the Real-Time-Event-Ticketing-System-W2051760 repository:
-```sh
-❯ git clone https://github.com/zionashirwada/Real-Time-Event-Ticketing-System-W2051760
-```
-
-2. Navigate to the project directory:
-```sh
-❯ cd Real-Time-Event-Ticketing-System-W2051760
-```
-
-#### Backend Installation and Usage
-
-1. Navigate to the backend directory:
-```sh
-❯ cd backend
-```
-2. Install dependencies and build the project:
-```sh
-❯ ./mvnw clean install
-```
-
-#### Frontend Installation and Usage
-
-1. Navigate to the frontend directory:
-```sh
-❯ cd frontend
-```
-2. Install dependencies:
-```sh
-❯ npm install
-```
-
-
-
-### 🤖 Usage
-
-To run the project, execute the following command:
-
-#### Backend Usage
-
-1. Navigate to the backend directory:
-```sh
-❯ cd backend
-```
-2. Run the backend server:
-```sh
-❯ ./mvnw spring-boot:run
-```
-
-#### Frontend Usage
-
-1. Navigate to the frontend directory:
-```sh
-❯ cd frontend
-```
-
-2. Run the frontend development server:
-
-```sh
-❯ ng serve
-```
-This will start the development server at `http://localhost:4200`.
 
 ---
 
