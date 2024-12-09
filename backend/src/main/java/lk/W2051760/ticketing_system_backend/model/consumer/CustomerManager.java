@@ -36,6 +36,11 @@ public class CustomerManager {
         this.customers = new ArrayList<>();
     }
 
+    
+    /** 
+     * @param numberOfCustomers
+     * @param ticketsToPurchase
+     */
     // Initialize with the necessary parameters
     public void initialize(int numberOfCustomers, int ticketsToPurchase) {
         this.numberOfCustomers = numberOfCustomers;

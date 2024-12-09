@@ -26,6 +26,11 @@ public class TicketPool {
         this.ticketPool = new LinkedBlockingQueue<>();
     }
 
+    
+    /** 
+     * @param maxTicketCapacity
+     * @param totalSystemTickets
+     */
     public synchronized void initialize(int maxTicketCapacity, int totalSystemTickets) {
         this.maxTicketCapacity = maxTicketCapacity;
         this.totalSystemTickets = totalSystemTickets;

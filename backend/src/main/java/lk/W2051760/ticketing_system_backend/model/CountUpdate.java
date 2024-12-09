@@ -16,6 +16,10 @@ public class CountUpdate {
         this.totalReleasedTickets = totalReleasedTickets;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getVendorCount() {
         return vendorCount;
     }

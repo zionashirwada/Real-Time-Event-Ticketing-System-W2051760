@@ -16,6 +16,10 @@ public class Configuration {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
+    
+    /** 
+     * @return int
+     */
     // Getters and Setters
     public int getTotalSystemTickets() {
         return totalSystemTickets;

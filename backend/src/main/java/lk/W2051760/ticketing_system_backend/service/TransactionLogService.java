@@ -17,6 +17,10 @@ public class TransactionLogService {
         this.messagingTemplate = messagingTemplate;
     }
 
+    
+    /** 
+     * @param log
+     */
     public void sendTransactionLog(TransactionLog log) {
         messagingTemplate.convertAndSend("/topic/transaction-logs", log);
         logger.info("Broadcasted transaction log: {}", log);

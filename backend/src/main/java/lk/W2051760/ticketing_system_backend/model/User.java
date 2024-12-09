@@ -9,6 +9,10 @@ public abstract class User {
         this.name = name;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getId() {
         return id;
     };

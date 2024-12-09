@@ -7,6 +7,10 @@ public class Ticket {
         this.id = id;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getId() {
         return id;
     }

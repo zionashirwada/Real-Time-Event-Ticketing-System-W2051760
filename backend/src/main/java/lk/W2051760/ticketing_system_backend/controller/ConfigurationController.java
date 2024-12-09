@@ -18,6 +18,11 @@ public class ConfigurationController {
     @Autowired
     private SystemManagementService systemManagementService;
 
+    
+    /** 
+     * @param config
+     * @return ResponseEntity<String>
+     */
     @PostMapping("/configuration")
     public ResponseEntity<String> saveConfiguration(@RequestBody Configuration config) {
         try {

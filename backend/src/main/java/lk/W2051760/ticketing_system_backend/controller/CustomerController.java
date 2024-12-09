@@ -12,6 +12,10 @@ public class CustomerController {
     @Autowired
     private CustomerManager customerManager;
 
+    
+    /** 
+     * @return ResponseEntity<Integer>
+     */
     // Get current customer count
     @GetMapping("/count")
     public ResponseEntity<Integer> getCustomerCount() {

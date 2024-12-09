@@ -12,6 +12,10 @@ public class VIPCustomerController {
     @Autowired
     private VIPCustomerManager vipCustomerManager;
 
+    
+    /** 
+     * @return ResponseEntity<Integer>
+     */
     @GetMapping("/count")
     public ResponseEntity<Integer> getVIPCustomerCount() {
         int count = vipCustomerManager.getVIPCustomerCount();

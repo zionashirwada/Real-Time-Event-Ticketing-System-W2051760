@@ -12,6 +12,10 @@ public class VendorController {
     @Autowired
     private VendorManager vendorManager;
 
+    
+    /** 
+     * @return ResponseEntity<Integer>
+     */
     // Get current vendor count
     @GetMapping("/count")
     public ResponseEntity<Integer> getVendorCount() {

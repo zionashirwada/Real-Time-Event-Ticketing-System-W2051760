@@ -15,6 +15,10 @@ public class SystemController {
     @Autowired
     private SystemManagementService systemManagementService;
 
+    
+    /** 
+     * @return ResponseEntity<String>
+     */
     @PostMapping("/start")
     public ResponseEntity<String> startSystem() {
         try {

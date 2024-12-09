@@ -24,6 +24,10 @@ public class CountUpdateService {
         this.ticketPool = ticketPool;
     }
 
+    
+    /** 
+     * @param vendorCount
+     */
     public synchronized void updateVendorCount(int vendorCount) {
         this.currentVendorCount = vendorCount;
         sendCountUpdate();

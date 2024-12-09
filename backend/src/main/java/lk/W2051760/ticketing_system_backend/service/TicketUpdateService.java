@@ -17,6 +17,10 @@ public class TicketUpdateService {
         this.messagingTemplate = messagingTemplate;
     }
 
+    
+    /** 
+     * @param ticketUpdate
+     */
     public void sendTicketUpdate(TicketUpdate ticketUpdate) {
         try {
             messagingTemplate.convertAndSend("/topic/ticket-updates", ticketUpdate);

@@ -2,6 +2,10 @@ package lk.W2051760.ticketing_system_backend.model;
 
 public final class SystemStateManager {
     private volatile SystemState currentState = SystemState.STOPPED;
+    
+    /** 
+     * @param state
+     */
     public synchronized void setCurrentState(SystemState state) {
         currentState = state;
         notifyAll();

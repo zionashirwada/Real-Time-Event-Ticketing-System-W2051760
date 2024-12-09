@@ -131,6 +131,10 @@ public class SystemManagementService {
         messagingTemplate.convertAndSend("/topic/ticket-updates", update);
     }
 
+    
+    /** 
+     * @return SystemState
+     */
     public synchronized SystemState getCurrentState() {
         return currentState;
     }

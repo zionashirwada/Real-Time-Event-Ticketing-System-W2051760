@@ -37,6 +37,11 @@ public class VendorManager {
         this.vendors = new ArrayList<>();
     }
 
+
+/** 
+ * @param numberOfVendors
+ * @param ticketsToRelease
+ */
 //   initialize
     public void initialize(int numberOfVendors, int ticketsToRelease) {
         this.numberOfVendors = numberOfVendors;

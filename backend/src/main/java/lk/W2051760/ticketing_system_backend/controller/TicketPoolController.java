@@ -13,6 +13,10 @@ public class TicketPoolController {
     @Autowired
     private TicketPool ticketPool;
 
+    
+    /** 
+     * @return ResponseEntity<?>
+     */
     @GetMapping("/ticket-pool-status")
     public ResponseEntity<?> getTicketPoolStatus() {
         return ResponseEntity.ok(new TicketPoolStatus(

@@ -15,6 +15,11 @@ public class ConfigurationService {
     private static final Logger logger = LogManager.getLogger(ConfigurationService.class);
     private static final String CONFIG_PATH = "config/configuration.json"; // Root-level config directory
 
+    
+    /** 
+     * @return Configuration
+     * @throws IOException
+     */
     public Configuration loadConfiguration() throws IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();

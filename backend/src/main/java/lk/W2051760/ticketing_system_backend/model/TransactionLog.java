@@ -19,6 +19,10 @@ public class TransactionLog {
         this.currentPoolAmount = currentPoolAmount;
     }
 
+    
+    /** 
+     * @return String
+     */
     // Getters and Setters
 
     public String getAction() {

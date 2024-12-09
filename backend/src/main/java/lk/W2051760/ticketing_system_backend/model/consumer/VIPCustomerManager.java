@@ -28,6 +28,11 @@ public class VIPCustomerManager extends CustomerManager {
         this.vipCustomers = new ArrayList<>();
     }
 
+    
+    /** 
+     * @param numberOfCustomers
+     * @param ticketsToPurchase
+     */
     @Override
     public void initialize(int numberOfCustomers, int ticketsToPurchase) {
         this.numberOfVIPCustomers = numberOfCustomers;
