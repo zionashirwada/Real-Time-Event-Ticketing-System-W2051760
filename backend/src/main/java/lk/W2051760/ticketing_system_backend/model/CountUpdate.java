@@ -1,5 +1,10 @@
 package lk.W2051760.ticketing_system_backend.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class CountUpdate {
     private int vendorCount;
     private int customerCount;
@@ -16,47 +21,5 @@ public class CountUpdate {
         this.totalReleasedTickets = totalReleasedTickets;
     }
 
-    
-    /** 
-     * @return int
-     */
-    public int getVendorCount() {
-        return vendorCount;
-    }
 
-    public void setVendorCount(int vendorCount) {
-        this.vendorCount = vendorCount;
-    }
-
-    public int getCustomerCount() {
-        return customerCount;
-    }
-
-    public void setCustomerCount(int customerCount) {
-        this.customerCount = customerCount;
-    }
-
-    public int getPoolTicketAmount() {
-        return poolTicketAmount;
-    }
-
-    public void setPoolTicketAmount(int poolTicketAmount) {
-        this.poolTicketAmount = poolTicketAmount;
-    }
-
-    public int getTotalReleasedTickets() {
-        return totalReleasedTickets;
-    }
-
-    public void setTotalReleasedTickets(int totalReleasedTickets) {
-        this.totalReleasedTickets = totalReleasedTickets;
-    }
-
-    public int getVipCustomerCount() {
-        return vipCustomerCount;
-    }
-
-    public void setVipCustomerCount(int vipCustomerCount) {
-        this.vipCustomerCount = vipCustomerCount;
-    }
 }

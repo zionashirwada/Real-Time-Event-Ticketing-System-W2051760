@@ -1,6 +1,12 @@
 package lk.W2051760.ticketing_system_backend.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class TicketUpdate {
+
     private String action;        // "ADD", "REMOVE"
     private String entity;        //  "VENDOR", "CUSTOMER", "SYSTEM"
     private String name;          // Name of the vendor/customer
@@ -18,52 +24,6 @@ public class TicketUpdate {
         this.currentPoolAmount = currentPoolAmount;
     }
 
-    
-    /** 
-     * @return String
-     */
-    // Getters and Setters
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-
-    public String getEntity() {
-        return entity;
-    }
-
-    public void setEntity(String entity) {
-        this.entity = entity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(int tickets) {
-        this.tickets = tickets;
-    }
-
-    public int getCurrentPoolAmount() {
-        return currentPoolAmount;
-    }
-
-    public void setCurrentPoolAmount(int currentPoolAmount) {
-        this.currentPoolAmount = currentPoolAmount;
-    }
 
     @Override
     public String toString() {

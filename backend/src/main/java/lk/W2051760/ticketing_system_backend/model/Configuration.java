@@ -1,5 +1,10 @@
 package lk.W2051760.ticketing_system_backend.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class Configuration {
     private int totalSystemTickets;
     private int ticketReleaseRate;
@@ -16,40 +21,5 @@ public class Configuration {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
-    
-    /** 
-     * @return int
-     */
-    // Getters and Setters
-    public int getTotalSystemTickets() {
-        return totalSystemTickets;
-    }
 
-    public void setTotalSystemTickets(int totalSystemTickets) {
-        this.totalSystemTickets = totalSystemTickets;
-    }
-
-    public int getTicketReleaseRate() {
-        return ticketReleaseRate;
-    }
-
-    public void setTicketReleaseRate(int ticketReleaseRate) {
-        this.ticketReleaseRate = ticketReleaseRate;
-    }
-
-    public int getCustomerRetrievalRate() {
-        return customerRetrievalRate;
-    }
-
-    public void setCustomerRetrievalRate(int customerRetrievalRate) {
-        this.customerRetrievalRate = customerRetrievalRate;
-    }
-
-    public int getMaxTicketCapacity() {
-        return maxTicketCapacity;
-    }
-
-    public void setMaxTicketCapacity(int maxTicketCapacity) {
-        this.maxTicketCapacity = maxTicketCapacity;
-    }
 }
