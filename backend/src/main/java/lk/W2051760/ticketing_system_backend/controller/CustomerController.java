@@ -1,3 +1,10 @@
+/**
+ * CustomerController.java
+ * 
+ * This file contains the CustomerController class, which provides REST endpoints 
+ * for managing customer-related operations, including retrieving the customer count, 
+ * adding or removing customers, and pausing or resuming customer actions.
+ */
 package lk.W2051760.ticketing_system_backend.controller;
 
 import lk.W2051760.ticketing_system_backend.model.consumer.CustomerManager;

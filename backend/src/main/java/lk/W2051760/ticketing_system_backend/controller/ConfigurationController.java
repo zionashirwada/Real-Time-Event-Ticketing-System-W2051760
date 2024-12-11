@@ -29,7 +29,6 @@ public class ConfigurationController {
             configurationService.saveConfiguration(config);
             return ResponseEntity.ok("Configuration saved successfully");
         } catch (IOException e) {
-            e.printStackTrace();
             return ResponseEntity.status(500).body("Error saving configuration: " + e.getMessage());
         }
     }

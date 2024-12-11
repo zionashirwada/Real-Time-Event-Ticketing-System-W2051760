@@ -7,8 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TicketingSystemBackendApplication {
 
 	
-	/** 
-	 * @param args
+	/**
+	 * Main method to run the Spring Boot application.
+	 * 
+	 * @param args the command-line arguments
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(TicketingSystemBackendApplication.class, args);

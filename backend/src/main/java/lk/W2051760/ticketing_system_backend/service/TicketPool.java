@@ -26,8 +26,7 @@ public class TicketPool {
         this.ticketPool = new LinkedBlockingQueue<>();
     }
 
-    
-    /** 
+    /**
      * @param maxTicketCapacity
      * @param totalSystemTickets
      */
@@ -38,6 +37,17 @@ public class TicketPool {
         this.ticketPool.clear();
     }
 
+    /**
+     * Adds a specified number of tickets to the ticket pool, ensuring that the
+     * total number of released tickets
+     * does not exceed the system's maximum ticket capacity or the total system
+     * tickets limit.
+     *
+     * @param amount the number of tickets to add
+     * @return the actual number of tickets added to the pool, which may be less
+     *         than the requested amount
+     *         if constraints are reached
+     */
     public synchronized int addTickets(int amount) {
         // Check if adding these tickets would exceed total system tickets
         if (totalReleasedTickets >= totalSystemTickets) {
@@ -59,10 +69,21 @@ public class TicketPool {
             ticketPool.offer(new Ticket(totalReleasedTickets + i + 1));
         }
         totalReleasedTickets += actualAmount;
-        
+
         return actualAmount;
     }
 
+    /**
+     * Removes a specified number of tickets from the ticket pool.
+     * This method is synchronized to ensure thread safety when accessing the ticket
+     * pool.
+     *
+     * @param amount the number of tickets to remove from the pool
+     * @return {@code true} if the specified number of tickets were successfully
+     *         removed;
+     *         {@code false} if there are not enough tickets in the pool to fulfill
+     *         the request
+     */
     public synchronized boolean removeTickets(int amount) {
         if (ticketPool.size() < amount) {
             return false;
@@ -79,12 +100,11 @@ public class TicketPool {
         totalReleasedTickets = 0;
         // Send WebSocket update about the reset
         TicketUpdate update = new TicketUpdate(
-            "RESET",
-            "SYSTEM",
-            "System",
-            0,
-            0
-        );
+                "RESET",
+                "SYSTEM",
+                "System",
+                0,
+                0);
         ticketUpdateService.sendTicketUpdate(update);
         logger.info("Ticket pool has been reset");
     }
@@ -93,12 +113,11 @@ public class TicketPool {
         reset();
         // Send WebSocket update about the stop and reset
         TicketUpdate update = new TicketUpdate(
-            "STOP_RESET",
-            "SYSTEM",
-            "System",
-            0,
-            0
-        );
+                "STOP_RESET",
+                "SYSTEM",
+                "System",
+                0,
+                0);
         ticketUpdateService.sendTicketUpdate(update);
         logger.info("Ticket pool has been stopped and reset");
     }
@@ -119,4 +138,3 @@ public class TicketPool {
         return totalSystemTickets;
     }
 }
-

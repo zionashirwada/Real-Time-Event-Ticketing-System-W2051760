@@ -1,10 +1,16 @@
+/**
+ * TicketUpdateService.java
+ * 
+ * This file contains the TicketUpdateService class, which is responsible for 
+ * broadcasting ticket updates to clients via WebSocket messaging.
+ */
 package lk.W2051760.ticketing_system_backend.service;
 
-import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import lk.W2051760.ticketing_system_backend.model.TicketUpdate;
 
 @Service
 public class TicketUpdateService {
@@ -13,13 +19,20 @@ public class TicketUpdateService {
 
     private final SimpMessagingTemplate messagingTemplate;
 
+    /**
+     * Constructor for TicketUpdateService.
+     * 
+     * @param messagingTemplate the SimpMessagingTemplate used for sending messages.
+     */
     public TicketUpdateService(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
-    
-    /** 
-     * @param ticketUpdate
+    /**
+     * Sends a ticket update to the specified WebSocket topic.
+     * 
+     * @param ticketUpdate the TicketUpdate object containing the update details to
+     *                     broadcast.
      */
     public void sendTicketUpdate(TicketUpdate ticketUpdate) {
         try {
